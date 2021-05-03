@@ -1,3 +1,4 @@
+using Management_Of_Educational_Cycles.Domain.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,6 +20,7 @@ namespace Management_Of_Educational_Cycles.API
     {
         public Startup(IConfiguration configuration)
         {
+
             Configuration = configuration;
         }
 
@@ -27,7 +29,8 @@ namespace Management_Of_Educational_Cycles.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("TempConnection")));
             services.AddControllers();
             
         }
