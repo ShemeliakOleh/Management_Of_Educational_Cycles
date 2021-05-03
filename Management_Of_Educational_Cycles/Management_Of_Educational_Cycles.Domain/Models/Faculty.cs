@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-    class Faculty
+    public class Faculty
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
