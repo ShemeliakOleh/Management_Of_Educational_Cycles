@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Management_Of_Educational_C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Management_Of_Educational_Cycles.View", "Management_Of_Educational_Cycles.View\Management_Of_Educational_Cycles.View.csproj", "{87BE6276-31B3-4230-8C24-6F321C62F46C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Management_Of_Educational_Cycles.Domain", "Management_Of_Educational_Cycles.Domain\Management_Of_Educational_Cycles.Domain.csproj", "{B0A88216-00DD-4261-BFC8-67F2D450968B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Management_Of_Educational_Cycles.Domain", "Management_Of_Educational_Cycles.Domain\Management_Of_Educational_Cycles.Domain.csproj", "{B0A88216-00DD-4261-BFC8-67F2D450968B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

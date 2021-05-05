@@ -14,5 +14,9 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         public List<Teacher> Teachers { get; set; }
         public int NumberOfHours { get; set; }
         public int Semester { get; set; }
+        public WorkManagementCycle()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }
