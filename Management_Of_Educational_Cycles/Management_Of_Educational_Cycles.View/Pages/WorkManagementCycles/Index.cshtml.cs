@@ -23,7 +23,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 
         public async Task OnGetAsync()
         {
-            WorkManagementCycle = await _context.WorkManagementCycles.ToListAsync();
+
+            WorkManagementCycle = await _context.WorkManagementCycles.Include(u=>u.Group).Include(u=>u.Teachers).ToListAsync();
         }
     }
 }

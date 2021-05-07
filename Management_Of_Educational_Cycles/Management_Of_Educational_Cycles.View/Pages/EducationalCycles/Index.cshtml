@@ -17,6 +17,15 @@
                 @Html.DisplayNameFor(model => model.EducationalCycle[0].Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.EducationalCycle[0].Discipline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EducationalCycle[0].Teacher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EducationalCycle[0].Group)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.EducationalCycle[0].TypeOfClasses)
             </th>
             <th>
@@ -33,6 +42,15 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discipline.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Teacher.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TypeOfClasses)

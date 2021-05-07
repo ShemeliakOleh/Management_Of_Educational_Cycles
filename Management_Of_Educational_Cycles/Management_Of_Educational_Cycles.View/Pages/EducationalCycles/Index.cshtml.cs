@@ -23,7 +23,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
 
         public async Task OnGetAsync()
         {
-            EducationalCycle = await _context.EducationalCycles.ToListAsync();
+            EducationalCycle = await _context.EducationalCycles.Include(x=>x.Discipline)
+                .Include(x => x.Teacher).Include(x => x.Group).ToListAsync();
         }
     }
 }
