@@ -16,10 +16,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         public string TypeOfClasses { get; set; }
         public int NumberOfHours { get; set; }
         public int Semester { get; set; }
-        public EducationalCycle()
-        {
-            Id = Guid.NewGuid();
-        }
+
 
     }
 }

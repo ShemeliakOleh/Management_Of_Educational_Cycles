@@ -30,7 +30,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
                 return NotFound();
             }
 
-            EducationalCycle = await _context.EducationalCycles.FirstOrDefaultAsync(m => m.Id == id);
+            EducationalCycle = await _context.EducationalCycles.Include(x=>x.Discipline).Include(x=>x.Group).FirstOrDefaultAsync(m => m.Id == id);
 
             if (EducationalCycle == null)
             {
@@ -47,7 +47,6 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return Page();
             }
-
             _context.Attach(EducationalCycle).State = EntityState.Modified;
 
             try

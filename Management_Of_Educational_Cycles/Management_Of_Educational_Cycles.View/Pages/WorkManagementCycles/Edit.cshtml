@@ -20,6 +20,11 @@
                 <span asp-validation-for="WorkManagementCycle.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="WorkManagementCycle.Group" class="control-label"></label>
+                <input asp-for="WorkManagementCycle.Group.Name" class="form-control" />
+                <span asp-validation-for="WorkManagementCycle.Group.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="WorkManagementCycle.NumberOfHours" class="control-label"></label>
                 <input asp-for="WorkManagementCycle.NumberOfHours" class="form-control" />
                 <span asp-validation-for="WorkManagementCycle.NumberOfHours" class="text-danger"></span>

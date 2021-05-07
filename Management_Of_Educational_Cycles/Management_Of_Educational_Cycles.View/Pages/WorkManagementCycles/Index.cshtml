@@ -41,8 +41,7 @@
                 @Html.DisplayFor(modelItem => item.Group.Name)
             </td>
             <td>
-                @if(item.Teachers != null)
-                foreach (var i in item.Teachers)
+                @foreach (var i in item.Teachers)
                 {
                     @i.Name
                 }

@@ -25,6 +25,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
         {
             EducationalCycle = await _context.EducationalCycles.Include(x=>x.Discipline)
                 .Include(x => x.Teacher).Include(x => x.Group).ToListAsync();
+        
         }
     }
 }

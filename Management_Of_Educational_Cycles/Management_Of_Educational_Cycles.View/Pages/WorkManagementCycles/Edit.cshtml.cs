@@ -30,7 +30,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 return NotFound();
             }
 
-            WorkManagementCycle = await _context.WorkManagementCycles.FirstOrDefaultAsync(m => m.Id == id);
+            WorkManagementCycle = await _context.WorkManagementCycles.Include(x=>x.Group).FirstOrDefaultAsync(m => m.Id == id);
 
             if (WorkManagementCycle == null)
             {

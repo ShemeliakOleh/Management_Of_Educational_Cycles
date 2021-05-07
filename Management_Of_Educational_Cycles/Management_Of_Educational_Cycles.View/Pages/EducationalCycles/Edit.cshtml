@@ -20,6 +20,16 @@
                 <span asp-validation-for="EducationalCycle.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="EducationalCycle.Discipline" class="control-label"></label>
+                <input asp-for="EducationalCycle.Discipline.Name" class="form-control" />
+                <span asp-validation-for="EducationalCycle.Discipline.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EducationalCycle.Group" class="control-label"></label>
+                <input asp-for="EducationalCycle.Group.Name" class="form-control" />
+                <span asp-validation-for="EducationalCycle.Group.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="EducationalCycle.TypeOfClasses" class="control-label"></label>
                 <input asp-for="EducationalCycle.TypeOfClasses" class="form-control" />
                 <span asp-validation-for="EducationalCycle.TypeOfClasses" class="text-danger"></span>
