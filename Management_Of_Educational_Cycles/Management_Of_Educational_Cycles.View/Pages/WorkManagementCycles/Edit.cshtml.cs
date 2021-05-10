@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 {
@@ -30,7 +33,11 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 return NotFound();
             }
 
-            WorkManagementCycle = await _context.WorkManagementCycles.Include(x=>x.Group).FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id);
+            var textResponse =await response.Content.ReadAsStringAsync();
+            WorkManagementCycle = JsonConvert.DeserializeObject<WorkManagementCycle>(textResponse);
+            
 
             if (WorkManagementCycle == null)
             {
@@ -39,8 +46,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
+      
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -48,23 +54,20 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 return Page();
             }
 
-            _context.Attach(WorkManagementCycle).State = EntityState.Modified;
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(WorkManagementCycle);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:44389/api/WorkManagementCycles/update", data);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToPage("./Index");
+            }
+            //else
+            //{
+            //    //DO something
+            //}
+            
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WorkManagementCycleExists(WorkManagementCycle.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
             return RedirectToPage("./Index");
         }

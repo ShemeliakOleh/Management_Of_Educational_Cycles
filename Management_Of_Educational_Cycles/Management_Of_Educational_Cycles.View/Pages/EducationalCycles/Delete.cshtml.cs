@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
 {
@@ -29,7 +31,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
                 return NotFound();
             }
 
-            EducationalCycle = await _context.EducationalCycles.FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id);
+            var textResponse = await response.Content.ReadAsStringAsync();
+            EducationalCycle = JsonConvert.DeserializeObject<EducationalCycle>(textResponse);
 
             if (EducationalCycle == null)
             {
@@ -45,13 +50,16 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
                 return NotFound();
             }
 
-            EducationalCycle = await _context.EducationalCycles.FindAsync(id);
-
-            if (EducationalCycle != null)
-            {
-                _context.EducationalCycles.Remove(EducationalCycle);
-                await _context.SaveChangesAsync();
-            }
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/EducationalCycles/remove?id=" + id);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    //DO something
+            //}
+            //else
+            //{
+            //    //Do something
+            //}
 
             return RedirectToPage("./Index");
         }

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using System.Net.Http;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 {
@@ -26,17 +29,24 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 
         [BindProperty]
         public WorkManagementCycle WorkManagementCycle { get; set; }
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
-            _context.WorkManagementCycles.Add(WorkManagementCycle);
-            await _context.SaveChangesAsync();
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(WorkManagementCycle);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:44389/api/WorkManagementCycles/create",data);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    //DO something
+            //}
+            //else
+            //{
+            //    //DO something
+            //}
 
             return RedirectToPage("./Index");
         }

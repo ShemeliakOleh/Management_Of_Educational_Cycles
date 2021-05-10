@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
 
 namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
 {
@@ -29,8 +32,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return NotFound();
             }
-
-            EducationalCycle = await _context.EducationalCycles.Include(x=>x.Discipline).Include(x=>x.Group).FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response =await client.GetAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id);
+            var textResponse =await response.Content.ReadAsStringAsync();
+            EducationalCycle = JsonConvert.DeserializeObject<EducationalCycle>(textResponse);
 
             if (EducationalCycle == null)
             {
@@ -39,31 +44,24 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            _context.Attach(EducationalCycle).State = EntityState.Modified;
-
-            try
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(EducationalCycle);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:44389/api/EducationalCycles/update", data);
+            if (response.IsSuccessStatusCode)
             {
-                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EducationalCycleExists(EducationalCycle.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //else
+            //{
+            //    //Do something
+            //}
 
             return RedirectToPage("./Index");
         }

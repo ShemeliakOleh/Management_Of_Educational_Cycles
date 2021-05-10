@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 {
@@ -29,7 +31,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 return NotFound();
             }
 
-            WorkManagementCycle = await _context.WorkManagementCycles.FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id);
+            var textResponse = await response.Content.ReadAsStringAsync();
+            WorkManagementCycle = JsonConvert.DeserializeObject<WorkManagementCycle>(textResponse);
 
             if (WorkManagementCycle == null)
             {
@@ -44,14 +49,16 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             {
                 return NotFound();
             }
-
-            WorkManagementCycle = await _context.WorkManagementCycles.FindAsync(id);
-
-            if (WorkManagementCycle != null)
-            {
-                _context.WorkManagementCycles.Remove(WorkManagementCycle);
-                await _context.SaveChangesAsync();
-            }
+            var client =new HttpClient();
+            var response =await client.GetAsync("https://localhost:44389/api/WorkManagementCycles/remove?id="+id);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    //DO something
+            //}
+            //else
+            //{
+            //    //Do something
+            //}
 
             return RedirectToPage("./Index");
         }

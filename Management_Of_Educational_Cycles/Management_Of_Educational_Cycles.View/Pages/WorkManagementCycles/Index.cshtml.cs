@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 {
@@ -23,8 +25,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 
         public async Task OnGetAsync()
         {
-
-            WorkManagementCycle = await _context.WorkManagementCycles.Include(u=>u.Group).Include(u=>u.Teachers).ToListAsync();
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/WorkManagementCycles/list");
+            var textResponse = await response.Content.ReadAsStringAsync();
+            WorkManagementCycle = JsonConvert.DeserializeObject<List<WorkManagementCycle>>(textResponse);
             if (WorkManagementCycle[0].Teachers == null)
             {
                 WorkManagementCycle[0].Teachers = new List<Teacher>();
