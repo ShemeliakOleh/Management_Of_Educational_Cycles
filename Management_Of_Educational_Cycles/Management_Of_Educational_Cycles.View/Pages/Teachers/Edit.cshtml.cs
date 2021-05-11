@@ -70,10 +70,5 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 
             return RedirectToPage("./Index");
         }
-
-        private bool TeacherExists(Guid id)
-        {
-            return _context.Teachers.Any(e => e.Id == id);
-        }
     }
 }

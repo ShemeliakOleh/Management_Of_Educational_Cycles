@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Departments
 {
@@ -28,7 +30,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return NotFound();
             }
 
-            Department = await _context.Departments.FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Departments/one?id=" + id);
+            var textResponse = await response.Content.ReadAsStringAsync();
+            Department = JsonConvert.DeserializeObject<Department>(textResponse);
 
             if (Department == null)
             {

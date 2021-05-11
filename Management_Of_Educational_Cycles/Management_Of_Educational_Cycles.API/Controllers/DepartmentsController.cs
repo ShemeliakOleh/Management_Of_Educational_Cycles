@@ -2,7 +2,6 @@
 using Management_Of_Educational_Cycles.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +11,11 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeachersController : GenericCrudController<Teacher>
+    public class DepartmentsController : GenericCrudController<Department>
     {
-        private DataManager _dataManager;
-        public TeachersController(DataManager dataManager) : base(dataManager)
+        public DepartmentsController(DataManager dataManager):base(dataManager)
         {
-
+            
         }
-
     }
 }
