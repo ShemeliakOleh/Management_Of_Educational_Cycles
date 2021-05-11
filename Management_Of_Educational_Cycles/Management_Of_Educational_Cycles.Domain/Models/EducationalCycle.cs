@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-    public class EducationalCycle
+    public class EducationalCycle : BaseEntity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public Group Group { get; set; }
         public Discipline Discipline { get; set; }

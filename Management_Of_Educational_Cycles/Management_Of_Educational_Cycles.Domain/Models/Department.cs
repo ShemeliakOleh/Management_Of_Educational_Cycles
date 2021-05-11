@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-   public class Department
+   public class Department : BaseEntity
     {
-        public Guid Id { get; set; }
+        
         public string Name { get; set; }
 
   

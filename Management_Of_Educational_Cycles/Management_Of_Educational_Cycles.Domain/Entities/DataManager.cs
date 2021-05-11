@@ -11,6 +11,8 @@ namespace Management_Of_Educational_Cycles.Domain.Entities
     {
         public IWorkManagementCyclesRepository _workManagementCyclesRepository { get; set; }
         public IEducationalCyclesRepository _educationalCyclesRepository { get; set; }
+
+        public IBaseRepository _baseRepository;
         public DataManager(IWorkManagementCyclesRepository workManagementCyclesRepository, IEducationalCyclesRepository educationalCyclesRepository)
         {
             _workManagementCyclesRepository = workManagementCyclesRepository;

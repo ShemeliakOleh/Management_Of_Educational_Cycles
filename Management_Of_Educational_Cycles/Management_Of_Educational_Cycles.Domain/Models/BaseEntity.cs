@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-    public class Teacher : BaseEntity
+    public abstract class BaseEntity
     {
-        public string Name { get; set; }
-
+        public Guid Id { get; set; }
     }
 }

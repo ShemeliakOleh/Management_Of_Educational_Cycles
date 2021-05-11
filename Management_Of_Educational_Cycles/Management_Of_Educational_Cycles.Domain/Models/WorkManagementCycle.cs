@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-    public class WorkManagementCycle
+    public class WorkManagementCycle : BaseEntity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public Group Group { get; set; }
         public List<Teacher> Teachers { get; set; }
