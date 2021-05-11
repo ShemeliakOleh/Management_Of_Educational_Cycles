@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
@@ -23,7 +25,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
 
         public async Task OnGetAsync()
         {
-            Group = await _context.Groups.ToListAsync();
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Groups/list");
+            var textResponse = await response.Content.ReadAsStringAsync();
+            Group = JsonConvert.DeserializeObject<List<Group>>(textResponse);
         }
     }
 }

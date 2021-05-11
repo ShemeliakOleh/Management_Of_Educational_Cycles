@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
 {
@@ -23,7 +25,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
 
         public async Task OnGetAsync()
         {
-            Discipline = await _context.Disciplines.ToListAsync();
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Disciplines/list");
+            var textResponse = await response.Content.ReadAsStringAsync();
+            Discipline = JsonConvert.DeserializeObject<List<Discipline>>(textResponse);
         }
     }
 }

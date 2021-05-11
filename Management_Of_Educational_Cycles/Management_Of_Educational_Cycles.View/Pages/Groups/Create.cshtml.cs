@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
@@ -35,8 +38,18 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return Page();
             }
 
-            _context.Groups.Add(Group);
-            await _context.SaveChangesAsync();
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(Group);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:44389/api/Groups/create", data);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    //DO something
+            //}
+            //else
+            //{
+            //    //DO something
+            //}
 
             return RedirectToPage("./Index");
         }

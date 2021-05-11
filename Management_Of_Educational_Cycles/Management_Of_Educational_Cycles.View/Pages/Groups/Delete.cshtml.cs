@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
@@ -29,7 +31,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return NotFound();
             }
 
-            Group = await _context.Groups.FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Groups/one?id=" + id);
+            var textResponse = await response.Content.ReadAsStringAsync();
+            Group = JsonConvert.DeserializeObject<Group>(textResponse);
 
             if (Group == null)
             {
@@ -45,13 +50,16 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return NotFound();
             }
 
-            Group = await _context.Groups.FindAsync(id);
-
-            if (Group != null)
-            {
-                _context.Groups.Remove(Group);
-                await _context.SaveChangesAsync();
-            }
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Groups/remove?id=" + id);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    //DO something
+            //}
+            //else
+            //{
+            //    //Do something
+            //}
 
             return RedirectToPage("./Index");
         }

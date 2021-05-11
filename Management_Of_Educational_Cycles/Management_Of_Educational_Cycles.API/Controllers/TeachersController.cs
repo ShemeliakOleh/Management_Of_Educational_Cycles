@@ -14,7 +14,6 @@ namespace Management_Of_Educational_Cycles.API.Controllers
     [ApiController]
     public class TeachersController : GenericCrudController<Teacher>
     {
-        private DataManager _dataManager;
         public TeachersController(DataManager dataManager) : base(dataManager)
         {
 

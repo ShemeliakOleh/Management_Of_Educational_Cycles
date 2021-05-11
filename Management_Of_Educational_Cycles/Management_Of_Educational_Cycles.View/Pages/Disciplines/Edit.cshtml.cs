@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
 {
@@ -30,7 +33,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
                 return NotFound();
             }
 
-            Discipline = await _context.Disciplines.FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Disciplines/one?id=" + id);
+            var textResponse = await response.Content.ReadAsStringAsync();
+            Discipline = JsonConvert.DeserializeObject<Discipline>(textResponse);
 
             if (Discipline == null)
             {
@@ -48,30 +54,23 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
                 return Page();
             }
 
-            _context.Attach(Discipline).State = EntityState.Modified;
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(Discipline);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DisciplineExists(Discipline.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var response = await client.PostAsync("https://localhost:44389/api/Disciplines/update", content);
+            //if (response.IsCompletedSuccessfully)
+            //{
+            //    //Do something
+            //}
+            //else
+            //{
+            //    //Do something
+            //}
 
             return RedirectToPage("./Index");
         }
 
-        private bool DisciplineExists(Guid id)
-        {
-            return _context.Disciplines.Any(e => e.Id == id);
-        }
+
     }
 }

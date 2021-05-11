@@ -11,9 +11,9 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupsController : GenericCrudController<Group>
+    public class DisciplinesController : GenericCrudController<Discipline>
     {
-        public GroupsController(DataManager dataManager):base(dataManager)
+        public DisciplinesController(DataManager dataManager):base(dataManager)
         {
 
         }

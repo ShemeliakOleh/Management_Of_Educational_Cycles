@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
 {
@@ -29,7 +31,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
                 return NotFound();
             }
 
-            Discipline = await _context.Disciplines.FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Disciplines/one?id=" + id);
+            var textResponse = await response.Content.ReadAsStringAsync();
+            Discipline = JsonConvert.DeserializeObject<Discipline>(textResponse);
 
             if (Discipline == null)
             {
@@ -45,13 +50,17 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
                 return NotFound();
             }
 
-            Discipline = await _context.Disciplines.FindAsync(id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Disciplines/remove?id=" + id);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    //DO something
+            //}
+            //else
+            //{
+            //    //Do something
+            //}
 
-            if (Discipline != null)
-            {
-                _context.Disciplines.Remove(Discipline);
-                await _context.SaveChangesAsync();
-            }
 
             return RedirectToPage("./Index");
         }
