@@ -14,63 +14,55 @@ namespace Management_Of_Educational_Cycles.API.Controllers
     [ApiController]
     public class EducationalCyclesController : ControllerBase
     {
-        private readonly ApplicationContext _context;
-
-        public EducationalCyclesController(ApplicationContext context)
+        private DataManager _dataManager;
+        public EducationalCyclesController(DataManager dataManager)
         {
-            this._context = context;
+            this._dataManager = dataManager;
         }
         [HttpGet("list")]
         public async Task<IActionResult> GetList()
         {
-            var EducationalCycles = await _context.EducationalCycles.Include(x => x.Discipline)
-            .Include(x => x.Teacher).Include(x => x.Group).ToListAsync();
-            return Ok(EducationalCycles);
+            var educationalCycles = await _dataManager._educationalCyclesRepository.GetAll();
+            if (educationalCycles != null)
+            {
+                return Ok(educationalCycles);
+            }
+            else
+            {
+                return Problem();
+            }
         }
         [HttpPost("update")]
         public async Task<IActionResult> UpdateOne([FromBody] EducationalCycle educationalCycle)
         {
-            _context.Attach(educationalCycle).State = EntityState.Modified;
+            if (educationalCycle != null)
+            {
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EducationalCycleExists(educationalCycle.Id))
+                if (!(await _dataManager._educationalCyclesRepository.Update(educationalCycle)))
                 {
                     return NotFound();
                 }
                 else
                 {
-                    throw;
+                    return Ok();
                 }
+
             }
-            return Ok();
+            else
+            {
+                return Problem("object is null");
+            }
         }
         [HttpGet("one")]
         public async Task<IActionResult> GetById(Guid? id)
         {
-            var WorkManagementCycle = await _context.EducationalCycles.Include(x => x.Group).Include(x => x.Discipline).Include(x => x.Teacher).FirstOrDefaultAsync(m => m.Id == id);
-            if(WorkManagementCycle != null)
-            {
-                return Ok(WorkManagementCycle);
-            }
-            else
-            {
-                return Problem("object with id = " + id + " not found");
-            }
+            return Ok(await _dataManager._educationalCyclesRepository.GetById(id));
         }
         [HttpGet("remove")]
         public async Task<IActionResult> RemoveById(Guid? id)
         {
-            var educationalCycle = await _context.EducationalCycles.FindAsync(id);
-
-            if (educationalCycle != null)
+            if (await _dataManager._educationalCyclesRepository.Remove(id))
             {
-                _context.EducationalCycles.Remove(educationalCycle);
-                await _context.SaveChangesAsync();
                 return Ok();
             }
             else
@@ -83,19 +75,14 @@ namespace Management_Of_Educational_Cycles.API.Controllers
         {
             if (educationalCycle != null)
             {
-                _context.EducationalCycles.Add(educationalCycle);
-                await _context.SaveChangesAsync();
+                await _dataManager._educationalCyclesRepository.Add(educationalCycle);
                 return Ok();
             }
             else
             {
-                return BadRequest("object is null");
+                return BadRequest("Object is null");
             }
 
-        }
-        private bool EducationalCycleExists(Guid id)
-        {
-            return _context.EducationalCycles.Any(e => e.Id == id);
         }
     }
 }

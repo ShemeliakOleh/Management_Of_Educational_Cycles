@@ -1,4 +1,6 @@
 using Management_Of_Educational_Cycles.Domain.Entities;
+using Management_Of_Educational_Cycles.Domain.Entities.Repository;
+using Management_Of_Educational_Cycles.Domain.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +35,9 @@ namespace Management_Of_Educational_Cycles.API
                 options.UseSqlServer(Configuration.GetConnectionString("TempConnection")));
             services.AddControllers();
             
+            services.AddTransient<IWorkManagementCyclesRepository, WorkManagementCyclesRepository>();
+            services.AddTransient<IEducationalCyclesRepository, EducationalCyclesRepository>();
+            services.AddTransient<DataManager>();
         }
 
 

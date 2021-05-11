@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
@@ -19,11 +21,15 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             _context = context;
         }
 
-        public IList<Teacher> Teacher { get;set; }
+        public IList<Teacher> Teachers { get;set; }
 
         public async Task OnGetAsync()
         {
-            Teacher = await _context.Teachers.ToListAsync();
+            var client = new HttpClient();
+            var response =await client.GetAsync("https://localhost:44389/api/Teachers/list");
+            var textResponse =await response.Content.ReadAsStringAsync();
+            Teachers = JsonConvert.DeserializeObject<List<Teacher>>(textResponse);
+            
         }
     }
 }

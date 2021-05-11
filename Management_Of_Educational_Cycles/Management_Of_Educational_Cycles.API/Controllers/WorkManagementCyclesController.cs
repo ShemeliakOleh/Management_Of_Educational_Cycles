@@ -15,55 +15,59 @@ namespace Management_Of_Educational_Cycles.API.Controllers
     [ApiController]
     public class WorkManagementCyclesController : ControllerBase
     {
-        private ApplicationContext _context;
-
-        public WorkManagementCyclesController(ApplicationContext context)
+        private DataManager _dataManager;
+        public WorkManagementCyclesController(DataManager dataManager)
         {
-            _context = context;
+            _dataManager = dataManager;
         }
         [HttpPost("update")]
         public async Task<IActionResult> Update(WorkManagementCycle workManagementCycle)
         {
-            _context.Attach(workManagementCycle).State = EntityState.Modified;
 
-            try
+            if (workManagementCycle != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WorkManagementCycleExists(workManagementCycle.Id))
+
+                if (!(await _dataManager._workManagementCyclesRepository.Update(workManagementCycle)))
                 {
                     return NotFound();
                 }
                 else
                 {
-                    throw;
+                    return Ok();
                 }
+
             }
-            return Ok();
+            else
+            {
+                return Problem("object is null");
+            }
+
+
         }
         [HttpGet("list")]
         public async Task<IActionResult> GetList()
         {
-            var ListOfWorkManagementCycle = await _context.WorkManagementCycles.Include(u => u.Group).Include(u => u.Teachers).ToListAsync();
-            return Content(JsonConvert.SerializeObject(ListOfWorkManagementCycle));
+            var workManagementRepository = await _dataManager._workManagementCyclesRepository.GetAll();
+            if (workManagementRepository != null)
+            {
+                return Ok(workManagementRepository);
+            }
+            else
+            {
+                return Problem();
+            }
+            
         }
         [HttpGet("one")]
         public async Task<IActionResult> GetById(Guid? id)
         {
-            var WorkManagementCycle = await _context.WorkManagementCycles.Include(x => x.Group).Include(x=>x.Teachers).FirstOrDefaultAsync(m => m.Id == id);
-            return Content(JsonConvert.SerializeObject(WorkManagementCycle));
+            return Ok(await _dataManager._workManagementCyclesRepository.GetById(id));
         }
         [HttpGet("remove")]
         public async Task<IActionResult> RemoveById(Guid? id)
         {
-            var WorkManagementCycle = await _context.WorkManagementCycles.FindAsync(id);
-
-            if (WorkManagementCycle != null)
+            if(await _dataManager._workManagementCyclesRepository.Remove(id))
             {
-                _context.WorkManagementCycles.Remove(WorkManagementCycle);
-                await _context.SaveChangesAsync();
                 return Ok();
             }
             else
@@ -75,20 +79,16 @@ namespace Management_Of_Educational_Cycles.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] WorkManagementCycle workManagementCycle) 
         {
-            if(workManagementCycle!= null) { 
-                _context.WorkManagementCycles.Add(workManagementCycle);
-                await _context.SaveChangesAsync();
+            if(workManagementCycle!= null) {
+                await _dataManager._workManagementCyclesRepository.Add(workManagementCycle);
                 return Ok();
             }
             else
             {
-                return BadRequest("object is null");
+                return BadRequest("Object is null");
             }
 
         }
-        private bool WorkManagementCycleExists(Guid id)
-        {
-            return _context.WorkManagementCycles.Any(e => e.Id == id);
-        }
+        
     }
 }

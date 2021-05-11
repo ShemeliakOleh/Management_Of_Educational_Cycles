@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
@@ -29,7 +31,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
                 return NotFound();
             }
 
-            Teacher = await _context.Teachers.FirstOrDefaultAsync(m => m.Id == id);
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Teachers/one?id=" + id);
+            var textResponse = await response.Content.ReadAsStringAsync();
+            Teacher = JsonConvert.DeserializeObject<Teacher>(textResponse);
 
             if (Teacher == null)
             {
@@ -45,13 +50,16 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
                 return NotFound();
             }
 
-            Teacher = await _context.Teachers.FindAsync(id);
-
-            if (Teacher != null)
-            {
-                _context.Teachers.Remove(Teacher);
-                await _context.SaveChangesAsync();
-            }
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:44389/api/Teachers/remove?id=" + id);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    //DO something
+            //}
+            //else
+            //{
+            //    //Do something
+            //}
 
             return RedirectToPage("./Index");
         }

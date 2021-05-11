@@ -12,7 +12,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
     public class HomeController : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<string>> Get()
+        public ActionResult<string> Get()
         {
             return "From HomeController";
         }
