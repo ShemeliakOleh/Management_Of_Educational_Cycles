@@ -37,6 +37,7 @@ namespace Management_Of_Educational_Cycles.API
             
             services.AddTransient<IWorkManagementCyclesRepository, WorkManagementCyclesRepository>();
             services.AddTransient<IEducationalCyclesRepository, EducationalCyclesRepository>();
+            services.AddTransient<IBaseRepository, BaseRepository>();
             services.AddTransient<DataManager>();
         }
 
