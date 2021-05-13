@@ -9,29 +9,27 @@ using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
 
-        public IndexModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+        public IndexModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+            EducationalCycles = new List<EducationalCycle>();
         }
 
-        public IList<EducationalCycle> EducationalCycle { get;set; }
+        public IList<EducationalCycle> EducationalCycles { get;set; }
 
         public async Task OnGetAsync()
         {
-            //EducationalCycle = await _context.EducationalCycles.Include(x => x.Discipline)
-            //    .Include(x => x.Teacher).Include(x => x.Group).ToListAsync();
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/EducationalCycles/list");
-            var textResponse = await response.Content.ReadAsStringAsync();
-            EducationalCycle = JsonConvert.DeserializeObject<List<EducationalCycle>>(textResponse);
-           
+            EducationalCycles = await _requestSender.GetContetFromRequestAsyncAs<List<EducationalCycle>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/list")
+                );
+
         }
     }
 }

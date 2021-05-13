@@ -33,5 +33,10 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             var data = new StringContent(json, encoding, mediaType);
             return await _client.PostAsync(requestUri, data);
         }
+        public async Task<T> GetContetFromRequestAsyncAs<T>(HttpResponseMessage response)
+        {
+            return JsonConvert.DeserializeObject<T>
+                (await response.Content.ReadAsStringAsync());
+        } 
     }
 }

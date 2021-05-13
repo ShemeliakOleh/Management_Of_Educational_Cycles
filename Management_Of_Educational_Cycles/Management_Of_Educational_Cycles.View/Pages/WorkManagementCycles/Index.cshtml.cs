@@ -9,29 +9,30 @@ using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
 
-        public IndexModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+        public IndexModel(IRequestSender requestSender):base(requestSender)
         {
-            _context = context;
+
         }
 
-        public IList<WorkManagementCycle> WorkManagementCycle { get;set; }
+        public IList<WorkManagementCycle> WorkManagementCycles { get;set; }
 
         public async Task OnGetAsync()
         {
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/WorkManagementCycles/list");
-            var textResponse = await response.Content.ReadAsStringAsync();
-            WorkManagementCycle = JsonConvert.DeserializeObject<List<WorkManagementCycle>>(textResponse);
-            if (WorkManagementCycle[0].Teachers == null)
+
+            WorkManagementCycles =await _requestSender.GetContetFromRequestAsyncAs<List<WorkManagementCycle>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/list")
+                );
+           
+            if (WorkManagementCycles[0].Teachers == null)
             {
-                WorkManagementCycle[0].Teachers = new List<Teacher>();
+                WorkManagementCycles[0].Teachers = new List<Teacher>();
             }
         }
     }

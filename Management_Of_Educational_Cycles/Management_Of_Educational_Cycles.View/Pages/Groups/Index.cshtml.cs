@@ -9,26 +9,26 @@ using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
 
-        public IndexModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+        public IndexModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+            Groups = new List<Group>();
         }
 
-        public IList<Group> Group { get;set; }
+        public IList<Group> Groups { get;set; }
 
         public async Task OnGetAsync()
         {
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/Groups/list");
-            var textResponse = await response.Content.ReadAsStringAsync();
-            Group = JsonConvert.DeserializeObject<List<Group>>(textResponse);
+            Groups = await _requestSender.GetContetFromRequestAsyncAs<List<Group>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Groups/list")
+                );
         }
     }
 }

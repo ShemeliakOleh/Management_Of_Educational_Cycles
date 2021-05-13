@@ -14,25 +14,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.WorkManagementCycle[0].Name)
+                @Html.DisplayNameFor(model => model.WorkManagementCycles[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkManagementCycle[0].Group)
+                @Html.DisplayNameFor(model => model.WorkManagementCycles[0].Group)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkManagementCycle[0].Teachers)
+                @Html.DisplayNameFor(model => model.WorkManagementCycles[0].Teachers)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkManagementCycle[0].NumberOfHours)
+                @Html.DisplayNameFor(model => model.WorkManagementCycles[0].NumberOfHours)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkManagementCycle[0].Semester)
+                @Html.DisplayNameFor(model => model.WorkManagementCycles[0].Semester)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.WorkManagementCycle) {
+@foreach (var item in Model.WorkManagementCycles) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

@@ -9,16 +9,16 @@ using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
-        public DetailsModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+     
+        public DetailsModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+
         }
 
         public Discipline Discipline { get; set; }
@@ -30,10 +30,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
                 return NotFound();
             }
 
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/Disciplines/one?id=" + id);
-            var textResponse = await response.Content.ReadAsStringAsync();
-            Discipline = JsonConvert.DeserializeObject<Discipline>(textResponse);
+
+            Discipline = await _requestSender.GetContetFromRequestAsyncAs<Discipline>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Disciplines/one?id=" + id)
+                );
 
             if (Discipline == null)
             {

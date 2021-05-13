@@ -9,16 +9,16 @@ using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
-        public DetailsModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+      
+        public DetailsModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+
         }
 
         public EducationalCycle EducationalCycle { get; set; }
@@ -29,10 +29,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return NotFound();
             }
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id);
-            var textResponse = await response.Content.ReadAsStringAsync();
-            EducationalCycle = JsonConvert.DeserializeObject<EducationalCycle>(textResponse);
+           
+            EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id)
+                );
 
             if (EducationalCycle == null)
             {

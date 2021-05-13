@@ -9,26 +9,25 @@ using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
 
-        public IndexModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+        public IndexModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+            Disciplines = new List<Discipline>();
         }
 
-        public IList<Discipline> Discipline { get;set; }
+        public IList<Discipline> Disciplines { get;set; }
 
         public async Task OnGetAsync()
         {
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/Disciplines/list");
-            var textResponse = await response.Content.ReadAsStringAsync();
-            Discipline = JsonConvert.DeserializeObject<List<Discipline>>(textResponse);
+            Disciplines = await _requestSender.GetContetFromRequestAsyncAs<List<Discipline>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Disciplines/list")
+                );
         }
     }
 }

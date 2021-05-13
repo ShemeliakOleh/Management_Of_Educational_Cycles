@@ -11,16 +11,16 @@ using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
-        public EditModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+        
+        public EditModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+
         }
 
         [BindProperty]
@@ -32,10 +32,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             {
                 return NotFound();
             }
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/Teachers/one?id=" + id);
-            var textResponse = await response.Content.ReadAsStringAsync();
-            Teacher = JsonConvert.DeserializeObject<Teacher>(textResponse);
+            Teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + id)
+                );
 
             if (Teacher == null)
             {
@@ -53,11 +52,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
                 return Page();
             }
 
-            var client = new HttpClient();
-            var json = JsonConvert.SerializeObject(Teacher);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response =await client.PostAsync("https://localhost:44389/api/Teachers/update",content);
+            
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/update", Teacher);
+
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something
@@ -66,7 +64,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             //{
             //    //Do something
             //}
-           
+
 
             return RedirectToPage("./Index");
         }

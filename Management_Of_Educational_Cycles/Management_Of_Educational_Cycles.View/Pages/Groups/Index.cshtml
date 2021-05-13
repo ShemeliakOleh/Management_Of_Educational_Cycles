@@ -14,13 +14,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Group[0].Name)
+                @Html.DisplayNameFor(model => model.Groups[0].Name)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Group) {
+@foreach (var item in Model.Groups) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

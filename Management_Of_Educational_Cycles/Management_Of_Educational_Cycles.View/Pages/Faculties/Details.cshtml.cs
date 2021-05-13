@@ -9,16 +9,16 @@ using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Faculties
 {
-    public class DetailsModel : PageModel
+    public class DetailsModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
-        public DetailsModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+     
+        public DetailsModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+
         }
 
         public Faculty Faculty { get; set; }
@@ -30,10 +30,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
                 return NotFound();
             }
 
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/Faculties/one?id=" + id);
-            var textResponse = await response.Content.ReadAsStringAsync();
-            Faculty = JsonConvert.DeserializeObject<Faculty>(textResponse);
+            
+            Faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + id)
+                );
 
             if (Faculty == null)
             {

@@ -12,5 +12,6 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         public Task<HttpResponseMessage> SendGetRequestAsync(string requestUri);
         public Task<HttpResponseMessage> SendPostRequestAsync(string requestUri, object content);
         public Task<HttpResponseMessage> SendPostRequestAsync(string requestUri, object content, string mediaType, Encoding encoding);
+        public Task<T> GetContetFromRequestAsyncAs<T>(HttpResponseMessage response);
     }
 }

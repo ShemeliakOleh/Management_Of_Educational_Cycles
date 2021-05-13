@@ -10,16 +10,16 @@ using Management_Of_Educational_Cycles.Domain.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
-        public CreateModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+      
+        public CreateModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+
         }
 
         public IActionResult OnGet()
@@ -38,10 +38,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return Page();
             }
 
-            var client = new HttpClient();
-            var json = JsonConvert.SerializeObject(Group);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:44389/api/Groups/create", data);
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/create", Group);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something

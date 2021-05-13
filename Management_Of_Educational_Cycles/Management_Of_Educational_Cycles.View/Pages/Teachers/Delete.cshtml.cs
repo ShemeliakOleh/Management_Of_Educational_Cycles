@@ -9,16 +9,16 @@ using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
-        public DeleteModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+      
+        public DeleteModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
+
         }
 
         [BindProperty]
@@ -31,10 +31,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
                 return NotFound();
             }
 
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/Teachers/one?id=" + id);
-            var textResponse = await response.Content.ReadAsStringAsync();
-            Teacher = JsonConvert.DeserializeObject<Teacher>(textResponse);
+            Teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + id)
+                );
 
             if (Teacher == null)
             {
@@ -50,8 +49,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
                 return NotFound();
             }
 
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/Teachers/remove?id=" + id);
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/remove?id=" + id);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something

@@ -4,13 +4,14 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Management_Of_Educational_Cycles.Domain.Models;
+using Management_Of_Educational_Cycles.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 
 namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 {
-    public class AppointModel : PageModel
+    public class AppointModel : BasePageModel
     {
         public WorkManagementCycle WorkManagementCycle { get; set; }
         [BindProperty]
@@ -19,9 +20,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         public List<Teacher> ListOfTeachers { get; set; }
         [BindProperty]
         public string Action { get; set; }
-        public AppointModel()
+        public AppointModel(IRequestSender requestSender):base(requestSender)
         {
-            
+
             ListOfTeachers = new List<Teacher>();
         }
         public async Task<IActionResult> OnGetAsync(Guid? id)
@@ -30,10 +31,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             {
                 return NotFound();
             }
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id);
-            var textResponse = await response.Content.ReadAsStringAsync();
-            WorkManagementCycle = JsonConvert.DeserializeObject<WorkManagementCycle>(textResponse);
+            WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
 
 
             //WorkManagementCycle = await _context.WorkManagementCycles.Include(x=>x.Group).FirstOrDefaultAsync(m => m.Id == id);
@@ -54,10 +53,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         {
             if(id!= null)
             {
-                var client = new HttpClient();
-                var response = await client.GetAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id);
-                var textResponse = await response.Content.ReadAsStringAsync();
-                WorkManagementCycle = JsonConvert.DeserializeObject<WorkManagementCycle>(textResponse);
+                WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
                 if (Action == "Add" && teacherId != null)
                 {
 
@@ -66,9 +63,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 {
                     if (Filter != null)
                     {
-                        response = await client.GetAsync("https://localhost:44389/api/Teachers/list");
-                        textResponse = await response.Content.ReadAsStringAsync();
-                        var allTeachers = JsonConvert.DeserializeObject<List<Teacher>>(textResponse);
+                        
+                        var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
                         var filteredTeachers = allTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
                         ListOfTeachers = filteredTeachers;
                         return Page();
@@ -83,7 +80,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 
                 }
             }
+            
 
+            
             return RedirectToPage("./Index");
         }
     }

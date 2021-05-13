@@ -11,18 +11,17 @@ using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Departments
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
-        public EditModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+    
+        public EditModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
-        }
 
+        }
         [BindProperty]
         public Department Department { get; set; }
 
@@ -33,10 +32,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return NotFound();
             }
 
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/Departments/one?id=" + id);
-            var textResponse = await response.Content.ReadAsStringAsync();
-            Department = JsonConvert.DeserializeObject<Department>(textResponse);
+            
+            Department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + id)
+                );
 
             if (Department == null)
             {
@@ -52,11 +51,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return Page();
             }
 
-            var client = new HttpClient();
-            var json = JsonConvert.SerializeObject(Department);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync("https://localhost:44389/api/Departments/update", content);
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/update", Department);
+            
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something

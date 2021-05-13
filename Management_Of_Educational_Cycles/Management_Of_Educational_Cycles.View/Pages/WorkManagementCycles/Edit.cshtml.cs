@@ -11,16 +11,14 @@ using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
-        public EditModel(Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext context)
+        public EditModel(IRequestSender requestSender) : base(requestSender)
         {
-            _context = context;
         }
 
         [BindProperty]
@@ -33,10 +31,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 return NotFound();
             }
 
-            var client = new HttpClient();
-            var response = await client.GetAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id);
-            var textResponse =await response.Content.ReadAsStringAsync();
-            WorkManagementCycle = JsonConvert.DeserializeObject<WorkManagementCycle>(textResponse);
+            WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
             
 
             if (WorkManagementCycle == null)
@@ -53,11 +49,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             {
                 return Page();
             }
-
-            var client = new HttpClient();
-            var json = JsonConvert.SerializeObject(WorkManagementCycle);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:44389/api/WorkManagementCycles/update", data);
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/update", WorkManagementCycle);
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToPage("./Index");
@@ -66,15 +58,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             //{
             //    //DO something
             //}
-            
+
 
 
             return RedirectToPage("./Index");
-        }
-
-        private bool WorkManagementCycleExists(Guid id)
-        {
-            return _context.WorkManagementCycles.Any(e => e.Id == id);
         }
     }
 }
