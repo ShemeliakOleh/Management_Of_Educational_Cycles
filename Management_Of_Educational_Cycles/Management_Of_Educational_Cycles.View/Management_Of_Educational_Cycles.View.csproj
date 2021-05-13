@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Management_Of_Educational_Cycles.Domain\Management_Of_Educational_Cycles.Domain.csproj" />
+    <ProjectReference Include="..\Management_Of_Educational_Cycles.Logic\Management_Of_Educational_Cycles.Logic.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Management_Of_Educational_C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Management_Of_Educational_Cycles.Domain", "Management_Of_Educational_Cycles.Domain\Management_Of_Educational_Cycles.Domain.csproj", "{B0A88216-00DD-4261-BFC8-67F2D450968B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Management_Of_Educational_Cycles.Logic", "Management_Of_Educational_Cycles.Logic\Management_Of_Educational_Cycles.Logic.csproj", "{A8470B4A-DBC9-4A88-BC7D-E8CC27F4BB0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B0A88216-00DD-4261-BFC8-67F2D450968B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0A88216-00DD-4261-BFC8-67F2D450968B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0A88216-00DD-4261-BFC8-67F2D450968B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8470B4A-DBC9-4A88-BC7D-E8CC27F4BB0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8470B4A-DBC9-4A88-BC7D-E8CC27F4BB0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8470B4A-DBC9-4A88-BC7D-E8CC27F4BB0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8470B4A-DBC9-4A88-BC7D-E8CC27F4BB0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

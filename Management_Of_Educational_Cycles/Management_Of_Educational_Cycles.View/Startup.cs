@@ -1,4 +1,5 @@
 using Management_Of_Educational_Cycles.Domain.Entities;
+using Management_Of_Educational_Cycles.Logic.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,7 @@ namespace Management_Of_Educational_Cycles.View
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TempConnection")));
             services.AddRazorPages();
+            services.AddTransient<IRequestSender, RequestSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
