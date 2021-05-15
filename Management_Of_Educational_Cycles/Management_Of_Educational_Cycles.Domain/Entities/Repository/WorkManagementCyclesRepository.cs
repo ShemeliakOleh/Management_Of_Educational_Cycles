@@ -103,8 +103,8 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             {
                 if (workManagementCycle.Teachers.Count < cycleFromDb.Teachers.Count())
                 {
-                    var teachersToDelete = workManagementCycle.Teachers.Where(x => !cycleFromDb.Teachers.Contains(x)).ToList();
-                    cycleFromDb.Teachers.RemoveAll(x => teachersToDelete.Contains(x));
+                    var teacherToDelete = cycleFromDb.Teachers.FirstOrDefault(x => !workManagementCycle.Teachers.Contains(x));
+                    cycleFromDb.Teachers.RemoveAll(x => x.Id == teacherToDelete.Id);
                 }
             }
             

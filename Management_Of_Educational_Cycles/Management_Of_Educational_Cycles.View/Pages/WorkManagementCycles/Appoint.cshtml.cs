@@ -55,12 +55,18 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             {
                 WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
-                if (Action == "Add" && teacherId != null)
+                if ((Action == "Add" || Action == "Delete") && teacherId != null)
                 {
-
-                    var teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
+                    if (Action == "Add")
+                    {
+                        var teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + teacherId));
-                    WorkManagementCycle.Teachers.Add(teacher);
+                        WorkManagementCycle.Teachers.Add(teacher);
+                    }
+                    else
+                    {
+                        WorkManagementCycle.Teachers.RemoveAll(x=>x.Id == teacherId);
+                    }
                     var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint",WorkManagementCycle);
                     WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
@@ -95,15 +101,12 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                         return Page();
                     }
                 }
-                if (Action == "Delete")
-                {
-
-                }
+              
             }
             
 
-            
-            return RedirectToPage("./Index");
+
+                return RedirectToPage("./Index");
         }
     }
 }

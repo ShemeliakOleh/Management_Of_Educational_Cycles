@@ -65,6 +65,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             {
                 return Problem("object is null");
             }
+            return Ok();
 
 
         }
