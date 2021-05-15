@@ -19,7 +19,23 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 
             
         }
-       
+        [HttpGet("list")]
+        public override async Task<IActionResult> GetList()
+        {
+            var entities = await _dataManager._teachersRepository.GetAll();
+            if (entities != null)
+            {
+                return Ok(entities);
+            }
+            else
+            {
+                return Problem();
+            }
+        }
+        public override async Task<IActionResult> GetOneById(Guid? id)
+        {
+            return Ok(await _dataManager._teachersRepository.GetById(id));
+        }
 
     }
 }

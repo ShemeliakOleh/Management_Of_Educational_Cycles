@@ -11,13 +11,16 @@ namespace Management_Of_Educational_Cycles.Domain.Entities
     {
         public IWorkManagementCyclesRepository _workManagementCyclesRepository { get; set; }
         public IEducationalCyclesRepository _educationalCyclesRepository { get; set; }
-
+        public ITeachersRepository _teachersRepository { get; set; }
         public IBaseRepository _baseRepository { get; set; }
-        public DataManager(IWorkManagementCyclesRepository workManagementCyclesRepository, IEducationalCyclesRepository educationalCyclesRepository, IBaseRepository baseRepository)
+        public DataManager(IWorkManagementCyclesRepository workManagementCyclesRepository,
+            IEducationalCyclesRepository educationalCyclesRepository, IBaseRepository baseRepository,
+            ITeachersRepository teachersRepository)
         {
             _workManagementCyclesRepository = workManagementCyclesRepository;
             _educationalCyclesRepository = educationalCyclesRepository;
             _baseRepository = baseRepository;
+            _teachersRepository = teachersRepository;
         }
          
     }
