@@ -20,9 +20,6 @@
                 @Html.DisplayNameFor(model => model.WorkManagementCycles[0].Group)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkManagementCycles[0].Teachers)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.WorkManagementCycles[0].NumberOfHours)
             </th>
             <th>
@@ -39,12 +36,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Group.Name)
-            </td>
-            <td>
-                @foreach (var i in item.Teachers)
-                {
-                    @i.Name
-                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfHours)

@@ -18,6 +18,52 @@
             @Html.DisplayFor(model => model.Teacher.Name)
         </dd>
     </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Teacher.Surname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Teacher.Surname)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Teacher.Department)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Teacher.Department.Name)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Teacher.Faculty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Teacher.Faculty.Name)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Teacher.WorkManagementCycles)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var teacher in Model.Teacher.WorkManagementCycles)
+            {
+                @(teacher.Name + " ")
+            }
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Teacher.EducationalCycles)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var teacher in Model.Teacher.EducationalCycles)
+            {
+                @(teacher.Name + " ")
+            }
+        </dd>
+    </dl>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Teacher.Id">Edit</a> |

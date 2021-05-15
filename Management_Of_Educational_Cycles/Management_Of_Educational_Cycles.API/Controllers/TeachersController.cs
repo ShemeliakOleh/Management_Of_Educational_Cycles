@@ -19,7 +19,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 
             
         }
-
+       
 
     }
 }

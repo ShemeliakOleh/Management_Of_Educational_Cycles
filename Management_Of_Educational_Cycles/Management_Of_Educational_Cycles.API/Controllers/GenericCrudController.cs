@@ -13,7 +13,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
     [ApiController]
     public abstract class GenericCrudController<T>: ControllerBase where T : BaseEntity
     {
-        readonly DataManager _dataManager;
+        protected readonly DataManager _dataManager;
         
         public GenericCrudController(DataManager dataManager)
         {
