@@ -44,6 +44,30 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 
 
         }
+        [HttpPost("appoint")]
+        public async Task<IActionResult> Appoint([FromBody] WorkManagementCycle workManagementCycle)
+        {
+
+            if (workManagementCycle != null)
+            {
+
+                if (!(await _dataManager._workManagementCyclesRepository.Appoint(workManagementCycle)))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok();
+                }
+
+            }
+            else
+            {
+                return Problem("object is null");
+            }
+
+
+        }
         [HttpGet("list")]
         public async Task<IActionResult> GetList()
         {
@@ -89,6 +113,6 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
 
         }
-        
+      
     }
 }

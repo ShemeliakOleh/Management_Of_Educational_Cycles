@@ -18,7 +18,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         {
             this._context = context;
         }
-        public async Task<bool> Add([FromBody] WorkManagementCycle workManagementCycle)
+        public async Task<bool> Add(WorkManagementCycle workManagementCycle)
         {
             _context.WorkManagementCycles.Add(workManagementCycle);
             await _context.SaveChangesAsync();
@@ -34,7 +34,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<List<WorkManagementCycle>> GetAll()
         {
-            var workManagementCycles =await _context.WorkManagementCycles.Include(u => u.Group).Include(u => u.Teachers).ToListAsync();
+            var workManagementCycles =await _context.WorkManagementCycles.Include(u => u.Teachers).Include(u => u.Group).ToListAsync();
             if (workManagementCycles != null)
             {
                 return workManagementCycles;
@@ -47,7 +47,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<WorkManagementCycle> GetById(Guid? id)
         {
-            var WorkManagementCycle = await _context.WorkManagementCycles.Include(x => x.Group).Include(x => x.Teachers).FirstOrDefaultAsync(m => m.Id == id);
+            var WorkManagementCycle = await _context.WorkManagementCycles.Include(x => x.Teachers).Include(x => x.Group).FirstOrDefaultAsync(m => m.Id == id);
             return WorkManagementCycle;
         }
 
@@ -68,8 +68,9 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
         }
 
-        public async Task<bool> Update([FromBody] WorkManagementCycle workManagementCycle)
+        public async Task<bool> Update(WorkManagementCycle workManagementCycle)
         {
+            
             _context.Attach(workManagementCycle).State = EntityState.Modified;
 
             try
@@ -89,5 +90,24 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
             return true;
         }
+        public async Task<bool> Appoint(WorkManagementCycle workManagementCycle)
+        {
+            var cycleFromDb = _context.WorkManagementCycles.Include(s => s.Teachers).FirstOrDefault(s => s.Id == workManagementCycle.Id);
+
+            if (workManagementCycle.Teachers.Count > cycleFromDb.Teachers.Count())
+            {
+                //cycleFromDb.Teachers.Add(workManagementCycle.Teachers.Last());
+                cycleFromDb.Teachers.AddRange(workManagementCycle.Teachers);
+            }
+            if(workManagementCycle.Teachers.Count < cycleFromDb.Teachers.Count())
+            {
+                var teachersToDelete = workManagementCycle.Teachers.Where(x => !cycleFromDb.Teachers.Contains(x)).ToList();
+                cycleFromDb.Teachers.RemoveAll(x=> teachersToDelete.Contains(x));
+            }
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+       
     }
 }

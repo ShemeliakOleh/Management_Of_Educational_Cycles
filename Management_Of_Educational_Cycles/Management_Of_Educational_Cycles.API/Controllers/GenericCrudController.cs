@@ -33,7 +33,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
         }
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateOne([FromBody] T entity)
+        virtual public async Task<IActionResult> UpdateOne([FromBody] T entity)
         {
             if (entity != null)
             {
@@ -55,7 +55,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 
         }
         [HttpGet("remove")]
-        public async Task<IActionResult> Remove(Guid? id)
+        virtual public async Task<IActionResult> Remove(Guid? id)
         {
             if (await _dataManager._baseRepository.Remove<T>(id))
             {
@@ -67,7 +67,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
         }
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] T entity)
+        virtual public async Task<IActionResult> Create([FromBody] T entity)
         {
             if (entity != null)
             {
@@ -81,7 +81,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 
         }
         [HttpGet("one")]
-        public async Task<IActionResult> GetOneById(Guid? id)
+        virtual public async Task<IActionResult> GetOneById(Guid? id)
         {
             return Ok(await _dataManager._baseRepository.GetById<T>(id));
         }

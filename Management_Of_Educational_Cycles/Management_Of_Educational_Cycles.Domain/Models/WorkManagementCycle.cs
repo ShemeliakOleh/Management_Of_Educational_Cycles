@@ -11,7 +11,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
     {
         public string Name { get; set; }
         public Group Group { get; set; }
-        public List<Teacher> Teachers { get; set; }
+        public List<Teacher> Teachers { get; set; } = new List<Teacher>();
         public int NumberOfHours { get; set; }
         public int Semester { get; set; }
 

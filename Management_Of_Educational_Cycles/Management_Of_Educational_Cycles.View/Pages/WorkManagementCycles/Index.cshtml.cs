@@ -26,14 +26,17 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         public async Task OnGetAsync()
         {
 
-            WorkManagementCycles =await _requestSender.GetContetFromRequestAsyncAs<List<WorkManagementCycle>>(
+            WorkManagementCycles = await _requestSender.GetContetFromRequestAsyncAs<List<WorkManagementCycle>>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/list")
                 );
-           
-            if (WorkManagementCycles[0].Teachers == null)
+            if (WorkManagementCycles.Count > 0)
             {
-                WorkManagementCycles[0].Teachers = new List<Teacher>();
+                if (WorkManagementCycles[0].Teachers == null)
+                {
+                    WorkManagementCycles[0].Teachers = new List<Teacher>();
+                }
             }
+            
         }
     }
 }

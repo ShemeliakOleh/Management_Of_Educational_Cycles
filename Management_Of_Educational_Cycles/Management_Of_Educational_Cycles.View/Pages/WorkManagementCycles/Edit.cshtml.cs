@@ -50,10 +50,10 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 return Page();
             }
             var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/update", WorkManagementCycle);
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToPage("./Index");
-            }
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return RedirectToPage("./Index");
+            //}
             //else
             //{
             //    //DO something

@@ -58,6 +58,21 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 if (Action == "Add" && teacherId != null)
                 {
 
+                    var teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + teacherId));
+                    WorkManagementCycle.Teachers.Add(teacher);
+                    var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint",WorkManagementCycle);
+                    WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
+                    //if (response.IsSuccessStatusCode)
+                    //{
+                    //    return RedirectToPage("./Index");
+                    //}
+                    //else
+                    //{
+                    //    //DO something
+                    //}
+                    return Page();
                 }
                 if (Action == "Find")
                 {
@@ -68,6 +83,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
                         var filteredTeachers = allTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
                         ListOfTeachers = filteredTeachers;
+                        WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
                         return Page();
                     }
                     else

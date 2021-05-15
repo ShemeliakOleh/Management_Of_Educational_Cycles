@@ -21,7 +21,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            
         }
     }
 }

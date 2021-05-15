@@ -35,8 +35,8 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         }
         public async Task<T> GetContetFromRequestAsyncAs<T>(HttpResponseMessage response)
         {
-            return JsonConvert.DeserializeObject<T>
-                (await response.Content.ReadAsStringAsync());
+            var textResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(textResponse);
         } 
     }
 }

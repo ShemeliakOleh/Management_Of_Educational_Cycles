@@ -18,7 +18,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         _context = context;
     }
 
-        public async Task<bool> Add<T>([FromBody] T entity) where T : BaseEntity
+        public async Task<bool> Add<T>(T entity) where T : BaseEntity
         {
             _context.Set<T>().Add(entity);
             await _context.SaveChangesAsync();
@@ -65,7 +65,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
         }
 
-        public async Task<bool> Update<T>([FromBody] T entity) where T : BaseEntity
+        public async Task<bool> Update<T>(T entity) where T : BaseEntity
         {
             _context.Attach(entity).State = EntityState.Modified;
 
