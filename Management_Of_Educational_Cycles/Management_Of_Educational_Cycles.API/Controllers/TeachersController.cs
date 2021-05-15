@@ -17,8 +17,9 @@ namespace Management_Of_Educational_Cycles.API.Controllers
         public TeachersController(DataManager dataManager) : base(dataManager)
         {
 
+            
         }
-        
+
 
     }
 }

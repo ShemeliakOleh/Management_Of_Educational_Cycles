@@ -20,7 +20,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         public List<Teacher> ListOfTeachers { get; set; }
         [BindProperty]
         public string Action { get; set; }
-        public AppointModel(IRequestSender requestSender):base(requestSender)
+        public AppointModel(IRequestSender requestSender) : base(requestSender)
         {
 
             ListOfTeachers = new List<Teacher>();
@@ -49,9 +49,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         }
 
 
-        public async Task<IActionResult> OnPostAsync(Guid? id,Guid? teacherId)
+        public async Task<IActionResult> OnPostAsync(Guid? id, Guid? teacherId)
         {
-            if(id!= null)
+            if (id != null)
             {
                 WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
@@ -65,35 +65,38 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                     }
                     else
                     {
-                        WorkManagementCycle.Teachers.RemoveAll(x=>x.Id == teacherId);
+                        WorkManagementCycle.Teachers.RemoveAll(x => x.Id == teacherId);
                     }
-                    var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint",WorkManagementCycle);
+                    var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint", WorkManagementCycle);
                     WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
-                    //if (response.IsSuccessStatusCode)
-                    //{
-                    //    return RedirectToPage("./Index");
-                    //}
-                    //else
-                    //{
-                    //    //DO something
-                    //}
                     return Page();
                 }
                 if (Action == "Find")
                 {
                     if (Filter != null)
                     {
-
-                        if(Filter.TeacherName!= null)
-                        {
-                            var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
+                        var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
                         await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
-                            var filteredTeachers = allTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
-                            ListOfTeachers = filteredTeachers;
+                        var filteredTeachers = new List<Teacher>();
+                        if (Filter.TeacherName != null)
+                        {
+                            filteredTeachers = allTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
                         }
-                        
-                        
+                        if (Filter.TeacherSurname != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Surname.ToLower().Contains(Filter.TeacherSurname.ToLower())).ToList();
+                            
+                        }
+                        if(Filter.Faculty != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Faculty.Name.ToLower().Contains(Filter.Faculty.ToLower())).ToList();
+                        }
+                        if(Filter.Department != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Department.Name.ToLower().Contains(Filter.Department.ToLower())).ToList();
+                        }
+                        ListOfTeachers = filteredTeachers;
                         return Page();
                     }
                     else
@@ -101,12 +104,12 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                         return Page();
                     }
                 }
-              
+
             }
-            
 
 
-                return RedirectToPage("./Index");
+
+            return RedirectToPage("./Index");
         }
     }
 }

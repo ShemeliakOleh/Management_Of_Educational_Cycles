@@ -15,8 +15,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
 {
     public class IndexModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
+     
         public IndexModel(IRequestSender requestSender) : base(requestSender)
         {
             Departments = new List<Department>();

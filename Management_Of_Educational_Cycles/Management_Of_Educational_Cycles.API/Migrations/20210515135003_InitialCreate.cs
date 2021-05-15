@@ -60,11 +60,26 @@ namespace Management_Of_Educational_Cycles.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FacultyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teachers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Teachers_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Teachers_Faculties_FacultyId",
+                        column: x => x.FacultyId,
+                        principalTable: "Faculties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,6 +179,16 @@ namespace Management_Of_Educational_Cycles.API.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Teachers_DepartmentId",
+                table: "Teachers",
+                column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teachers_FacultyId",
+                table: "Teachers",
+                column: "FacultyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TeacherWorkManagementCycle_WorkManagementCyclesId",
                 table: "TeacherWorkManagementCycle",
                 column: "WorkManagementCyclesId");
@@ -177,13 +202,7 @@ namespace Management_Of_Educational_Cycles.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Departments");
-
-            migrationBuilder.DropTable(
                 name: "EducationalCycles");
-
-            migrationBuilder.DropTable(
-                name: "Faculties");
 
             migrationBuilder.DropTable(
                 name: "TeacherWorkManagementCycle");
@@ -196,6 +215,12 @@ namespace Management_Of_Educational_Cycles.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "WorkManagementCycles");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
+
+            migrationBuilder.DropTable(
+                name: "Faculties");
 
             migrationBuilder.DropTable(
                 name: "Groups");

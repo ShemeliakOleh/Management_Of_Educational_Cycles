@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management_Of_Educational_Cycles.API.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210514074820_InitialCreate")]
+    [Migration("20210515135003_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,10 +121,23 @@ namespace Management_Of_Educational_Cycles.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("FacultyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Surname")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("FacultyId");
 
                     b.ToTable("Teachers");
                 });
@@ -188,6 +201,21 @@ namespace Management_Of_Educational_Cycles.API.Migrations
                     b.Navigation("Group");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("Management_Of_Educational_Cycles.Domain.Models.Teacher", b =>
+                {
+                    b.HasOne("Management_Of_Educational_Cycles.Domain.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("Management_Of_Educational_Cycles.Domain.Models.Faculty", "Faculty")
+                        .WithMany()
+                        .HasForeignKey("FacultyId");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Faculty");
                 });
 
             modelBuilder.Entity("Management_Of_Educational_Cycles.Domain.Models.WorkManagementCycle", b =>

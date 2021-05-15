@@ -15,8 +15,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
     public class IndexModel : BasePageModel
     {
-        private readonly Management_Of_Educational_Cycles.Domain.Entities.ApplicationContext _context;
-
+       
         public IndexModel(IRequestSender requestSender) : base(requestSender)
         {
             Groups = new List<Group>();

@@ -18,7 +18,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         _context = context;
     }
 
-        public async Task<bool> Add<T>(T entity) where T : BaseEntity
+       public async Task<bool> Add<T>(T entity) where T : BaseEntity
         {
             _context.Set<T>().Add(entity);
             await _context.SaveChangesAsync();
@@ -30,7 +30,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             return _context.Set<T>().Any(e => e.Id == id);
         }
 
-        public async Task<List<T>> GetAll<T>() where T : BaseEntity
+        public virtual async Task<List<T>> GetAll<T>() where T : BaseEntity
         {
             var entities = await _context.Set<T>().ToListAsync();
             if (entities != null)
@@ -43,7 +43,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
         }
 
-        public async Task<T> GetById<T>(Guid? id) where T : BaseEntity
+        public virtual async Task<T> GetById<T>(Guid? id) where T : BaseEntity
         {
             var entity = await _context.Set<T>().FirstOrDefaultAsync(m => m.Id == id);
             return entity;
