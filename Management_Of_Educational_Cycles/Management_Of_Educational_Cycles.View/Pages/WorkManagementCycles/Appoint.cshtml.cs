@@ -78,13 +78,16 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 {
                     if (Filter != null)
                     {
+
+                        if(Filter.TeacherName!= null)
+                        {
+                            var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
+                        await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
+                            var filteredTeachers = allTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
+                            ListOfTeachers = filteredTeachers;
+                        }
                         
-                        var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
-                        var filteredTeachers = allTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
-                        ListOfTeachers = filteredTeachers;
-                        WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
+                        
                         return Page();
                     }
                     else

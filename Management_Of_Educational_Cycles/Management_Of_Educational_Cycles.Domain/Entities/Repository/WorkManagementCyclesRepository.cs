@@ -96,14 +96,18 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
             if (workManagementCycle.Teachers.Count > cycleFromDb.Teachers.Count())
             {
-                //cycleFromDb.Teachers.Add(workManagementCycle.Teachers.Last());
-                cycleFromDb.Teachers.AddRange(workManagementCycle.Teachers);
+                cycleFromDb.Teachers.Add(workManagementCycle.Teachers.Last());
+                //cycleFromDb.Teachers.AddRange(workManagementCycle.Teachers);
             }
-            if(workManagementCycle.Teachers.Count < cycleFromDb.Teachers.Count())
+            else
             {
-                var teachersToDelete = workManagementCycle.Teachers.Where(x => !cycleFromDb.Teachers.Contains(x)).ToList();
-                cycleFromDb.Teachers.RemoveAll(x=> teachersToDelete.Contains(x));
+                if (workManagementCycle.Teachers.Count < cycleFromDb.Teachers.Count())
+                {
+                    var teachersToDelete = workManagementCycle.Teachers.Where(x => !cycleFromDb.Teachers.Contains(x)).ToList();
+                    cycleFromDb.Teachers.RemoveAll(x => teachersToDelete.Contains(x));
+                }
             }
+            
             await _context.SaveChangesAsync();
             return true;
         }

@@ -12,7 +12,13 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         public string TeacherSurname { get; set; }
         public string Department { get; set; }
         public string Faculty { get; set; }
-
+        public TeachersFilter()
+        {
+            this.TeacherName = "";
+            this.TeacherSurname = "";
+            this.Department = "";
+            this.Faculty = "";
+        }
 
     }
 }
