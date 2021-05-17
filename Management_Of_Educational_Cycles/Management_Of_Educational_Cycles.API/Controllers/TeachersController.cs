@@ -32,6 +32,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
                 return Problem();
             }
         }
+        [HttpGet("one")]
         public override async Task<IActionResult> GetOneById(Guid? id)
         {
             return Ok(await _dataManager._teachersRepository.GetById(id));

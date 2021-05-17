@@ -1,4 +1,5 @@
 ﻿using Management_Of_Educational_Cycles.Domain.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,8 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
                 return new List<T>();
             }
         }
+
+        
 
         public virtual async Task<T> GetById<T>(Guid? id) where T : BaseEntity
         {

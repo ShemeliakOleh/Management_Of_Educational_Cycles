@@ -10,7 +10,8 @@ namespace Management_Of_Educational_Cycles.Domain.Models
     {
         
         public string Name { get; set; }
+        public List<Group> Groups { get; set; }
 
-  
+
     }
 }

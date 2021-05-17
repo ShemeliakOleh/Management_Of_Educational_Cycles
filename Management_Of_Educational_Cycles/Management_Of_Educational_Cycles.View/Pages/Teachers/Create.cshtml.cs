@@ -16,7 +16,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
     public class CreateModel : BasePageModel
     {
-     
+
+        [BindProperty]
+        public TeacherCreateViewModel TeacherCreateViewModel { get; set; }
         public CreateModel(IRequestSender requestSender) : base(requestSender)
         {
 
@@ -47,5 +49,6 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 
             return RedirectToPage("./Index");
         }
+       
     }
 }

@@ -9,6 +9,6 @@ namespace Management_Of_Educational_Cycles.Domain.Models
     public class Discipline : BaseEntity
     {
         public string Name { get; set; }
-
+        public List<Group> Groups { get; set; }
     }
 }

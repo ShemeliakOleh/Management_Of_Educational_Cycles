@@ -38,21 +38,14 @@
                 @Html.DisplayFor(modelItem => item.Discipline.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Teacher.Name)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Group.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TypeOfClasses)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfHours)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Semester)
             </td>
             <td>
+            <td>
+                <a asp-page="./Appoint" asp-route-id="@item.Id">Appoint</a>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>

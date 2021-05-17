@@ -84,5 +84,30 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
 
         }
+        [HttpPost("appoint")]
+        public async Task<IActionResult> Appoint([FromBody] EducationalCycle educationalCycle)
+        {
+
+            if (educationalCycle != null)
+            {
+
+                if (!(await _dataManager._educationalCyclesRepository.Appoint(educationalCycle)))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok();
+                }
+
+            }
+            else
+            {
+                return Problem("object is null");
+            }
+
+
+
+        }
     }
 }

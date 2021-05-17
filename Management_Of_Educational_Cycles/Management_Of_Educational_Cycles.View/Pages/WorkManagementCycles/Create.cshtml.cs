@@ -34,6 +34,11 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 return Page();
             }
             
+            
+
+
+
+
             var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/create", WorkManagementCycle);
             //if (response.IsSuccessStatusCode)
             //{

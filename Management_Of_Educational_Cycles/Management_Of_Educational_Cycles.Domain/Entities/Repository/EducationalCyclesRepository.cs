@@ -16,7 +16,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         {
             _context = context;
         }
-        public async Task<bool> Add([FromBody] EducationalCycle educationalCycle)
+        public async Task<bool> Add(EducationalCycle educationalCycle)
         {
             _context.EducationalCycles.Add(educationalCycle);
             await _context.SaveChangesAsync();
@@ -64,7 +64,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
         }
 
-        public async Task<bool> Update([FromBody] EducationalCycle educationalCycle)
+        public async Task<bool> Update(EducationalCycle educationalCycle)
         {
             _context.Attach(educationalCycle).State = EntityState.Modified;
 
@@ -83,6 +83,14 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
                     throw;
                 }
             }
+            return true;
+        }
+        public async Task<bool> Appoint(EducationalCycle educationalCycle)
+        {
+
+            var cycleFromDb = _context.EducationalCycles.FirstOrDefault(x => x.Id == educationalCycle.Id);
+            cycleFromDb.Teacher = educationalCycle.Teacher;
+            await _context.SaveChangesAsync();
             return true;
         }
     }

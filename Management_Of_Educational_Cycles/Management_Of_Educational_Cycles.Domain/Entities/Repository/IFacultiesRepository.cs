@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 {
-    public interface ITeachersRepository
+    public interface IFacultiesRepository
     {
-        public Task<bool> Add(Teacher teacher);
-        public Task<bool> Update(Teacher teacher);
+        public Task<bool> Add(Faculty faculty);
+        public Task<bool> Update(Faculty faculty);
         public Task<bool> Remove(Guid? id);
-        public Task<Teacher> GetById(Guid? id);
-        public Task<List<Teacher>> GetAll();
+        public Task<Faculty> GetById(Guid? id);
+        public Task<List<Faculty>> GetAll();
         public bool Exists(Guid? id);
     }
 }

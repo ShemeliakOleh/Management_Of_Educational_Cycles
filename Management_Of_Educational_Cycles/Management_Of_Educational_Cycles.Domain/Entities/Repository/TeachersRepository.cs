@@ -1,4 +1,5 @@
 ﻿using Management_Of_Educational_Cycles.Domain.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         public async Task<List<Teacher>> GetAll()
         {
             var teachers = await _context.Teachers.Include(u => u.WorkManagementCycles).Include(u => u.EducationalCycles)
-                .Include(u=>u.Department).Include(u => u.Faculty).ToListAsync();
+                .Include(u => u.Department).Include(u => u.Faculty).ToListAsync();
             if (teachers != null)
             {
                 return teachers;
@@ -43,6 +44,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
                 return new List<Teacher>();
             }
         }
+
 
         public async Task<Teacher> GetById(Guid? id)
         {

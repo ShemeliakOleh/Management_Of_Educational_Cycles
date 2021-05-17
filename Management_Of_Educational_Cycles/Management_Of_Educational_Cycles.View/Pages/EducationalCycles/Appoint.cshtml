@@ -1,0 +1,108 @@
+﻿@page
+@model Management_Of_Educational_Cycles.View.Pages.EducationalCycles.AppointModel
+@{
+}
+<div>
+    <h4>appoint for @Model.EducationalCycle.Name</h4>
+    <hr />
+    <dl class="row">
+
+
+        @*<dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EducationalCycle.Discipline)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EducationalCycle.Discipline.Name)
+        </dd>*@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EducationalCycle.Teacher)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EducationalCycle.Teacher.Name)
+
+        </dd>
+        @*<dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EducationalCycle.Group)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EducationalCycle.Group.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EducationalCycle.TypeOfClasses)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EducationalCycle.TypeOfClasses)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EducationalCycle.NumberOfHours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EducationalCycle.NumberOfHours)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EducationalCycle.Semester)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EducationalCycle.Semester)
+        </dd>*@
+    </dl>
+</div>
+<br>
+<br>
+<form method="post">
+    <input type="hidden" name="id" value="@Model.EducationalCycle.Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Filter.TeacherName" class="control-label"></label>
+        <input asp-for="Filter.TeacherName" class="form-control" />
+        <span asp-validation-for="Filter.TeacherName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Filter.TeacherSurname" class="control-label"></label>
+        <input asp-for="Filter.TeacherSurname" class="form-control" />
+        <span asp-validation-for="Filter.TeacherSurname" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Filter.Department" class="control-label"></label>
+        <input asp-for="Filter.Department" class="form-control" />
+        <span asp-validation-for="Filter.Department" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Filter.Faculty" class="control-label"></label>
+        <input asp-for="Filter.Faculty" class="form-control" />
+        <span asp-validation-for="Filter.Faculty" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" value="Find" name="Action" class="btn btn-primary">Find</button>  />
+    </div>
+
+    <br /><br /><br />
+    <div>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Department</th>
+                <th>Faculty</th>
+                <th></th>
+
+            </tr>
+            @foreach (var teacher in Model.ListOfTeachers)
+            {
+                <tr>
+                    <th>@teacher.Name</th>
+                    <th>@teacher.Surname</th>
+                    <th>@teacher.Department.Name</th>
+                    <th>@teacher.Faculty.Name</th>
+                    <th>
+
+                        <button type="submit" asp-route-teacherId="@teacher.Id" value="Add" name="Action">Add</button>
+                        <button type="submit" asp-route-teacherId="@teacher.Id" value="Delete" name="Action">Delete</button>
+
+                    </th>
+                </tr>
+            }
+        </table>
+    </div>
+</form>
