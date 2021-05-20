@@ -12,15 +12,16 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeachersController : GenericCrudController<Teacher>
+    public class TeachersController : ControllerBase
     {
-        public TeachersController(DataManager dataManager) : base(dataManager)
-        {
+        private DataManager _dataManager;
 
-            
+        public TeachersController(DataManager dataManager)
+        {
+            _dataManager = dataManager;
         }
         [HttpGet("list")]
-        public override async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList()
         {
             var entities = await _dataManager._teachersRepository.GetAll();
             if (entities != null)
@@ -33,9 +34,23 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
         }
         [HttpGet("one")]
-        public override async Task<IActionResult> GetOneById(Guid? id)
+        public async Task<IActionResult> GetOneById(Guid? id)
         {
             return Ok(await _dataManager._teachersRepository.GetById(id));
+        }
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] Teacher teacher)
+        {
+            if (teacher != null)
+            {
+                await _dataManager._teachersRepository.Add(teacher);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Object is null");
+            }
+
         }
 
     }

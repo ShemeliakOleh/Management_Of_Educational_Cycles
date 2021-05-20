@@ -30,6 +30,8 @@ namespace Management_Of_Educational_Cycles.View
                 options.UseSqlServer(Configuration.GetConnectionString("TempConnection")));
             services.AddRazorPages();
             services.AddTransient<IRequestSender, RequestSender>();
+            services.AddTransient<IDropDownService, DropDownService>();
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

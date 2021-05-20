@@ -8,25 +8,17 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-    public class TeacherCreateViewModel
+    public class DepartmentEditViewModel
     {
-       
-        [Display(Name = "Name")]
-        public string TeacherName { get; set; }
+        [Display(Name = "Department Id")]
+        public string DepartmentId { get; set; }
 
-        [Required]
-        [Display(Name = "Surname")]
-        public string TeacherSurname { get; set; }
+        [Display(Name = "Name")]
+        public string DepartmentName { get; set; }
 
         [Required]
         [Display(Name = "Faculty")]
         public string SelectedFaculty { get; set; }
         public IEnumerable<SelectListItem> Faculties { get; set; }
-
-        [Required]
-        [Display(Name = "Department")]
-        public string SelectedDepartment { get; set; }
-        public IEnumerable<SelectListItem> Departments { get; set; }
-
     }
 }

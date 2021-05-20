@@ -16,21 +16,22 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
 {
     public class CreateModel : BasePageModel
     {
-       
-        public CreateModel(IRequestSender requestSender) : base(requestSender)
+        private IDropDownService _dropDownService;
+        [BindProperty(SupportsGet = true)]
+        public DepartmentEditViewModel DepartmentEditViewModel{ get; set; }
+        public CreateModel(IRequestSender requestSender, IDropDownService _dropDownService) : base(requestSender)
         {
-
+            this._dropDownService = _dropDownService;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            DepartmentEditViewModel =await _dropDownService.CreateDepartment();
             return Page();
         }
 
         [BindProperty]
         public Department Department { get; set; }
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -38,17 +39,18 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return Page();
             }
 
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/create", Department);
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    //DO something
-            //}
-            //else
-            //{
-            //    //DO something
-            //}
+            bool saved =await _dropDownService.SaveDepartment(DepartmentEditViewModel);
+            if (saved)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                //DO something //////////////////!
+            }
+            return Page();
 
-            return RedirectToPage("./Index");
+            
         }
     }
 }

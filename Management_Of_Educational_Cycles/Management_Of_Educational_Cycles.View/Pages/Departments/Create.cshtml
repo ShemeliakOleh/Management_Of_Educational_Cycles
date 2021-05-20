@@ -9,7 +9,7 @@
 
 <h4>Department</h4>
 <hr />
-<div class="row">
+@*<div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -23,8 +23,49 @@
             </div>
         </form>
     </div>
-</div>
+</div>*@
 
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.DepartmentEditViewModel.DepartmentId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DepartmentEditViewModel.DepartmentId,
+                    new { htmlAttributes = new { @class = "form-control", @readonly = "readonly"} })
+                @Html.ValidationMessageFor(model => model.DepartmentEditViewModel.DepartmentId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DepartmentEditViewModel.DepartmentName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DepartmentEditViewModel.DepartmentName,
+                  new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus", @required = true } })
+                @Html.ValidationMessageFor(model => model.DepartmentEditViewModel.DepartmentName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => Model.DepartmentEditViewModel.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.DropDownListFor(x => Model.DepartmentEditViewModel.SelectedFaculty,
+                  new SelectList(Model.DepartmentEditViewModel.Faculties, "Value", "Text"),
+                  htmlAttributes: new { @class = "form-control", id = "Faculty", @required = true })
+                @Html.ValidationMessageFor(x => x.DepartmentEditViewModel.SelectedFaculty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
 <div>
     <a asp-page="Index">Back to List</a>
 </div>

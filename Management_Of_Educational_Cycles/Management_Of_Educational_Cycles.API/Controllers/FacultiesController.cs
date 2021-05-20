@@ -11,14 +11,16 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FacultiesController : GenericCrudController<Faculty>
+    public class FacultiesController : ControllerBase
     {
-        public FacultiesController(DataManager dataManager):base(dataManager)
-        {
+        private DataManager _dataManager;
 
+        public FacultiesController(DataManager dataManager)
+        {
+            _dataManager = dataManager;
         }
         [HttpGet("list")]
-        public override async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList()
         {
             var entities = await _dataManager._facultiesRepository.GetAll();
             if (entities != null)
@@ -31,9 +33,23 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
         }
         [HttpGet("one")]
-        public override async Task<IActionResult> GetOneById(Guid? id)
+        public async Task<IActionResult> GetOneById(Guid? id)
         {
             return Ok(await _dataManager._facultiesRepository.GetById(id));
+        }
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] Faculty faculty)
+        {
+            if (faculty != null)
+            {
+                await _dataManager._facultiesRepository.Add(faculty);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Object is null");
+            }
+
         }
     }
 }

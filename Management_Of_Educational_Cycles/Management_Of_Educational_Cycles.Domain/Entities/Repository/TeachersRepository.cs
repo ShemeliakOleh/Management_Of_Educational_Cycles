@@ -18,7 +18,12 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         }
         public async Task<bool> Add(Teacher teacher)
         {
-            _context.Teachers.Add(teacher);
+            var teacherToDb = new Teacher() { Name = teacher.Name, Surname = teacher.Surname };
+            var faculty = _context.Faculties.FirstOrDefault(x => x.Id == teacher.Faculty.Id);
+            var department = _context.Departments.FirstOrDefault(x => x.Id == teacher.Department.Id);
+            _context.Teachers.Add(teacherToDb);
+            teacherToDb.Faculty = faculty;
+            teacherToDb.Department = department;
             await _context.SaveChangesAsync();
             return true;
         }

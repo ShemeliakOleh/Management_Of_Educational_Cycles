@@ -11,33 +11,52 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using Management_Of_Educational_Cycles.Logic.Services;
+using System.IO;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
     public class CreateModel : BasePageModel
     {
-
-        [BindProperty]
+        private IDropDownService _dropDownService;
+        [BindProperty(SupportsGet = true)]
         public TeacherCreateViewModel TeacherCreateViewModel { get; set; }
-        public CreateModel(IRequestSender requestSender) : base(requestSender)
+        //[BindProperty(SupportsGet = true)]
+        //public int FacultyId { get; set; }
+        //[BindProperty(SupportsGet = true)]
+        //public int DepartmentId { get; set; }
+        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender)
         {
-
+            _dropDownService = dropDownService;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            TeacherCreateViewModel =await _dropDownService.CreateTeacher();
             return Page();
         }
 
         [BindProperty]
         public Teacher Teacher { get; set; }
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return null;
             }
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/create", Teacher);
+            //Teacher.Name = TeacherCreateViewModel.TeacherName;
+            //Teacher.Surname = TeacherCreateViewModel.TeacherSurname;
+            //Teacher.Faculty = TeacherCreateViewModel.SelectedFaculty; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            bool saved = await _dropDownService.SaveTeacher(TeacherCreateViewModel);
+            if (saved)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                //DO something //////////////////!
+            }
+            return null;
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something
@@ -47,8 +66,25 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             //    //DO something
             //}
 
-            return RedirectToPage("./Index");
+        }
+        public async Task<IActionResult> OnPostDepartmentsAsync(string selectedFaculty)
+        {
+
+            MemoryStream stream = new MemoryStream();
+            await Request.Body.CopyToAsync(stream);
+            stream.Position = 0;
+            using StreamReader reader = new StreamReader(stream);
+            var requestBody = reader.ReadToEnd();
+            
+            if (requestBody.Length > 0)
+            {
+                var facultyId = Guid.Parse(requestBody);
+                IEnumerable <SelectListItem> departmentsAsSelectList = await _dropDownService.GetDepartments(facultyId);
+                return new JsonResult(departmentsAsSelectList);
+            }
+            return null;
         }
        
+
     }
 }
