@@ -15,16 +15,19 @@ namespace Management_Of_Educational_Cycles.Domain.Entities
         public IFacultiesRepository _facultiesRepository{ get; set; }
         public IDepartmentRepository _departmentRepository { get; set; }
 
+        public IGroupRepository _groupRepository { get; set; }
+
         public DataManager(IWorkManagementCyclesRepository workManagementCyclesRepository,
             IEducationalCyclesRepository educationalCyclesRepository,
             ITeachersRepository teachersRepository, IFacultiesRepository facultiesRepository,
-            IDepartmentRepository departmentRepository)
+            IDepartmentRepository departmentRepository, IGroupRepository groupRepository)
         {
             _workManagementCyclesRepository = workManagementCyclesRepository;
             _educationalCyclesRepository = educationalCyclesRepository;
             _teachersRepository = teachersRepository;
             _facultiesRepository = facultiesRepository;
             _departmentRepository = departmentRepository;
+            _groupRepository = groupRepository;
         }
          
     }

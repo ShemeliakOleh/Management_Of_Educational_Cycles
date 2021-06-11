@@ -28,6 +28,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             Groups = await _requestSender.GetContetFromRequestAsyncAs<List<Group>>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Groups/list")
                 );
+            if (Groups == null) Groups = new List<Group>();
         }
     }
 }

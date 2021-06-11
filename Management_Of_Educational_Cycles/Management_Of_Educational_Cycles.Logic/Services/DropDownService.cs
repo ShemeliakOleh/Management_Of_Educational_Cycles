@@ -16,16 +16,25 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             _requestSender = requestSender;
         }
 
-        public async Task<TeacherCreateViewModel> CreateTeacher()
+        public async Task<TeacherEditViewModel> CreateTeacher()
         {
-            var teacher = new TeacherCreateViewModel()
+            var teacher = new TeacherEditViewModel()
             {
                 Faculties = await GetFaculties(),
                 Departments = GetDepartments()
             };
             return teacher;
         }
-        public async Task<bool> SaveTeacher(TeacherCreateViewModel teacherToSave)
+        public async Task<GroupEditViewModel> CreateGroup()
+        {
+            var group = new GroupEditViewModel()
+            {
+                Faculties = await GetFaculties(),
+                Departments = GetDepartments()
+            };
+            return group;
+        }
+        public async Task<bool> SaveTeacher(TeacherEditViewModel teacherToSave)
         {
             if (teacherToSave != null)
             {
@@ -34,13 +43,17 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 {
                     Name = teacherToSave.TeacherName,
                     Surname = teacherToSave.TeacherSurname,
+                    FacultyId = Guid.Parse(teacherToSave.SelectedFaculty),
+                    DepartmentId = Guid.Parse(teacherToSave.SelectedDepartment)
+
                 };
-                teacher.Faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
-        await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + Guid.Parse(teacherToSave.SelectedFaculty))
-        );
-                teacher.Department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
-        await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + Guid.Parse(teacherToSave.SelectedDepartment))
-        );
+
+        //        teacher.Faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
+        //await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + Guid.Parse(teacherToSave.SelectedFaculty))
+        //);
+        //        teacher.Department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
+        //await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + Guid.Parse(teacherToSave.SelectedDepartment))
+        //);
                 var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/create", teacher);
                 return true;
             }
@@ -71,11 +84,11 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         {
             List<SelectListItem> departments = new List<SelectListItem>()
             {
-                new SelectListItem
-                {
-                    Value = null,
-                    Text = " "
-                }
+                //new SelectListItem
+                //{
+                //    Value = null,
+                //    Text = "--- select department ---"
+                //}
             };
             return departments;
         }
@@ -148,14 +161,98 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                         Name = departmentToSave.DepartmentName,
                         Groups = new List<Group>()
                     };
-                    department.Faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
-            await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + Guid.Parse(departmentToSave.SelectedFaculty))
-            );
+                    department.FacultyId = Guid.Parse(departmentToSave.SelectedFaculty);
                     var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/create", department);
                     return true;
                 }
             }
             // Return false if customeredit == null or CustomerID is not a guid
+            return false;
+        }
+
+        public async Task<TeacherEditViewModel> CreateTeacher(Teacher teacher)
+        {
+            var teacherViewModel =await CreateTeacher();
+            teacherViewModel.Departments =await GetDepartments(teacher.FacultyId);
+            teacherViewModel.TeacherId = teacher.Id;
+            teacherViewModel.TeacherName = teacher.Name;
+            teacherViewModel.TeacherSurname = teacher.Surname;
+            teacherViewModel.SelectedFaculty = teacher.Faculty.Id.ToString();
+            teacherViewModel.SelectedDepartment = teacher.Department.Id.ToString();
+            return teacherViewModel;
+        }
+
+        public async Task<Teacher> Convert2Teacher(TeacherEditViewModel teacherEditViewModel)
+        {
+            var faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
+        await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + Guid.Parse(teacherEditViewModel.SelectedFaculty))
+        );
+            var department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
+    await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + Guid.Parse(teacherEditViewModel.SelectedDepartment)));
+            return new Teacher() { Name = teacherEditViewModel.TeacherName, Surname = teacherEditViewModel.TeacherSurname, Faculty = faculty, Department = department };
+        }
+
+        public async Task<WorkManagementCycleEditViewModel> CreateWorkMangementCycle()
+        {
+            var group = new WorkManagementCycleEditViewModel()
+            {
+                Faculties = await GetFaculties(),
+                Departments = GetDepartments(),
+                Groups = GetGroups()
+        };
+            return group;
+        }
+        public async Task<IEnumerable<SelectListItem>> GetGroups(Guid? departmentId)
+        {
+            var department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
+             await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + departmentId)
+             );
+
+            IEnumerable<SelectListItem> groupsSelectListItems = department.Groups.OrderBy(n => n.Name)
+            .Select(n =>
+                new SelectListItem
+                {
+                    Value = n.Id.ToString(),
+                    Text = n.Name
+                }).ToList();
+
+            return new SelectList(groupsSelectListItems, "Value", "Text");
+        }
+
+        public IEnumerable<SelectListItem> GetGroups()
+        {
+            List<SelectListItem> groups = new List<SelectListItem>()
+            {
+                //new SelectListItem
+                //{
+                //    Value = null,
+                //    Text = "--- select group ---"
+                //}
+            };
+            return groups;
+        }
+
+        public async Task<bool> SaveGroup(GroupEditViewModel groupToSave)
+        {
+            if (groupToSave != null)
+            {
+
+                var group = new Group()
+                {
+                    Name = groupToSave.GroupName,
+                    FacultyId = Guid.Parse(groupToSave.SelectedFaculty),
+                    DepartmentId = Guid.Parse(groupToSave.SelectedDepartment)
+
+                };
+        //        group.Faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
+        //await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + Guid.Parse(groupToSave.SelectedFaculty))
+        //);
+        //        group.Department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
+        //await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + Guid.Parse(groupToSave.SelectedDepartment))
+        //);
+                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/create", group);
+                return true;
+            }
             return false;
         }
     }

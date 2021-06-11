@@ -11,44 +11,64 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using Management_Of_Educational_Cycles.Logic.Services;
+using System.IO;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
     public class CreateModel : BasePageModel
     {
-      
-        public CreateModel(IRequestSender requestSender) : base(requestSender)
-        {
 
+        private IDropDownService _dropDownService;
+        [BindProperty(SupportsGet = true)]
+        public GroupEditViewModel GroupEditViewModel { get; set; }
+
+        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender)
+        {
+            _dropDownService = dropDownService;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            GroupEditViewModel =await _dropDownService.CreateGroup();
             return Page();
         }
 
-        [BindProperty]
-        public Group Group { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && GroupEditViewModel != null && GroupEditViewModel.SelectedDepartment != null)
             {
-                return Page();
+                return null;
             }
 
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/create", Group);
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    //DO something
-            //}
-            //else
-            //{
-            //    //DO something
-            //}
-
+            bool saved = await _dropDownService.SaveGroup(GroupEditViewModel);
+            if (saved)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                //DO something //////////////////!
+            }
             return RedirectToPage("./Index");
+        }
+        public async Task<IActionResult> OnPostDepartmentsAsync()
+        {
+
+            MemoryStream stream = new MemoryStream();
+            await Request.Body.CopyToAsync(stream);
+            stream.Position = 0;
+            using StreamReader reader = new StreamReader(stream);
+            var requestBody = reader.ReadToEnd();
+
+            if (requestBody.Length > 0)
+            {
+                var facultyId = Guid.Parse(requestBody);
+                IEnumerable<SelectListItem> departmentsAsSelectList = await _dropDownService.GetDepartments(facultyId);
+                return new JsonResult(departmentsAsSelectList);
+            }
+            return null;
         }
     }
 }
