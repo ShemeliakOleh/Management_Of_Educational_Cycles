@@ -40,8 +40,10 @@ namespace Management_Of_Educational_Cycles.API
 
             services.AddTransient<IWorkManagementCyclesRepository, WorkManagementCyclesRepository>();
             services.AddTransient<IEducationalCyclesRepository, EducationalCyclesRepository>();
-            services.AddTransient<IBaseRepository, BaseRepository>();
             services.AddTransient<ITeachersRepository, TeachersRepository>();
+            services.AddTransient<IFacultiesRepository, FacultiesRepository>();
+            services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<DataManager>();
         }
 

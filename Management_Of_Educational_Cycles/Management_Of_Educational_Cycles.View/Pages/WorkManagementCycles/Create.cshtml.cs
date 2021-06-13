@@ -11,35 +11,39 @@ using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 using Management_Of_Educational_Cycles.Logic.Services;
+using System.IO;
 
 namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 {
     public class CreateModel : BasePageModel
     {
-        public CreateModel(IRequestSender requestSender) : base(requestSender)
+        private IDropDownService _dropDownService;
+        [BindProperty(SupportsGet = true)]
+        public WorkManagementCycleEditViewModel WorkManagementCycleEditViewModel { get; set; }
+
+        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender)
         {
+            _dropDownService = dropDownService;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            WorkManagementCycleEditViewModel = await _dropDownService.CreateWorkMangementCycle();
             return Page();
         }
-
-        [BindProperty]
-        public WorkManagementCycle WorkManagementCycle { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            
-            
 
 
 
 
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/create", WorkManagementCycle);
+
+
+            await _dropDownService.SaveWorkManagementCycle(WorkManagementCycleEditViewModel);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something
@@ -50,6 +54,40 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             //}
 
             return RedirectToPage("./Index");
+        }
+        public async Task<IActionResult> OnPostDepartmentsAsync()
+        {
+
+            MemoryStream stream = new MemoryStream();
+            await Request.Body.CopyToAsync(stream);
+            stream.Position = 0;
+            using StreamReader reader = new StreamReader(stream);
+            var requestBody = reader.ReadToEnd();
+
+            if (requestBody.Length > 0)
+            {
+                var facultyId = Guid.Parse(requestBody);
+                IEnumerable<SelectListItem> departmentsAsSelectList = await _dropDownService.GetDepartments(facultyId);
+                return new JsonResult(departmentsAsSelectList);
+            }
+            return null;
+        }
+        public async Task<IActionResult> OnPostGroupsAsync()
+        {
+
+            MemoryStream stream = new MemoryStream();
+            await Request.Body.CopyToAsync(stream);
+            stream.Position = 0;
+            using StreamReader reader = new StreamReader(stream);
+            var requestBody = reader.ReadToEnd();
+
+            if (requestBody.Length > 0)
+            {
+                var departmentId = Guid.Parse(requestBody);
+                IEnumerable<SelectListItem> groupsAsSelectList = await _dropDownService.GetGroups(departmentId);
+                return new JsonResult(groupsAsSelectList);
+            }
+            return null;
         }
     }
 }

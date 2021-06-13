@@ -8,6 +8,6 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
     public abstract class BaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
     }
 }

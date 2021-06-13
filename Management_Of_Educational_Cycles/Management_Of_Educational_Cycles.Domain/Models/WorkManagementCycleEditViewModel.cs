@@ -8,15 +8,19 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-    public class TeacherCreateViewModel
+    public class WorkManagementCycleEditViewModel
     {
-       
-        [Display(Name = "Name")]
-        public string TeacherName { get; set; }
+        public Guid? CycleId { get; set; }
 
-        [Required]
-        [Display(Name = "Surname")]
-        public string TeacherSurname { get; set; }
+        [Display(Name = "Name")]
+        public string CycleName { get; set; }
+
+
+        [Display(Name = "Number of hours")]
+        public int NumberOfHours { get; set; }
+
+        [Display(Name = "Semester")]
+        public int Semester { get; set; }
 
         [Required]
         [Display(Name = "Faculty")]
@@ -28,5 +32,9 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         public string SelectedDepartment { get; set; }
         public IEnumerable<SelectListItem> Departments { get; set; }
 
+        [Required]
+        [Display(Name = "Group")]
+        public string SelectedGroup { get; set; }
+        public IEnumerable<SelectListItem> Groups { get; set; }
     }
 }

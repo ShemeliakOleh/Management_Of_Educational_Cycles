@@ -19,7 +19,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         public async Task<bool> Add(Department department)
         {
             var departmentToDb = new Department() { Name = department.Name };
-            var faculty = _context.Faculties.Include(x => x.Departments).FirstOrDefault(x => x.Id == department.Faculty.Id);
+            var faculty = _context.Faculties.Include(x => x.Departments).FirstOrDefault(x => x.Id == department.FacultyId);
             faculty.Departments.Add(departmentToDb);
             try
             {

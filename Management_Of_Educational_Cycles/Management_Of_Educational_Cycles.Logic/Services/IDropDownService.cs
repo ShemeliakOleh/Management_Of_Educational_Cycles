@@ -16,6 +16,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         public IEnumerable<SelectListItem> GetDepartments();
         public IEnumerable<SelectListItem> GetGroups();
         public Task<bool> SaveTeacher(TeacherEditViewModel teacherToSave);
+        public Task<bool> SaveWorkManagementCycle(WorkManagementCycleEditViewModel cycleToSave);
         public Task<bool> SaveGroup(GroupEditViewModel groupToSave);
         public Task<bool> SaveDepartment(DepartmentEditViewModel departmentToSave);
         public  Task<List<TeacherDisplayViewModel>> GetTeachers();

@@ -61,6 +61,25 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             // Return false if customeredit == null or CustomerID is not a guid
             return false;
         }
+        public async Task<bool> SaveWorkManagementCycle(WorkManagementCycleEditViewModel cycleToSave)
+        {
+            if (cycleToSave != null)
+            {
+
+                var workManagementCycle = new WorkManagementCycle()
+                {
+                    Name = cycleToSave.CycleName,
+                    Semester = cycleToSave.Semester,
+                    NumberOfHours = cycleToSave.NumberOfHours,
+                    GroupId = Guid.Parse(cycleToSave.SelectedGroup)
+                };
+                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/create", workManagementCycle);
+                return true;
+            }
+
+            // Return false if customeredit == null or CustomerID is not a guid
+            return false;
+        }
 
         public async Task<IEnumerable<SelectListItem>> GetDepartments(Guid? facultyId)
         {
