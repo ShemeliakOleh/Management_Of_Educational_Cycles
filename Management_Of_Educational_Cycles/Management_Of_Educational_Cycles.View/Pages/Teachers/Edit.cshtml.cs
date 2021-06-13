@@ -12,19 +12,21 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using Management_Of_Educational_Cycles.Logic.Services;
+using System.IO;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
     public class EditModel : BasePageModel
     {
-        
-        public EditModel(IRequestSender requestSender) : base(requestSender)
-        {
+        private IDropDownService _dropDownService;
+        [BindProperty(SupportsGet = true)]
+        public TeacherEditViewModel TeacherEditViewModel { get; set; }
 
+        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender)
+        {
+            _dropDownService = dropDownService;
         }
 
-        [BindProperty]
-        public Teacher Teacher { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -32,29 +34,28 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             {
                 return NotFound();
             }
-            Teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
+            var teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + id)
                 );
 
-            if (Teacher == null)
+            if (teacher == null)
             {
                 return NotFound();
             }
+            TeacherEditViewModel = await _dropDownService.CreateTeacher(teacher);
+            
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && TeacherEditViewModel.SelectedFaculty != null && TeacherEditViewModel.SelectedDepartment != null)
             {
-                return Page();
+                return null;
             }
-
-
-            
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/update", Teacher);
+            var teacher = await _dropDownService.Convert2Teacher(TeacherEditViewModel);
+            teacher.Id = TeacherEditViewModel.TeacherId;
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/update",teacher);
 
             //if (response.IsCompletedSuccessfully)
             //{
@@ -67,6 +68,23 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 
 
             return RedirectToPage("./Index");
+        }
+        public async Task<IActionResult> OnPostDepartmentsAsync()
+        {
+
+            MemoryStream stream = new MemoryStream();
+            await Request.Body.CopyToAsync(stream);
+            stream.Position = 0;
+            using StreamReader reader = new StreamReader(stream);
+            var requestBody = reader.ReadToEnd();
+
+            if (requestBody.Length > 0)
+            {
+                var facultyId = Guid.Parse(requestBody);
+                IEnumerable<SelectListItem> departmentsAsSelectList = await _dropDownService.GetDepartments(facultyId);
+                return new JsonResult(departmentsAsSelectList);
+            }
+            return null;
         }
     }
 }

@@ -19,8 +19,8 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         public async Task<bool> Add(Teacher teacher)
         {
             var teacherToDb = new Teacher() { Name = teacher.Name, Surname = teacher.Surname };
-            var faculty = _context.Faculties.FirstOrDefault(x => x.Id == teacher.Faculty.Id);
-            var department = _context.Departments.FirstOrDefault(x => x.Id == teacher.Department.Id);
+            var faculty = _context.Faculties.FirstOrDefault(x => x.Id == teacher.FacultyId);
+            var department = _context.Departments.FirstOrDefault(x => x.Id == teacher.DepartmentId);
             _context.Teachers.Add(teacherToDb);
             teacherToDb.Faculty = faculty;
             teacherToDb.Department = department;
@@ -78,7 +78,11 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         public async Task<bool> Update(Teacher teacher)
         {
 
-            _context.Attach(teacher).State = EntityState.Modified;
+            var teacherFromDb = _context.Teachers.FirstOrDefault(x => x.Id == teacher.Id);
+            teacherFromDb.Name = teacher.Name;
+            teacherFromDb.Surname = teacher.Surname;
+            teacherFromDb.DepartmentId = teacher.Department.Id;
+            teacherFromDb.FacultyId = teacher.Faculty.Id;
 
             try
             {

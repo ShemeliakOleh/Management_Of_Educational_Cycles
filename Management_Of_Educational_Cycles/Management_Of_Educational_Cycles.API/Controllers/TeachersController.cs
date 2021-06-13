@@ -52,6 +52,42 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
 
         }
+        [HttpPost("update")]
+        public async Task<IActionResult> Update(Teacher teacher)
+        {
 
+            if (teacher != null)
+            {
+
+                if (!(await _dataManager._teachersRepository.Update(teacher)))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok();
+                }
+
+            }
+            else
+            {
+                return Problem("object is null");
+            }
+
+
+        }
+        [HttpGet("remove")]
+        public async Task<IActionResult> RemoveById(Guid? id)
+        {
+            if (await _dataManager._teachersRepository.Remove(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return Problem("object with id = " + id + " not found");
+            }
+
+        }
     }
 }

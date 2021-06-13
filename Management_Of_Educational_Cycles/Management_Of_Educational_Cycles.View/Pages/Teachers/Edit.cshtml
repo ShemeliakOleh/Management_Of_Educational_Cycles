@@ -12,30 +12,50 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Teacher.Id" />
+            <input type="hidden" asp-for="TeacherEditViewModel.TeacherId" />
             <div class="form-group">
-                <label asp-for="Teacher.Name" class="control-label"></label>
-                <input asp-for="Teacher.Name" class="form-control" />
-                <span asp-validation-for="Teacher.Name" class="text-danger"></span>
+                @Html.LabelFor(model => model.TeacherEditViewModel.TeacherName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TeacherEditViewModel.TeacherName,
+                      new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus", @required = true } })
+                    @Html.ValidationMessageFor(model => model.TeacherEditViewModel.TeacherName, "", new { @class = "text-danger" })
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Teacher.Surname" class="control-label"></label>
-                <input asp-for="Teacher.Surname" class="form-control" />
-                <span asp-validation-for="Teacher.Surname" class="text-danger"></span>
+                @Html.LabelFor(model => model.TeacherEditViewModel.TeacherSurname, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TeacherEditViewModel.TeacherSurname,
+                      new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus", @required = true } })
+                    @Html.ValidationMessageFor(model => model.TeacherEditViewModel.TeacherSurname, "", new { @class = "text-danger" })
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Teacher.Department" class="control-label"></label>
-                <input asp-for="Teacher.Department.Name" class="form-control" />
-                <span asp-validation-for="Teacher.Department.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Teacher.Faculty" class="control-label"></label>
-                <input asp-for="Teacher.Faculty.Name" class="form-control" />
-                <span asp-validation-for="Teacher.Faculty.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-group" TeacherEditViewModel
+                 @if (Model.TeacherEditViewModel.Faculties == null) { Model.TeacherEditViewModel.Faculties = new List<SelectListItem>(); }
+                 @Html.LabelFor(x => Model.TeacherEditViewModel.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => Model.TeacherEditViewModel.SelectedFaculty,
+                      new SelectList(Model.TeacherEditViewModel.Faculties, "Value", "Text"),
+                      htmlAttributes: new { @class = "form-control", id = "Faculty", @required = true })
+                    @Html.ValidationMessageFor(x => x.TeacherEditViewModel.SelectedFaculty, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @if (Model.TeacherEditViewModel.Departments == null)
+                    {
+                        Model.TeacherEditViewModel.Departments = new List<SelectListItem>();
+                    }
+                    @Html.LabelFor(x => Model.TeacherEditViewModel.SelectedDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownListFor(x => Model.TeacherEditViewModel.SelectedDepartment,
+                          new SelectList(Model.TeacherEditViewModel.Departments, "Value", "Text"),
+                          htmlAttributes: new { @class = "form-control", @id = "Department" })
+                        @Html.ValidationMessageFor(x => x.TeacherEditViewModel.SelectedDepartment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+             <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
             </div>
         </form>
     </div>
@@ -46,5 +66,40 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+            $('#Faculty').change(function () {
+                var selectedFaculty = $("#Faculty").val();
+                var departmentsSelect = $('#Department');
+                departmentsSelect.empty();
+                if (selectedFaculty != null && selectedFaculty != '') {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Teachers/Edit?handler=Departments",
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("XSRF-TOKEN",
+                                $('input:hidden[name="__RequestVerificationToken"]').val());
+                        },
+                        data: selectedFaculty,
+                        contentType: "json; charset=utf-8",
+                        success: function (departments) {
+                            if (departments != null && !jQuery.isEmptyObject(departments)) {
+                                //departmentsSelect.append($('<option/>', {
+                                //    value: null,
+                                //    text: "--- select111 department ---"
+                                //}));
+                                $.each(departments, function (index, department) {
+                                    departmentsSelect.append("<option value='" + department.value + "'>" + department.text + "</option>");
+                                });
+                            };
+                        },
+                        failure: function (response) {
+                            alert(response);
+                        }
+                    });
+                }
+                else {
+
+                }
+            });
+    </script>
 }

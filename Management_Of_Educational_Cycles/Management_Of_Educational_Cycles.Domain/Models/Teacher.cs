@@ -11,7 +11,9 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public Faculty Faculty { get; set; }
+        public Guid? FacultyId { get; set; }
         public Department Department { get; set; }
+        public Guid? DepartmentId { get; set; }
         public List<WorkManagementCycle> WorkManagementCycles { get; set; } = new List<WorkManagementCycle>();
         public List<EducationalCycle> EducationalCycles { get; set; } = new List<EducationalCycle>();
     }

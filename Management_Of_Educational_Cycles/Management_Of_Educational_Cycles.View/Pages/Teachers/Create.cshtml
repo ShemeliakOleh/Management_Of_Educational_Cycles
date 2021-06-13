@@ -26,44 +26,44 @@
     <div class="form-horizontal">
       
         <div class="form-group">
-            @Html.LabelFor(model => model.TeacherCreateViewModel.TeacherName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TeacherEditViewModel.TeacherName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TeacherCreateViewModel.TeacherName,
+                @Html.EditorFor(model => model.TeacherEditViewModel.TeacherName,
                   new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus", @required = true } })
-                @Html.ValidationMessageFor(model => model.TeacherCreateViewModel.TeacherName, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.TeacherEditViewModel.TeacherName, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.TeacherCreateViewModel.TeacherSurname, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TeacherEditViewModel.TeacherSurname, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TeacherCreateViewModel.TeacherSurname,
+                @Html.EditorFor(model => model.TeacherEditViewModel.TeacherSurname,
                   new { htmlAttributes = new { @class = "form-control", @autofocus = "autofocus", @required = true } })
-                @Html.ValidationMessageFor(model => model.TeacherCreateViewModel.TeacherSurname, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.TeacherEditViewModel.TeacherSurname, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @if (Model.TeacherCreateViewModel.Faculties == null)
+            @if (Model.TeacherEditViewModel.Faculties == null)
         {
-            Model.TeacherCreateViewModel.Faculties = new List<SelectListItem>();
+            Model.TeacherEditViewModel.Faculties = new List<SelectListItem>();
         }
-        @Html.LabelFor(x => Model.TeacherCreateViewModel.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(x => Model.TeacherEditViewModel.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-5">
-            @Html.DropDownListFor(x => Model.TeacherCreateViewModel.SelectedFaculty,
-              new SelectList(Model.TeacherCreateViewModel.Faculties, "Value", "Text"),
+            @Html.DropDownListFor(x => Model.TeacherEditViewModel.SelectedFaculty,
+              new SelectList(Model.TeacherEditViewModel.Faculties, "Value", "Text"),
               htmlAttributes: new { @class = "form-control", id = "Faculty", @required = true })
-            @Html.ValidationMessageFor(x => x.TeacherCreateViewModel.SelectedFaculty, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(x => x.TeacherEditViewModel.SelectedFaculty, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
-            @if (Model.TeacherCreateViewModel.Departments == null)
+            @if (Model.TeacherEditViewModel.Departments == null)
         {
-            Model.TeacherCreateViewModel.Departments = new List<SelectListItem>();
+            Model.TeacherEditViewModel.Departments = new List<SelectListItem>();
         }
-        @Html.LabelFor(x => Model.TeacherCreateViewModel.SelectedDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(x => Model.TeacherEditViewModel.SelectedDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-5">
-            @Html.DropDownListFor(x => Model.TeacherCreateViewModel.SelectedDepartment,
-              new SelectList(Model.TeacherCreateViewModel.Departments, "Value", "Text"),
-              htmlAttributes: new { @class = "form-control", @id = "Department" })
-            @Html.ValidationMessageFor(x => x.TeacherCreateViewModel.SelectedDepartment, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(x => Model.TeacherEditViewModel.SelectedDepartment,
+              new SelectList(Model.TeacherEditViewModel.Departments, "Value", "Text"),
+              htmlAttributes: new { @class = "form-control", @id = "Department",  @required = true })
+            @Html.ValidationMessageFor(x => x.TeacherEditViewModel.SelectedDepartment, "", new { @class = "text-danger" })
         </div>
         </div>
         <div class="form-group">
@@ -71,6 +71,7 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </div>
+    </div>
     </div>
 </form>
 
@@ -136,10 +137,10 @@
                         contentType: "json; charset=utf-8",
                         success: function (departments) {
                             if (departments != null && !jQuery.isEmptyObject(departments)) {
-                                departmentsSelect.append($('<option/>', {
-                                    value: null,
-                                    text: "Choose Department"
-                                }));
+                                //departmentsSelect.append($('<option/>', {
+                                //    value: null,
+                                //    text: "Choose Department"
+                                //}));
                                 $.each(departments, function (index, department) {
                                     departmentsSelect.append("<option value='" + department.value + "'>" + department.text + "</option>");
                                 });
