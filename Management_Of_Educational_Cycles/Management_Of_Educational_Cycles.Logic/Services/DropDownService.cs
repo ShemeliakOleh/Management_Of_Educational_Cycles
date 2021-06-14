@@ -367,5 +367,49 @@ namespace Management_Of_Educational_Cycles.Logic.Services
 
             return false;
         }
+
+        public async Task<EducationalCycleEditViewModel> CreateEducationalCycle(EducationalCycle educationalCycle)
+        {
+            var cycle = new EducationalCycleEditViewModel()
+            {
+                CycleName = educationalCycle.Name,
+                NumberOfHours = educationalCycle.NumberOfHours,
+                Semester = educationalCycle.Semester,
+                TypeOfClasses = educationalCycle.TypeOfClasses,
+                CycleId = educationalCycle.Id,
+                Faculties = await GetFaculties(),
+                Departments = await GetDepartments(educationalCycle.Group.FacultyId),
+                Groups = await GetGroups(educationalCycle.Group.DepartmentId),
+                Disciplines = await GetDisciplines(),
+                SelectedFaculty = educationalCycle.Group.FacultyId.ToString(),
+                SelectedDepartment = educationalCycle.Group.DepartmentId.ToString(),
+                SelectedGroup = educationalCycle.GroupId.ToString(),
+                SelectedDiscipline = educationalCycle.DisciplineId.ToString()
+            };
+            return cycle;
+        }
+
+        public async Task<bool> UpdateEducationalCycle(EducationalCycleEditViewModel cycleToUpdate)
+        {
+            if (cycleToUpdate != null)
+            {
+
+                var educationalCycle = new EducationalCycle()
+                {
+                    Id = cycleToUpdate.CycleId,
+                    Name = cycleToUpdate.CycleName,
+                    Semester = cycleToUpdate.Semester,
+                    NumberOfHours = cycleToUpdate.NumberOfHours,
+                    TypeOfClasses = cycleToUpdate.TypeOfClasses,
+                    DisciplineId = Guid.Parse(cycleToUpdate.SelectedDiscipline),
+                    GroupId = Guid.Parse(cycleToUpdate.SelectedGroup)
+                };
+                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/update", educationalCycle);
+                return true;
+            }
+
+            // Return false if customeredit == null or CustomerID is not a guid
+            return false;
+        }
     }
 }

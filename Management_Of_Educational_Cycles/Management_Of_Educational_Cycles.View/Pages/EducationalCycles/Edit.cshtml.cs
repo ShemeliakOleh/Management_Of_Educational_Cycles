@@ -15,15 +15,14 @@ using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
 {
-    public class EditModel : BasePageModel { 
-       
-        public EditModel(IRequestSender requestSender) : base(requestSender)
+    public class EditModel : BasePageModel {
+        [BindProperty(SupportsGet = true)]
+        public EducationalCycleEditViewModel educationalCycleEditViewModel { get; set; }
+        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
 
         }
 
-        [BindProperty]
-        public EducationalCycle EducationalCycle { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -31,12 +30,13 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return NotFound();
             }
-            
-            EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
+            var cycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id)
                 );
+            educationalCycleEditViewModel = await _dropDownService.CreateEducationalCycle(cycle);
+            return Page();
 
-            if (EducationalCycle == null)
+            if (educationalCycleEditViewModel == null)
             {
                 return NotFound();
             }
@@ -49,7 +49,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return Page();
             }
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/update", EducationalCycle);
+            await _dropDownService.UpdateEducationalCycle(educationalCycleEditViewModel);
             //if (response.IsSuccessStatusCode)
             //{
             //    return RedirectToPage("./Index");
