@@ -313,5 +313,59 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             // Return false if customeredit == null or CustomerID is not a guid
             return false;
         }
+
+        public async Task<EducationalCycleEditViewModel> CreateEducationalCycle()
+        {
+            var cycle = new EducationalCycleEditViewModel()
+            {
+                Faculties = await GetFaculties(),
+                Departments = GetDepartments(),
+                Groups = GetGroups(),
+                Disciplines = await GetDisciplines()
+            };
+            return cycle;
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetDisciplines()
+        {
+            var disciplines = await _requestSender.GetContetFromRequestAsyncAs<List<Discipline>>(
+            await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Disciplines/list")
+            );
+            List<SelectListItem> disciplinesSelectListItems = disciplines.OrderBy(n => n.Name)
+             .Select(n =>
+                 new SelectListItem
+                 {
+                     Value = n.Id.ToString(),
+                     Text = n.Name
+                 }).ToList();
+            var disciplinetip = new SelectListItem()
+            {
+                Value = null,
+                Text = "--- select discipline ---"
+            };
+            disciplinesSelectListItems.Insert(0, disciplinetip);
+            return new SelectList(disciplinesSelectListItems, "Value", "Text");
+        }
+
+        public async Task<bool> SaveEducationalCycle(EducationalCycleEditViewModel cycleToSave)
+        {
+            if (cycleToSave != null)
+            {
+
+                var educationalCycle = new EducationalCycle()
+                {
+                    Name = cycleToSave.CycleName,
+                    Semester = cycleToSave.Semester,
+                    NumberOfHours = cycleToSave.NumberOfHours,
+                    GroupId = Guid.Parse(cycleToSave.SelectedGroup),
+                    DisciplineId = Guid.Parse(cycleToSave.SelectedDiscipline),
+                    TypeOfClasses = cycleToSave.TypeOfClasses
+                };
+                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/create", educationalCycle);
+                return true;
+            }
+
+            return false;
+        }
     }
 }

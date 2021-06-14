@@ -34,7 +34,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         public async Task<List<Faculty>> GetAll()
         {
             var faculties = await _context.Faculties.Include(x=>x.Departments)
-                .Include(u => u.Disciplines).ToListAsync();
+                .ToListAsync();
             if (faculties != null)
             {
                 return faculties;
@@ -66,8 +66,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<Faculty> GetById(Guid? id)
         {
-            var faculty = await _context.Faculties.Include(u => u.Departments).Include(u => u.Disciplines)
-                .FirstOrDefaultAsync(u => u.Id == id);
+            var faculty = await _context.Faculties.Include(u => u.Departments).FirstOrDefaultAsync(u => u.Id == id);
             return faculty;
         }
 
