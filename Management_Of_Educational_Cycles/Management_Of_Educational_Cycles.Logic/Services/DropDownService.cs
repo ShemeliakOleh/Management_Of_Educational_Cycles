@@ -213,13 +213,13 @@ namespace Management_Of_Educational_Cycles.Logic.Services
 
         public async Task<WorkManagementCycleEditViewModel> CreateWorkMangementCycle()
         {
-            var group = new WorkManagementCycleEditViewModel()
+            var cycle = new WorkManagementCycleEditViewModel()
             {
                 Faculties = await GetFaculties(),
                 Departments = GetDepartments(),
                 Groups = GetGroups()
         };
-            return group;
+            return cycle;
         }
         public async Task<IEnumerable<SelectListItem>> GetGroups(Guid? departmentId)
         {
@@ -272,6 +272,45 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/create", group);
                 return true;
             }
+            return false;
+        }
+
+        public async Task<WorkManagementCycleEditViewModel> CreateWorkMangementCycle(WorkManagementCycle workManagementCycle)
+        {
+            var cycle = new WorkManagementCycleEditViewModel()
+            {
+                CycleName = workManagementCycle.Name,
+                NumberOfHours = workManagementCycle.NumberOfHours,
+                Semester = workManagementCycle.Semester,
+                CycleId = workManagementCycle.Id,
+                Faculties = await GetFaculties(),
+                Departments =await GetDepartments(workManagementCycle.Group.FacultyId),
+                Groups =await GetGroups(workManagementCycle.Group.DepartmentId),
+                SelectedFaculty = workManagementCycle.Group.FacultyId.ToString(),
+                SelectedDepartment = workManagementCycle.Group.DepartmentId.ToString(),
+                SelectedGroup = workManagementCycle.GroupId.ToString()
+            };
+            return cycle;
+        }
+
+        public async Task<bool> UpdateWorkManagementCycle(WorkManagementCycleEditViewModel cycleToUpdate)
+        {
+            if (cycleToUpdate != null)
+            {
+
+                var workManagementCycle = new WorkManagementCycle()
+                {
+                    Id = cycleToUpdate.CycleId,
+                    Name = cycleToUpdate.CycleName,
+                    Semester = cycleToUpdate.Semester,
+                    NumberOfHours = cycleToUpdate.NumberOfHours,
+                    GroupId = Guid.Parse(cycleToUpdate.SelectedGroup)
+                };
+                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/update", workManagementCycle);
+                return true;
+            }
+
+            // Return false if customeredit == null or CustomerID is not a guid
             return false;
         }
     }

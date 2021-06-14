@@ -10,7 +10,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
     public class TeacherEditViewModel
     {
-        [Display(Name = "Name")]
+        [Display(Name = "Id")]
         public Guid? TeacherId { get; set; }
 
         [Display(Name = "Name")]

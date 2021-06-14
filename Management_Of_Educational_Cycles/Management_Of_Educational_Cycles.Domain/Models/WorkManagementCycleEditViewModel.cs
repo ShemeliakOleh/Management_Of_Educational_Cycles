@@ -10,6 +10,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
     public class WorkManagementCycleEditViewModel
     {
+        [Display(Name = "Id")]
         public Guid? CycleId { get; set; }
 
         [Display(Name = "Name")]

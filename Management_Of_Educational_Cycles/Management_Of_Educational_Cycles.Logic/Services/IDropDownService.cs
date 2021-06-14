@@ -17,6 +17,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         public IEnumerable<SelectListItem> GetGroups();
         public Task<bool> SaveTeacher(TeacherEditViewModel teacherToSave);
         public Task<bool> SaveWorkManagementCycle(WorkManagementCycleEditViewModel cycleToSave);
+        public Task<bool> UpdateWorkManagementCycle(WorkManagementCycleEditViewModel cycleToUpdate);
         public Task<bool> SaveGroup(GroupEditViewModel groupToSave);
         public Task<bool> SaveDepartment(DepartmentEditViewModel departmentToSave);
         public  Task<List<TeacherDisplayViewModel>> GetTeachers();
@@ -25,6 +26,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         public Task<TeacherEditViewModel> CreateTeacher(Teacher teacher);
         public Task<DepartmentEditViewModel> CreateDepartment();
         public Task<Teacher> Convert2Teacher(TeacherEditViewModel teacherEditViewModel);
+        Task<WorkManagementCycleEditViewModel> CreateWorkMangementCycle(WorkManagementCycle workManagementCycle);
         Task<WorkManagementCycleEditViewModel> CreateWorkMangementCycle();
     }
 }
