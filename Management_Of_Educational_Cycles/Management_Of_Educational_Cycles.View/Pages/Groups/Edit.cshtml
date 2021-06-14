@@ -13,15 +13,40 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Group.Id" />
+            <input type="hidden" asp-for="GroupEditViewModel.GroupId" />
             <div class="form-group">
-                <label asp-for="Group.Name" class="control-label"></label>
-                <input asp-for="Group.Name" class="form-control" />
-                <span asp-validation-for="Group.Name" class="text-danger"></span>
+                <label asp-for="GroupEditViewModel.GroupName" class="control-label"></label>
+                <input asp-for="GroupEditViewModel.GroupName" class="form-control" />
+                <span asp-validation-for="GroupEditViewModel.GroupName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+                @if (Model.GroupEditViewModel.Faculties == null)
+                {
+                    Model.GroupEditViewModel.Faculties = new List<SelectListItem>();
+                }
+                @Html.LabelFor(x => Model.GroupEditViewModel.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => Model.GroupEditViewModel.SelectedFaculty,
+                      new SelectList(Model.GroupEditViewModel.Faculties, "Value", "Text"),
+                      htmlAttributes: new { @class = "form-control", id = "Faculty", @required = true })
+                    @Html.ValidationMessageFor(x => x.GroupEditViewModel.SelectedFaculty, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @if (Model.GroupEditViewModel.Departments == null)
+                    {
+                        Model.GroupEditViewModel.Departments = new List<SelectListItem>();
+                    }
+                    @Html.LabelFor(x => Model.GroupEditViewModel.SelectedDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownListFor(x => Model.GroupEditViewModel.SelectedDepartment,
+                          new SelectList(Model.GroupEditViewModel.Departments, "Value", "Text"),
+                          htmlAttributes: new { @class = "form-control", @id = "Department", @required = true })
+                        @Html.ValidationMessageFor(x => x.GroupEditViewModel.SelectedDepartment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
         </form>
     </div>
 </div>
