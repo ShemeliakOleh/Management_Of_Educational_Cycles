@@ -44,6 +44,7 @@ namespace Management_Of_Educational_Cycles.API
             services.AddTransient<IFacultiesRepository, FacultiesRepository>();
             services.AddTransient<IDepartmentRepository, DepartmentRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IDisciplineRepository, DisciplineRepository>();
             services.AddTransient<DataManager>();
         }
 

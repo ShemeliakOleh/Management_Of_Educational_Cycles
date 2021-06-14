@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-
+<script src="js/site.js" asp-append-version="true"></script>
 <h1>Create</h1>
 
 <h4>EducationalCycle</h4>
@@ -14,47 +14,85 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="EducationalCycle.Name" class="control-label"></label>
-                <input asp-for="EducationalCycle.Name" class="form-control" />
-                <span asp-validation-for="EducationalCycle.Name" class="text-danger"></span>
+                <label asp-for="educationalCycleEditViewModel.CycleName" class="control-label"></label>
+                <input asp-for="educationalCycleEditViewModel.CycleName" class="form-control" />
+                <span asp-validation-for="educationalCycleEditViewModel.CycleName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EducationalCycle.Discipline" class="control-label"></label>
-                <input asp-for="EducationalCycle.Discipline.Name" class="form-control" />
-                <span asp-validation-for="EducationalCycle.Discipline.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EducationalCycle.Group" class="control-label"></label>
-                <input asp-for="EducationalCycle.Group.Name" class="form-control" />
-                <span asp-validation-for="EducationalCycle.Group.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EducationalCycle.TypeOfClasses" class="control-label"></label>
-                <input asp-for="EducationalCycle.TypeOfClasses" class="form-control" />
-                <span asp-validation-for="EducationalCycle.TypeOfClasses" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EducationalCycle.NumberOfHours" class="control-label"></label>
-                <input asp-for="EducationalCycle.NumberOfHours" class="form-control" />
-                <span asp-validation-for="EducationalCycle.NumberOfHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EducationalCycle.Semester" class="control-label"></label>
-                <input asp-for="EducationalCycle.Semester" class="form-control" />
-                <span asp-validation-for="EducationalCycle.Semester" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                @if (Model.educationalCycleEditViewModel.Faculties == null)
+                {
+                    Model.educationalCycleEditViewModel.Faculties = new List<SelectListItem>();
+                }
+                @Html.LabelFor(x => Model.educationalCycleEditViewModel.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => Model.educationalCycleEditViewModel.SelectedFaculty,
+                      new SelectList(Model.educationalCycleEditViewModel.Faculties, "Value", "Text"),
+                      htmlAttributes: new { @class = "form-control", id = "Faculty", @required = true })
+                    @Html.ValidationMessageFor(x => x.educationalCycleEditViewModel.SelectedFaculty, "", new { @class = "text-danger" })
+                </div>
+                </div>
+                <div class="form-group">
+                    @if (Model.educationalCycleEditViewModel.Departments == null)
+                    {
+                        Model.educationalCycleEditViewModel.Departments = new List<SelectListItem>();
+                    }
+                    @Html.LabelFor(x => Model.educationalCycleEditViewModel.SelectedDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownListFor(x => Model.educationalCycleEditViewModel.SelectedDepartment,
+                          new SelectList(Model.educationalCycleEditViewModel.Departments, "Value", "Text"),
+                          htmlAttributes: new { @class = "form-control", @id = "Department", @required = true })
+                        @Html.ValidationMessageFor(x => x.educationalCycleEditViewModel.SelectedDepartment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @if (Model.educationalCycleEditViewModel.Groups == null)
+                    {
+                        Model.educationalCycleEditViewModel.Groups = new List<SelectListItem>();
+                    }
+                    @Html.LabelFor(x => Model.educationalCycleEditViewModel.SelectedGroup, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownListFor(x => Model.educationalCycleEditViewModel.SelectedGroup,
+                          new SelectList(Model.educationalCycleEditViewModel.Groups, "Value", "Text"),
+                          htmlAttributes: new { @class = "form-control", @id = "Group", @required = true })
+                        @Html.ValidationMessageFor(x => x.educationalCycleEditViewModel.SelectedGroup, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @if (Model.educationalCycleEditViewModel.Disciplines == null)
+                    {
+                        Model.educationalCycleEditViewModel.Disciplines = new List<SelectListItem>();
+                    }
+                    @Html.LabelFor(x => Model.educationalCycleEditViewModel.SelectedDiscipline, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownListFor(x => Model.educationalCycleEditViewModel.SelectedDiscipline,
+                          new SelectList(Model.educationalCycleEditViewModel.Disciplines, "Value", "Text"),
+                          htmlAttributes: new { @class = "form-control", @id = "Group", @required = true })
+                        @Html.ValidationMessageFor(x => x.educationalCycleEditViewModel.SelectedDiscipline, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="educationalCycleEditViewModel.NumberOfHours" class="control-label"></label>
+                    <input asp-for="educationalCycleEditViewModel.NumberOfHours" class="form-control" />
+                    <span asp-validation-for="educationalCycleEditViewModel.NumberOfHours" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="educationalCycleEditViewModel.Semester" class="control-label"></label>
+                    <input asp-for="educationalCycleEditViewModel.Semester" class="form-control" />
+                    <span asp-validation-for="educationalCycleEditViewModel.Semester" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="educationalCycleEditViewModel.TypeOfClasses" class="control-label"></label>
+                    <input asp-for="educationalCycleEditViewModel.TypeOfClasses" class="form-control" />
+                    <span asp-validation-for="educationalCycleEditViewModel.TypeOfClasses" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+                
+</form>
     </div>
 </div>
 
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

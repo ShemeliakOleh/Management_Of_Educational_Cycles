@@ -17,25 +17,26 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
     public class CreateModel : BasePageModel
     {
         
-        public CreateModel(IRequestSender requestSender) : base(requestSender)
-        {
+        [BindProperty(SupportsGet = true)]
+        public EducationalCycleEditViewModel educationalCycleEditViewModel { get; set; }
 
+        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        {
+           
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            educationalCycleEditViewModel = await _dropDownService.CreateEducationalCycle();
             return Page();
         }
-
-        [BindProperty]
-        public EducationalCycle EducationalCycle { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/create", EducationalCycle);
+            await _dropDownService.SaveEducationalCycle(educationalCycleEditViewModel);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something
