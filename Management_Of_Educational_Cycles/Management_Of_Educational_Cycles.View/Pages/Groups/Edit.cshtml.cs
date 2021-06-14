@@ -17,14 +17,14 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
     public class EditModel : BasePageModel
     {
-        [BindProperty(SupportsGet = true)]
-        public GroupEditViewModel GroupEditViewModel { get; set; }
-        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+      
+        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender , dropDownService)
         {
-
+            
         }
 
-
+        [BindProperty]
+        public Group Group { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -32,13 +32,12 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             {
                 return NotFound();
             }
-            var group = await _requestSender.GetContetFromRequestAsyncAs<Group>(
+
+            Group = await _requestSender.GetContetFromRequestAsyncAs<Group>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Groups/one?id=" + id)
                 );
-            GroupEditViewModel = await _dropDownService.CreateGroupEditViewModel(group);
-            return Page();
 
-            if (GroupEditViewModel == null)
+            if (Group == null)
             {
                 return NotFound();
             }
@@ -53,7 +52,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return Page();
             }
 
-            await _dropDownService.UpdateGroup(GroupEditViewModel);
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/update", Group);
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something

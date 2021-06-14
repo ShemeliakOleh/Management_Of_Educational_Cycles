@@ -23,12 +23,10 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         public Task<EducationalCycleEditViewModel> CreateEducationalCycle();
         public  Task<List<TeacherDisplayViewModel>> GetTeachers();
         public Task<TeacherEditViewModel> CreateTeacher();
-        public Task<GroupEditViewModel> CreateGroupEditViewModel(Group group);
         public Task<bool> SaveEducationalCycle(EducationalCycleEditViewModel cycleToSave);
         public Task<DepartmentEditViewModel> CreateDepartmentEditViewModel(Department department);
         public Task<EducationalCycleEditViewModel> CreateEducationalCycle(EducationalCycle educationalCycle);
         public Task<GroupEditViewModel> CreateGroup();
-        public Task<bool> UpdateGroup(GroupEditViewModel groupToUpdate);
         public Task<TeacherEditViewModel> CreateTeacher(Teacher teacher);
         public Task<DepartmentEditViewModel> CreateDepartmentEditViewModel();
         public Task<bool> UpdateDepartment(DepartmentEditViewModel departmentToUpdate);

@@ -441,42 +441,5 @@ namespace Management_Of_Educational_Cycles.Logic.Services
 
             return false;
         }
-
-        public async Task<GroupEditViewModel> CreateGroupEditViewModel(Group group)
-        {
-            var groupEditViewModel = new GroupEditViewModel()
-            {
-                GroupName = group.Name,
-                GroupId = group.Id.ToString(),
-                Faculties = await GetFaculties(),
-                SelectedFaculty = group.FacultyId.ToString(),
-                SelectedDepartment = group.DepartmentId.ToString()
-            };
-            if(group.FacultyId != null)
-            {
-
-                groupEditViewModel.Departments = await GetDepartments(group.FacultyId);
-            }
-            return groupEditViewModel;
-        }
-
-        public async Task<bool> UpdateGroup(GroupEditViewModel groupToUpdate)
-        {
-            if (groupToUpdate != null)
-            {
-
-                var group = new Group()
-                {
-                    Id = Guid.Parse(groupToUpdate.GroupId),
-                    Name = groupToUpdate.GroupName,
-                    FacultyId = Guid.Parse(groupToUpdate.SelectedFaculty),
-                    DepartmentId = Guid.Parse(groupToUpdate.SelectedDepartment)
-                };
-                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/update", group);
-                return true;
-            }
-
-            return false;
-        }
     }
 }

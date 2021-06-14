@@ -11,7 +11,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
    public class GroupEditViewModel
     {
         [Display(Name = "Name")]
-        public string GroupId { get; set; }
+        public Guid GroupId { get; set; }
 
         [Display(Name = "Name")]
         public string GroupName { get; set; }
