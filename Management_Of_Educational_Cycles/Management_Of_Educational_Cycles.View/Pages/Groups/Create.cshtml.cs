@@ -17,14 +17,12 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
     public class CreateModel : BasePageModel
     {
-
-        private IDropDownService _dropDownService;
         [BindProperty(SupportsGet = true)]
         public GroupEditViewModel GroupEditViewModel { get; set; }
 
-        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender)
+        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
-            _dropDownService = dropDownService;
+            
         }
 
         public async Task<IActionResult> OnGet()
@@ -53,22 +51,6 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             }
             return RedirectToPage("./Index");
         }
-        public async Task<IActionResult> OnPostDepartmentsAsync()
-        {
-
-            MemoryStream stream = new MemoryStream();
-            await Request.Body.CopyToAsync(stream);
-            stream.Position = 0;
-            using StreamReader reader = new StreamReader(stream);
-            var requestBody = reader.ReadToEnd();
-
-            if (requestBody.Length > 0)
-            {
-                var facultyId = Guid.Parse(requestBody);
-                IEnumerable<SelectListItem> departmentsAsSelectList = await _dropDownService.GetDepartments(facultyId);
-                return new JsonResult(departmentsAsSelectList);
-            }
-            return null;
-        }
+       
     }
 }
