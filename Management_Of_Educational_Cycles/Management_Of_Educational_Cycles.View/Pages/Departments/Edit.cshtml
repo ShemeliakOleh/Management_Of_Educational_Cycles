@@ -13,11 +13,24 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Department.Id" />
+            <input type="hidden" asp-for="DepartmentEditViewModel.DepartmentId" />
             <div class="form-group">
-                <label asp-for="Department.Name" class="control-label"></label>
-                <input asp-for="Department.Name" class="form-control" />
-                <span asp-validation-for="Department.Name" class="text-danger"></span>
+                <label asp-for="DepartmentEditViewModel.DepartmentName" class="control-label"></label>
+                <input asp-for="DepartmentEditViewModel.DepartmentName" class="form-control" />
+                <span asp-validation-for="DepartmentEditViewModel.DepartmentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if (Model.DepartmentEditViewModel.Faculties == null)
+                {
+                    Model.DepartmentEditViewModel.Faculties = new List<SelectListItem>();
+                }
+                @Html.LabelFor(x => Model.DepartmentEditViewModel.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => Model.DepartmentEditViewModel.SelectedFaculty,
+                      new SelectList(Model.DepartmentEditViewModel.Faculties, "Value", "Text"),
+                      htmlAttributes: new { @class = "form-control", id = "Faculty", @required = true })
+                    @Html.ValidationMessageFor(x => x.DepartmentEditViewModel.SelectedFaculty, "", new { @class = "text-danger" })
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

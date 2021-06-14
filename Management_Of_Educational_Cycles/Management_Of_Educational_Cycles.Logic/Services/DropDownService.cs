@@ -158,7 +158,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             return null;
         }
 
-        public async Task<DepartmentEditViewModel> CreateDepartment()
+        public async Task<DepartmentEditViewModel> CreateDepartmentEditViewModel()
         {
             var department = new DepartmentEditViewModel()
             {
@@ -409,6 +409,36 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             }
 
             // Return false if customeredit == null or CustomerID is not a guid
+            return false;
+        }
+
+        public async Task<DepartmentEditViewModel> CreateDepartmentEditViewModel(Department department)
+        {
+            var departmentEditViewModel = new DepartmentEditViewModel()
+            {
+                DepartmentId = department.Id.ToString(),
+                Faculties = await GetFaculties(),
+                DepartmentName = department.Name,
+                SelectedFaculty = department.FacultyId.ToString()
+            };
+            return departmentEditViewModel;
+        }
+
+        public async Task<bool> UpdateDepartment(DepartmentEditViewModel departmentToUpdate)
+        {
+            if (departmentToUpdate != null)
+            {
+
+                var department = new Department()
+                {
+                    Id = Guid.Parse(departmentToUpdate.DepartmentId),
+                    Name = departmentToUpdate.DepartmentName,
+                    FacultyId = Guid.Parse(departmentToUpdate.SelectedFaculty)
+                };
+                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/update", department);
+                return true;
+            }
+
             return false;
         }
     }

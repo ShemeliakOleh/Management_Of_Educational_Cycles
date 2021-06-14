@@ -16,17 +16,16 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
 {
     public class CreateModel : BasePageModel
     {
-        private IDropDownService _dropDownService;
         [BindProperty(SupportsGet = true)]
         public DepartmentEditViewModel DepartmentEditViewModel{ get; set; }
-        public CreateModel(IRequestSender requestSender, IDropDownService _dropDownService) : base(requestSender)
+        public CreateModel(IRequestSender requestSender, IDropDownService _dropDownService) : base(requestSender,_dropDownService)
         {
-            this._dropDownService = _dropDownService;
+          
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            DepartmentEditViewModel =await _dropDownService.CreateDepartment();
+            DepartmentEditViewModel =await _dropDownService.CreateDepartmentEditViewModel();
             return Page();
         }
 

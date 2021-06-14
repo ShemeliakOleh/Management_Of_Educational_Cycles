@@ -51,5 +51,29 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
 
         }
+        [HttpPost("update")]
+        public async Task<IActionResult> Update(Department department)
+        {
+
+            if (department != null)
+            {
+
+                if (!(await _dataManager._departmentRepository.Update(department)))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok();
+                }
+
+            }
+            else
+            {
+                return Problem("object is null");
+            }
+
+
+        }
     }
 }

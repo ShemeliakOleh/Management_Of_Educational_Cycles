@@ -17,13 +17,13 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
 {
     public class EditModel : BasePageModel
     {
-    
-        public EditModel(IRequestSender requestSender) : base(requestSender)
+
+        [BindProperty(SupportsGet = true)]
+        public DepartmentEditViewModel DepartmentEditViewModel { get; set; }
+        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
 
         }
-        [BindProperty]
-        public Department Department { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -31,13 +31,13 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
             {
                 return NotFound();
             }
-
-            
-            Department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
+            var department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + id)
                 );
+            DepartmentEditViewModel = await _dropDownService.CreateDepartmentEditViewModel(department);
+            return Page();
 
-            if (Department == null)
+            if (DepartmentEditViewModel == null)
             {
                 return NotFound();
             }
@@ -51,8 +51,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return Page();
             }
 
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/update", Department);
-            
+            await _dropDownService.UpdateDepartment(DepartmentEditViewModel);
+
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something
