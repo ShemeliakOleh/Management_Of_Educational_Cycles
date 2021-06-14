@@ -18,13 +18,13 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
     public class EditModel : BasePageModel
     {
-        private IDropDownService _dropDownService;
+       
         [BindProperty(SupportsGet = true)]
         public TeacherEditViewModel TeacherEditViewModel { get; set; }
 
-        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender)
+        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
-            _dropDownService = dropDownService;
+         
         }
 
 
@@ -69,22 +69,6 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 
             return RedirectToPage("./Index");
         }
-        public async Task<IActionResult> OnPostDepartmentsAsync()
-        {
-
-            MemoryStream stream = new MemoryStream();
-            await Request.Body.CopyToAsync(stream);
-            stream.Position = 0;
-            using StreamReader reader = new StreamReader(stream);
-            var requestBody = reader.ReadToEnd();
-
-            if (requestBody.Length > 0)
-            {
-                var facultyId = Guid.Parse(requestBody);
-                IEnumerable<SelectListItem> departmentsAsSelectList = await _dropDownService.GetDepartments(facultyId);
-                return new JsonResult(departmentsAsSelectList);
-            }
-            return null;
-        }
+       
     }
 }

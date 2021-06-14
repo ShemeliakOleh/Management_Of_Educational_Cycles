@@ -10,7 +10,6 @@ namespace Management_Of_Educational_Cycles.Domain.Models
     {
         public string Name { get; set; }
         public List<Department> Departments { get; set; } = new List<Department>();
-        public List<Discipline> Disciplines { get; set; } = new List<Discipline>();
 
     }
 }

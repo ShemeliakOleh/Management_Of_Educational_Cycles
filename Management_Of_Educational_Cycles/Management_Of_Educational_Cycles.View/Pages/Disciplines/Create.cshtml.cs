@@ -17,7 +17,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
     public class CreateModel : BasePageModel
     {
      
-        public CreateModel(IRequestSender requestSender) : base(requestSender)
+        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
 
         }
