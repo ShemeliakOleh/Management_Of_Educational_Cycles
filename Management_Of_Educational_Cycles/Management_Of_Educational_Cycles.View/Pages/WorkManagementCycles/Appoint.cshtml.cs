@@ -49,27 +49,27 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         }
 
 
-        public async Task<IActionResult> OnPostAsync(Guid? id, Guid? teacherId)
+        public async Task<IActionResult> OnPostAsync(Guid? workManagementCycleId, Guid? teacherId)
         {
-            if (id != null)
+            if (workManagementCycleId != null)
             {
                 WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + workManagementCycleId));
                 if ((Action == "Add" || Action == "Delete") && teacherId != null)
                 {
                     if (Action == "Add")
                     {
-                        var teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + teacherId));
-                        WorkManagementCycle.Teachers.Add(teacher);
+                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint?workManagementCycleId="+workManagementCycleId+"&teacherId="+teacherId);
+                        
                     }
                     else
                     {
-                        WorkManagementCycle.Teachers.RemoveAll(x => x.Id == teacherId);
+                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/throwOff?workManagementCycleId=" + workManagementCycleId + "&teacherId=" + teacherId);
+
                     }
-                    var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint", WorkManagementCycle);
                     WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + workManagementCycleId));
+
                     return Page();
                 }
                 if (Action == "Find")

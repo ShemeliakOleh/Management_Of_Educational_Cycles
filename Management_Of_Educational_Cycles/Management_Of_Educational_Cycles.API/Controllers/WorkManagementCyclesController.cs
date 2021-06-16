@@ -44,14 +44,14 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 
 
         }
-        [HttpPost("appoint")]
-        public async Task<IActionResult> Appoint([FromBody] WorkManagementCycle workManagementCycle)
+        [HttpGet("appoint")]
+        public async Task<IActionResult> Appoint(Guid? teacherId, Guid? workManagementCycleId)
         {
 
-            if (workManagementCycle != null)
+            if (teacherId != null && workManagementCycleId != null)
             {
 
-                if (!(await _dataManager._workManagementCyclesRepository.Appoint(workManagementCycle)))
+                if (!(await _dataManager._workManagementCyclesRepository.Appoint(teacherId, workManagementCycleId)))
                 {
                     return NotFound();
                 }
@@ -69,7 +69,33 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 
 
         }
-        [HttpGet("list")]
+        [HttpGet("throwOff")]
+        public async Task<IActionResult> ThrowOff(Guid? teacherId, Guid? workManagementCycleId)
+        {
+
+            if (teacherId != null && workManagementCycleId != null)
+            {
+
+                if (!(await _dataManager._workManagementCyclesRepository.ThrowOff(teacherId, workManagementCycleId)))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok();
+                }
+
+            }
+            else
+            {
+                return Problem("object is null");
+            }
+
+
+
+        }
+        
+       [HttpGet("list")]
         public async Task<IActionResult> GetList()
         {
             var workManagementRepository = await _dataManager._workManagementCyclesRepository.GetAll();
