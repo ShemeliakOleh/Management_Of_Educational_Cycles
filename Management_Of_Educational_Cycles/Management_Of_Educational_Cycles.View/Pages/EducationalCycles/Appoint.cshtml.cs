@@ -38,27 +38,27 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostAsync(Guid? id, Guid? teacherId)
+        public async Task<IActionResult> OnPostAsync(Guid? educationalCycleId, Guid? teacherId)
         {
-            if (id != null)
+            if (educationalCycleId != null)
             {
                 EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id));
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + educationalCycleId));
                 if ((Action == "Add" || Action == "Delete") && teacherId != null)
                 {
                     if (Action == "Add")
                     {
-                        var teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + teacherId));
-                        EducationalCycle.Teacher = teacher;
+                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/appoint?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
+
                     }
                     else
                     {
-                        EducationalCycle.Teacher = new Teacher();
+                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/throwOff?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
+
                     }
-                    var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/appoint", EducationalCycle);
                     EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id));
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + educationalCycleId));
+
                     return Page();
                 }
                 if (Action == "Find")

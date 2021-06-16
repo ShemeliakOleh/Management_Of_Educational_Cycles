@@ -85,12 +85,27 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
             return true;
         }
-        public async Task<bool> Appoint(EducationalCycle educationalCycle)
+      
+        public async Task<bool> Appoint(Guid? teacherId, Guid? educationalCycleId)
         {
+            var cycle = await _context.EducationalCycles.FirstOrDefaultAsync(x => x.Id == educationalCycleId);
+            var teacher = await _context.Teachers.Include(x=>x.EducationalCycles).FirstOrDefaultAsync(x => x.Id == teacherId);
+            teacher.EducationalCycles.Add(cycle);
+            _context.SaveChanges();
 
-            var cycleFromDb = _context.EducationalCycles.FirstOrDefault(x => x.Id == educationalCycle.Id);
-            cycleFromDb.Teacher = educationalCycle.Teacher;
-            await _context.SaveChangesAsync();
+
+
+            return true;
+        }
+
+        public async Task<bool> ThrowOff(Guid? teacherId, Guid? educationalCycleId)
+        {
+            var teacher = await _context.Teachers.Include(x=>x.EducationalCycles).FirstOrDefaultAsync(x => x.Id == teacherId);
+            teacher.EducationalCycles.RemoveAll(x => x.Id == educationalCycleId);
+            _context.SaveChanges();
+          
+
+
             return true;
         }
     }
