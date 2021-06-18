@@ -90,7 +90,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                         }
                         if(Filter.Faculty != null)
                         {
-                            filteredTeachers = filteredTeachers.Where(x => x.Faculty.Name.ToLower().Contains(Filter.Faculty.ToLower())).ToList();
+                            filteredTeachers = filteredTeachers.Where(x => x.Department.Faculty.Name.ToLower().Contains(Filter.Faculty.ToLower())).ToList();
                         }
                         if(Filter.Department != null)
                         {

@@ -51,5 +51,18 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             }
 
         }
+        [HttpGet("remove")]
+        public async Task<IActionResult> RemoveById(Guid? id)
+        {
+            if (await _dataManager._facultiesRepository.Remove(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return Problem("object with id = " + id + " not found");
+            }
+
+        }
     }
 }

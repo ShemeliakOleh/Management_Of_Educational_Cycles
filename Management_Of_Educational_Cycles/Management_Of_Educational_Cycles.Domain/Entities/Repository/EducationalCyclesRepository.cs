@@ -44,7 +44,8 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<EducationalCycle> GetById(Guid? id)
         {
-            var educationalCycles = await _context.EducationalCycles.Include(x => x.Discipline).Include(x => x.Teacher).Include(x => x.Group).FirstOrDefaultAsync(m => m.Id == id);
+            var educationalCycles = await _context.EducationalCycles.Include(x => x.Discipline)
+                .Include(x => x.Teacher).Include(x => x.Group).ThenInclude(x=>x.Department).ThenInclude(x=>x.Faculty).FirstOrDefaultAsync(m => m.Id == id);
             return educationalCycles;
         }
 
@@ -85,11 +86,11 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
             return true;
         }
-      
+
         public async Task<bool> Appoint(Guid? teacherId, Guid? educationalCycleId)
         {
             var cycle = await _context.EducationalCycles.FirstOrDefaultAsync(x => x.Id == educationalCycleId);
-            var teacher = await _context.Teachers.Include(x=>x.EducationalCycles).FirstOrDefaultAsync(x => x.Id == teacherId);
+            var teacher = await _context.Teachers.Include(x => x.EducationalCycles).FirstOrDefaultAsync(x => x.Id == teacherId);
             teacher.EducationalCycles.Add(cycle);
             _context.SaveChanges();
 
@@ -100,10 +101,10 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<bool> ThrowOff(Guid? teacherId, Guid? educationalCycleId)
         {
-            var teacher = await _context.Teachers.Include(x=>x.EducationalCycles).FirstOrDefaultAsync(x => x.Id == teacherId);
+            var teacher = await _context.Teachers.Include(x => x.EducationalCycles).FirstOrDefaultAsync(x => x.Id == teacherId);
             teacher.EducationalCycles.RemoveAll(x => x.Id == educationalCycleId);
             _context.SaveChanges();
-          
+
 
 
             return true;

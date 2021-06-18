@@ -47,7 +47,8 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<WorkManagementCycle> GetById(Guid? id)
         {
-            var WorkManagementCycle = await _context.WorkManagementCycles.Include(x => x.Teachers).Include(x => x.Group).FirstOrDefaultAsync(m => m.Id == id);
+            var WorkManagementCycle = await _context.WorkManagementCycles.Include(x => x.Teachers).Include(x => x.Group)
+                .ThenInclude(x=>x.Department).ThenInclude(x=>x.Faculty).FirstOrDefaultAsync(m => m.Id == id);
             return WorkManagementCycle;
         }
 

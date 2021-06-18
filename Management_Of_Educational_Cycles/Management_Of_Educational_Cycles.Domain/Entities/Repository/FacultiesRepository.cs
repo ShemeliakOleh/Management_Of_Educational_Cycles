@@ -73,7 +73,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<bool> Remove(Guid? id)
         {
-            var faculty = await _context.Faculties.FindAsync(id);
+            var faculty =await _context.Faculties.Include(x=>x.Departments).SingleOrDefaultAsync(x => x.Id == id);
 
             if (faculty != null)
             {

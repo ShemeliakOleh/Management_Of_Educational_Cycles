@@ -17,12 +17,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         }
         public async Task<bool> Add(Group group)
         {
-            var groupToDb = new Group() { Name = group.Name};
-            var faculty = _context.Faculties.FirstOrDefault(x => x.Id == group.FacultyId);
-            var department = _context.Departments.FirstOrDefault(x => x.Id == group.DepartmentId);
-            _context.Groups.Add(groupToDb);
-            groupToDb.Faculty = faculty;
-            groupToDb.Department = department;
+            _context.Groups.Add(group);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -34,7 +29,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<List<Group>> GetAll()
         {
-            var groups = await _context.Groups.Include(u => u.Department).Include(u => u.Faculty).ToListAsync();
+            var groups = await _context.Groups.Include(u => u.Department).ToListAsync();
 
             if (groups != null)
             {
@@ -48,7 +43,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<Group> GetById(Guid? id)
         {
-            var group = await _context.Groups.Include(u => u.Department).Include(u => u.Faculty).FirstOrDefaultAsync(u => u.Id == id);
+            var group = await _context.Groups.Include(u => u.Department).FirstOrDefaultAsync(u => u.Id == id);
             return group;
         }
 
@@ -73,7 +68,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             var groupFromDb = _context.Groups.FirstOrDefault(x => x.Id == group.Id);
             groupFromDb.Name = group.Name;
             groupFromDb.DepartmentId = group.DepartmentId;
-            groupFromDb.FacultyId = group.FacultyId;
+            
 
             try
             {

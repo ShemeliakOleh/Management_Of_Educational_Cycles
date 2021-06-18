@@ -42,17 +42,17 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<Discipline> GetById(Guid? id)
         {
-            var discipline = await _context.Disciplines.FirstOrDefaultAsync(u => u.Id == id);
+            var discipline = await _context.Disciplines.Include(x=>x.EducationalCycles).SingleOrDefaultAsync(u => u.Id == id);
             return discipline;
         }
 
         public async Task<bool> Remove(Guid? id)
         {
-            var discpline = await _context.Disciplines.FindAsync(id);
+            var discipline = await _context.Disciplines.Include(x => x.EducationalCycles).SingleOrDefaultAsync(u => u.Id == id);
 
-            if (discpline != null)
+            if (discipline != null)
             {
-                _context.Disciplines.Remove(discpline);
+                _context.Disciplines.Remove(discipline);
                 await _context.SaveChangesAsync();
                 return true;
             }

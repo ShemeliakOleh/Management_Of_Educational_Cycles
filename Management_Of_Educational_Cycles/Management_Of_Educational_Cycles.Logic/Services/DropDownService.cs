@@ -43,7 +43,6 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 {
                     Name = teacherToSave.TeacherName,
                     Surname = teacherToSave.TeacherSurname,
-                    FacultyId = Guid.Parse(teacherToSave.SelectedFaculty),
                     DepartmentId = Guid.Parse(teacherToSave.SelectedDepartment)
 
                 };
@@ -148,7 +147,6 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                         TeacherId = x.Id,
                         TeacherName = x.Name,
                         TeacherSurname = x.Surname,
-                        FacultyName = x.Faculty.Name,
                         DepartmentName = x.Department.Name
                     };
                     teachersDisplay.Add(teacherDisplay);
@@ -192,12 +190,19 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         public async Task<TeacherEditViewModel> CreateTeacher(Teacher teacher)
         {
             var teacherViewModel =await CreateTeacher();
-            teacherViewModel.Departments =await GetDepartments(teacher.FacultyId);
             teacherViewModel.TeacherId = teacher.Id;
             teacherViewModel.TeacherName = teacher.Name;
             teacherViewModel.TeacherSurname = teacher.Surname;
-            teacherViewModel.SelectedFaculty = teacher.Faculty.Id.ToString();
-            teacherViewModel.SelectedDepartment = teacher.Department.Id.ToString();
+            if(teacher.Department != null)
+            {
+                teacherViewModel.SelectedDepartment = teacher.DepartmentId.ToString();
+                if(teacher.Department.Faculty != null)
+                {
+                    teacherViewModel.SelectedFaculty = teacher.Department.FacultyId.ToString();
+                    teacherViewModel.Departments = await GetDepartments(teacher.Department.FacultyId);
+                }
+            }
+            
             return teacherViewModel;
         }
 
@@ -208,7 +213,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         );
             var department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
     await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + Guid.Parse(teacherEditViewModel.SelectedDepartment)));
-            return new Teacher() { Name = teacherEditViewModel.TeacherName, Surname = teacherEditViewModel.TeacherSurname, Faculty = faculty, Department = department };
+            return new Teacher() { Name = teacherEditViewModel.TeacherName, Surname = teacherEditViewModel.TeacherSurname, Department = department };
         }
 
         public async Task<WorkManagementCycleEditViewModel> CreateWorkMangementCycle()
@@ -259,7 +264,6 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 var group = new Group()
                 {
                     Name = groupToSave.GroupName,
-                    FacultyId = Guid.Parse(groupToSave.SelectedFaculty),
                     DepartmentId = Guid.Parse(groupToSave.SelectedDepartment)
 
                 };
@@ -283,13 +287,22 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 NumberOfHours = workManagementCycle.NumberOfHours,
                 Semester = workManagementCycle.Semester,
                 CycleId = workManagementCycle.Id,
-                Faculties = await GetFaculties(),
-                Departments =await GetDepartments(workManagementCycle.Group.FacultyId),
-                Groups =await GetGroups(workManagementCycle.Group.DepartmentId),
-                SelectedFaculty = workManagementCycle.Group.FacultyId.ToString(),
-                SelectedDepartment = workManagementCycle.Group.DepartmentId.ToString(),
-                SelectedGroup = workManagementCycle.GroupId.ToString()
+                Faculties = await GetFaculties()
             };
+            if (workManagementCycle.Group != null)
+            {
+                cycle.SelectedGroup = workManagementCycle.GroupId.ToString();
+                if (workManagementCycle.Group.Department != null)
+                {
+                    cycle.Groups = await GetGroups(workManagementCycle.Group.DepartmentId);
+                    cycle.SelectedDepartment = workManagementCycle.Group.DepartmentId.ToString();
+                    if (workManagementCycle.Group.Department.FacultyId != null)
+                    {
+                        cycle.SelectedFaculty = workManagementCycle.Group.Department.FacultyId.ToString();
+                        cycle.Departments = await GetDepartments(workManagementCycle.Group.Department.FacultyId);
+                    }
+                }
+            }
             return cycle;
         }
 
@@ -378,14 +391,25 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 TypeOfClasses = educationalCycle.TypeOfClasses,
                 CycleId = educationalCycle.Id,
                 Faculties = await GetFaculties(),
-                Departments = await GetDepartments(educationalCycle.Group.FacultyId),
-                Groups = await GetGroups(educationalCycle.Group.DepartmentId),
                 Disciplines = await GetDisciplines(),
-                SelectedFaculty = educationalCycle.Group.FacultyId.ToString(),
-                SelectedDepartment = educationalCycle.Group.DepartmentId.ToString(),
-                SelectedGroup = educationalCycle.GroupId.ToString(),
-                SelectedDiscipline = educationalCycle.DisciplineId.ToString()
+                
             };
+            if (educationalCycle.Group != null){
+                cycle.SelectedGroup = educationalCycle.GroupId.ToString();
+                if (educationalCycle.Group.Department!= null)
+                {
+                    cycle.Groups = await GetGroups(educationalCycle.Group.DepartmentId);
+                    cycle.SelectedDepartment = educationalCycle.Group.DepartmentId.ToString();
+                    if (educationalCycle.Group.Department.FacultyId != null) {
+                        cycle.SelectedFaculty = educationalCycle.Group.Department.FacultyId.ToString();
+                        cycle.Departments = await GetDepartments(educationalCycle.Group.Department.FacultyId);
+                    }
+                }
+            }
+            if (educationalCycle.DisciplineId != null)
+            {
+                cycle.SelectedDiscipline = educationalCycle.DisciplineId.ToString();
+            }
             return cycle;
         }
 
@@ -449,12 +473,13 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 GroupName = group.Name,
                 GroupId = group.Id.ToString(),
                 Faculties = await GetFaculties(),
-                SelectedDepartment = group.DepartmentId.ToString(),
-                SelectedFaculty = group.FacultyId.ToString()
+                SelectedDepartment = group.DepartmentId.ToString()
+ 
             };
-            if(group.FacultyId != null)
+            if(group.Department != null && group.Department.FacultyId != null)
             {
-                groupEditViewModel.Departments = await GetDepartments(group.FacultyId);
+                groupEditViewModel.Departments = await GetDepartments(group.Department.FacultyId);
+                groupEditViewModel.SelectedFaculty = group.Department.FacultyId.ToString();
             }
 
             return groupEditViewModel;
@@ -469,7 +494,6 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 {
                     Id = Guid.Parse(groupToUpdate.GroupId),
                     Name = groupToUpdate.GroupName,
-                    FacultyId = Guid.Parse(groupToUpdate.SelectedFaculty),
                     DepartmentId = Guid.Parse(groupToUpdate.SelectedDepartment)
                 };
                 var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/update", group);

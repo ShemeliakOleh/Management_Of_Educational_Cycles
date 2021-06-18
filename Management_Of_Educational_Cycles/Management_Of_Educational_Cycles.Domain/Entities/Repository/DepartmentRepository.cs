@@ -18,9 +18,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         }
         public async Task<bool> Add(Department department)
         {
-            var departmentToDb = new Department() { Name = department.Name };
-            var faculty = _context.Faculties.Include(x => x.Departments).FirstOrDefault(x => x.Id == department.FacultyId);
-            faculty.Departments.Add(departmentToDb);
+            _context.Departments.Add(department);
             try
             {
                 await _context.SaveChangesAsync();
@@ -28,7 +26,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             catch (Exception)
             {
 
-                throw ;
+                throw;
             }
             
             return true;
@@ -85,7 +83,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<bool> Remove(Guid? id)
         {
-            var department = await _context.Departments.FindAsync(id);
+            var department =await _context.Departments.Include(x => x.Groups).Include(x=>x.Teachers).SingleOrDefaultAsync(x => x.Id == id);
 
             if (department != null)
             {

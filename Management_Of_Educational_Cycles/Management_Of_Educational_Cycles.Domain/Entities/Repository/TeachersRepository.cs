@@ -18,12 +18,8 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         }
         public async Task<bool> Add(Teacher teacher)
         {
-            var teacherToDb = new Teacher() { Name = teacher.Name, Surname = teacher.Surname };
-            var faculty = _context.Faculties.FirstOrDefault(x => x.Id == teacher.FacultyId);
-            var department = _context.Departments.FirstOrDefault(x => x.Id == teacher.DepartmentId);
-            _context.Teachers.Add(teacherToDb);
-            teacherToDb.Faculty = faculty;
-            teacherToDb.Department = department;
+           
+            _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -39,7 +35,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         public async Task<List<Teacher>> GetAll()
         {
             var teachers = await _context.Teachers.Include(u => u.WorkManagementCycles).Include(u => u.EducationalCycles)
-                .Include(u => u.Department).Include(u => u.Faculty).ToListAsync();
+                .Include(u => u.Department).ThenInclude(x=>x.Faculty).ToListAsync();
             if (teachers != null)
             {
                 return teachers;
@@ -54,14 +50,15 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         public async Task<Teacher> GetById(Guid? id)
         {
             var teacher = await _context.Teachers.Include(u => u.WorkManagementCycles).Include(u => u.EducationalCycles)
-                .Include(u => u.Department).Include(u => u.Faculty).FirstOrDefaultAsync(u => u.Id == id);
+                .Include(u => u.Department).FirstOrDefaultAsync(u => u.Id == id);
             return teacher;
         }
 
 
         public async Task<bool> Remove(Guid? id)
         {
-            var teacher = await _context.Teachers.FindAsync(id);
+            var teacher = await _context.Teachers.Include(u => u.WorkManagementCycles).Include(u => u.EducationalCycles)
+                .Include(u => u.Department).FirstOrDefaultAsync(u => u.Id == id);
 
             if (teacher != null)
             {
@@ -82,7 +79,6 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             teacherFromDb.Name = teacher.Name;
             teacherFromDb.Surname = teacher.Surname;
             teacherFromDb.DepartmentId = teacher.Department.Id;
-            teacherFromDb.FacultyId = teacher.Faculty.Id;
 
             try
             {
