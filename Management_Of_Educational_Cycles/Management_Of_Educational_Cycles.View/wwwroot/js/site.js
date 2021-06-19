@@ -33,7 +33,6 @@
     }
 });
 $('#Department').change(function () {
-    alert("group");
     var selectedDepartment = $("#Department").val();
     var groupsSelect = $('#Group');
     groupsSelect.empty();

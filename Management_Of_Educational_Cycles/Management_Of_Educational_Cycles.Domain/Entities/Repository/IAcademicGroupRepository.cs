@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 {
-   public interface IGroupRepository
+   public interface IAcademicGroupRepository
     {
-        public Task<bool> Add(Group group);
-        public Task<bool> Update(Group group);
+        public Task<bool> Add(AcademicGroup group);
+        public Task<bool> Update(AcademicGroup group);
         public Task<bool> Remove(Guid? id);
-        public Task<Group> GetById(Guid? id);
-        public Task<List<Group>> GetAll();
+        public Task<AcademicGroup> GetById(Guid? id);
+        public Task<List<AcademicGroup>> GetAll();
         public bool Exists(Guid? id);
     }
 }

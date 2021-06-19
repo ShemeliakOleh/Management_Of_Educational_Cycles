@@ -11,11 +11,11 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 {// write Crud logic for groups, try dont use clsses faculty and department for adding group and teacher!!
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupsController : ControllerBase
+    public class AcademicGroupsController : ControllerBase
     {
         private DataManager _dataManager;
 
-        public GroupsController(DataManager dataManager)
+        public AcademicGroupsController(DataManager dataManager)
         {
             _dataManager = dataManager;
         }
@@ -38,7 +38,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
             return Ok(await _dataManager._groupRepository.GetById(id));
         }
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] Group group)
+        public async Task<IActionResult> Create([FromBody] AcademicGroup group)
         {
             if (group != null)
             {
@@ -52,7 +52,7 @@ namespace Management_Of_Educational_Cycles.API.Controllers
 
         }
         [HttpPost("update")]
-        public async Task<IActionResult> Update(Group group)
+        public async Task<IActionResult> Update(AcademicGroup group)
         {
 
             if (group != null)

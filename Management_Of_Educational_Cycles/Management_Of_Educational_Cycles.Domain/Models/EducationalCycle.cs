@@ -10,7 +10,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
     {
         public string Name { get; set; }
         public Guid? GroupId { get; set; }
-        public Group Group { get; set; }
+        public AcademicGroup Group { get; set; }
         public Guid? DisciplineId { get; set; }
         public Discipline Discipline { get; set; }
         public Guid? TeacherId { get; set; }

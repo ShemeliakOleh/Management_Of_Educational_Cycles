@@ -18,17 +18,17 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
        
         public IndexModel(IRequestSender requestSender) : base(requestSender)
         {
-            Groups = new List<Group>();
+            Groups = new List<AcademicGroup>();
         }
 
-        public IList<Group> Groups { get;set; }
+        public IList<AcademicGroup> Groups { get;set; }
 
         public async Task OnGetAsync()
         {
-            Groups = await _requestSender.GetContetFromRequestAsyncAs<List<Group>>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Groups/list")
+            Groups = await _requestSender.GetContetFromRequestAsyncAs<List<AcademicGroup>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/list")
                 );
-            if (Groups == null) Groups = new List<Group>();
+            if (Groups == null) Groups = new List<AcademicGroup>();
         }
     }
 }

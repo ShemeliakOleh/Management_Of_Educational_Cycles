@@ -32,8 +32,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             {
                 return NotFound();
             }
-            var group = await _requestSender.GetContetFromRequestAsyncAs<Group>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Groups/one?id=" + id)
+            var group = await _requestSender.GetContetFromRequestAsyncAs<AcademicGroup>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/one?id=" + id)
                 );
             GroupEditViewModel = await _dropDownService.CreateGroupEditViewModel(group);
             return Page();

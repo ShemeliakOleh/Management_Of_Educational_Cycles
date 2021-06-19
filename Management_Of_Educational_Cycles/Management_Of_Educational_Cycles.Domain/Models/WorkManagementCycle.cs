@@ -10,7 +10,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
     public class WorkManagementCycle : BaseEntity
     {
         public string Name { get; set; }
-        public Group Group { get; set; }
+        public AcademicGroup Group { get; set; }
         public Guid? GroupId { get; set; }
         public List<Teacher> Teachers { get; set; }
         public int NumberOfHours { get; set; }

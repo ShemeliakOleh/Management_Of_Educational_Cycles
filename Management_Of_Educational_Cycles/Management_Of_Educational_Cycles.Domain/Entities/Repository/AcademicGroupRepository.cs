@@ -8,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 {
-    public class GroupRepository : IGroupRepository
+    public class AcademicGroupRepository : IAcademicGroupRepository
     {
         private readonly ApplicationContext _context;
-        public GroupRepository(ApplicationContext context)
+        public AcademicGroupRepository(ApplicationContext context)
         {
             _context = context;
         }
-        public async Task<bool> Add(Group group)
+        public async Task<bool> Add(AcademicGroup group)
         {
-            _context.Groups.Add(group);
+            _context.AcademicGroups.Add(group);
             await _context.SaveChangesAsync();
             return true;
         }
 
         public bool Exists(Guid? id)
         {
-            return _context.Groups.Any(e => e.Id == id);
+            return _context.AcademicGroups.Any(e => e.Id == id);
         }
 
-        public async Task<List<Group>> GetAll()
+        public async Task<List<AcademicGroup>> GetAll()
         {
-            var groups = await _context.Groups.Include(u => u.Department).ToListAsync();
+            var groups = await _context.AcademicGroups.Include(u => u.Department).ToListAsync();
 
             if (groups != null)
             {
@@ -37,23 +37,23 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
             else
             {
-                return new List<Group>();
+                return new List<AcademicGroup>();
             }
         }
 
-        public async Task<Group> GetById(Guid? id)
+        public async Task<AcademicGroup> GetById(Guid? id)
         {
-            var group = await _context.Groups.Include(u => u.Department).FirstOrDefaultAsync(u => u.Id == id);
+            var group = await _context.AcademicGroups.Include(u => u.Department).FirstOrDefaultAsync(u => u.Id == id);
             return group;
         }
 
         public async Task<bool> Remove(Guid? id)
         {
-            var teacher = await _context.Groups.FindAsync(id);
+            var teacher = await _context.AcademicGroups.FindAsync(id);
 
             if (teacher != null)
             {
-                _context.Groups.Remove(teacher);
+                _context.AcademicGroups.Remove(teacher);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -63,9 +63,9 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             }
         }
 
-        public async Task<bool> Update(Group group)
+        public async Task<bool> Update(AcademicGroup group)
         {
-            var groupFromDb = _context.Groups.FirstOrDefault(x => x.Id == group.Id);
+            var groupFromDb = _context.AcademicGroups.FirstOrDefault(x => x.Id == group.Id);
             groupFromDb.Name = group.Name;
             groupFromDb.DepartmentId = group.DepartmentId;
             

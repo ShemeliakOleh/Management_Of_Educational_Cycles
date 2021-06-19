@@ -176,7 +176,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                     {
                         Id = newGuid,
                         Name = departmentToSave.DepartmentName,
-                        Groups = new List<Group>()
+                        Groups = new List<AcademicGroup>()
                     };
                     department.FacultyId = Guid.Parse(departmentToSave.SelectedFaculty);
                     var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/create", department);
@@ -261,7 +261,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             if (groupToSave != null)
             {
 
-                var group = new Group()
+                var group = new AcademicGroup()
                 {
                     Name = groupToSave.GroupName,
                     DepartmentId = Guid.Parse(groupToSave.SelectedDepartment)
@@ -273,7 +273,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         //        group.Department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
         //await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + Guid.Parse(groupToSave.SelectedDepartment))
         //);
-                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/create", group);
+                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/AcademicGroups/create", group);
                 return true;
             }
             return false;
@@ -466,7 +466,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             return false;
         }
 
-        public async Task<GroupEditViewModel> CreateGroupEditViewModel(Group group)
+        public async Task<GroupEditViewModel> CreateGroupEditViewModel(AcademicGroup group)
         {
             var groupEditViewModel = new GroupEditViewModel()
             {
@@ -490,13 +490,13 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             if (groupToUpdate != null)
             {
 
-                var group = new Group()
+                var group = new AcademicGroup()
                 {
                     Id = Guid.Parse(groupToUpdate.GroupId),
                     Name = groupToUpdate.GroupName,
                     DepartmentId = Guid.Parse(groupToUpdate.SelectedDepartment)
                 };
-                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Groups/update", group);
+                var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/AcademicGroups/update", group);
                 return true;
             }
 

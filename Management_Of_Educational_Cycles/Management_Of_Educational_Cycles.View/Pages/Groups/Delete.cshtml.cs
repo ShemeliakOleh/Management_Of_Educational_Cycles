@@ -22,7 +22,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
         }
 
         [BindProperty]
-        public Group Group { get; set; }
+        public AcademicGroup Group { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -31,8 +31,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return NotFound();
             }
 
-            Group = await _requestSender.GetContetFromRequestAsyncAs<Group>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Groups/one?id=" + id)
+            Group = await _requestSender.GetContetFromRequestAsyncAs<AcademicGroup>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/one?id=" + id)
                 );
 
             if (Group == null)
@@ -49,7 +49,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return NotFound();
             }
 
-            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Groups/remove?id=" + id);
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/remove?id=" + id);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something
