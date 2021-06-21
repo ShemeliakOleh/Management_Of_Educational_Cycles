@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-    public class AcademicGroup : BaseEntity
+    public class AcademicGroup : BaseEntity,IGroup
     {
         public string Name { get; set; }
+        public List<Group> MixedGroups { get; set; }
         public Department Department { get; set; }
         public Guid? DepartmentId { get; set; }
-        public List<Group> Groups { get; set; }
+        
     }
 }
 

@@ -12,6 +12,8 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         public Guid? GroupId { get; set; }
         public AcademicGroup Group { get; set; }
         public Guid? DisciplineId { get; set; }
+        public Department Department { get; set; }
+        public Guid? DepartmentId { get; set; }
         public Discipline Discipline { get; set; }
         public Guid? TeacherId { get; set; }
         public Teacher Teacher { get; set; }

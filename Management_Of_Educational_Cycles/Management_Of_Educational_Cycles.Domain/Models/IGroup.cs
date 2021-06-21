@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-    public class Group : BaseEntity, IGroup
+    public interface IGroup
     {
         public string Name { get; set; }
-        public List<AcademicGroup> AcademicGroups { get; set; }
-        
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.Domain.Models
 {
-   public class GroupEditViewModel
+   public class AcademicGroupEditViewModel
     {
         [Display(Name = "Name")]
         public string GroupId { get; set; }

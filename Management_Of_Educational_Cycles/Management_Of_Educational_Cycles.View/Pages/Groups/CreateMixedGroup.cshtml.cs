@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,19 +15,19 @@ using System.IO;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Groups
 {
-    public class CreateModel : BasePageModel
+    public class CreateMixedGroupModel : BasePageModel
     {
         [BindProperty(SupportsGet = true)]
-        public AcademicGroupEditViewModel GroupEditViewModel { get; set; }
+        public MixedGroupEditViewModel MixedGroupEditViewModel { get; set; }
 
-        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public CreateMixedGroupModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
-            
+
         }
 
         public async Task<IActionResult> OnGet()
         {
-            GroupEditViewModel =await _dropDownService.CreateAcademicGroup();
+            MixedGroupEditViewModel = await _dropDownService.CreateMixedGroup();
             return Page();
         }
 
@@ -35,12 +35,12 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid && GroupEditViewModel != null && GroupEditViewModel.SelectedDepartment != null)
+            if (!ModelState.IsValid && MixedGroupEditViewModel != null && MixedGroupEditViewModel.SelectedDepartment != null)
             {
                 return null;
             }
 
-            bool saved = await _dropDownService.SaveAcademicGroup(GroupEditViewModel);
+            bool saved = await _dropDownService.SaveMixedGroup(MixedGroupEditViewModel);
             if (saved)
             {
                 return RedirectToPage("./Index");
@@ -51,6 +51,6 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             }
             return RedirectToPage("./Index");
         }
-       
+
     }
 }

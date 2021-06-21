@@ -18,7 +18,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
     public class EditModel : BasePageModel
     {
         [BindProperty(SupportsGet = true)]
-        public GroupEditViewModel GroupEditViewModel { get; set; }
+        public AcademicGroupEditViewModel GroupEditViewModel { get; set; }
         public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender , dropDownService)
         {
             
@@ -32,11 +32,21 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             {
                 return NotFound();
             }
-            var group = await _requestSender.GetContetFromRequestAsyncAs<AcademicGroup>(
+            var group = await _requestSender.GetContetFromRequestAsyncAs<IGroup>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/one?id=" + id)
                 );
-            GroupEditViewModel = await _dropDownService.CreateGroupEditViewModel(group);
-            return Page();
+
+            if(group is AcademicGroup)
+            {
+                GroupEditViewModel = await _dropDownService.CreateAcademicGroupEditViewModel(group as AcademicGroup);
+                return Page();
+            }
+            if(group is Group)
+            {
+                string url = Url.Page("EditMixedGroup", id );
+                return Redirect(url);
+            }
+            
 
             if (GroupEditViewModel == null)
             {
@@ -53,7 +63,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return Page();
             }
 
-            await _dropDownService.UpdateGroup(GroupEditViewModel);
+            await _dropDownService.UpdateAcademicGroup(GroupEditViewModel);
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something

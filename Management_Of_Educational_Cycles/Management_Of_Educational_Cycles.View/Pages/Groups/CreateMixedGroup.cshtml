@@ -1,0 +1,73 @@
+﻿@page
+@model Management_Of_Educational_Cycles.View.Pages.Groups.CreateMixedGroupModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Group</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MixedGroupEditViewModel.GroupName" class="control-label"></label>
+                <input asp-for="MixedGroupEditViewModel.GroupName" class="form-control" />
+                <span asp-validation-for="MixedGroupEditViewModel.GroupName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if (Model.MixedGroupEditViewModel.Faculties == null)
+                {
+                    Model.MixedGroupEditViewModel.Faculties = new List<SelectListItem>();
+                }
+                @Html.LabelFor(x => Model.MixedGroupEditViewModel.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => Model.MixedGroupEditViewModel.SelectedFaculty,
+                      new SelectList(Model.MixedGroupEditViewModel.Faculties, "Value", "Text"),
+                      htmlAttributes: new { @class = "form-control", id = "Faculty", @required = true })
+                    @Html.ValidationMessageFor(x => x.MixedGroupEditViewModel.SelectedFaculty, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @if (Model.MixedGroupEditViewModel.Departments == null)
+                    {
+                        Model.MixedGroupEditViewModel.Departments = new List<SelectListItem>();
+                    }
+                    @Html.LabelFor(x => Model.MixedGroupEditViewModel.SelectedDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownListFor(x => Model.MixedGroupEditViewModel.SelectedDepartment,
+                          new SelectList(Model.MixedGroupEditViewModel.Departments, "Value", "Text"),
+                          htmlAttributes: new { @class = "form-control", @id = "Department", @required = true })
+                        @Html.ValidationMessageFor(x => x.MixedGroupEditViewModel.SelectedDepartment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @if (Model.MixedGroupEditViewModel.Groups == null)
+                    {
+                        Model.MixedGroupEditViewModel.Groups = new List<SelectListItem>();
+                    }
+                    @Html.LabelFor(x => Model.MixedGroupEditViewModel.SelectedGroup, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownListFor(x => Model.MixedGroupEditViewModel.SelectedGroup,
+                          new SelectList(Model.MixedGroupEditViewModel.Groups, "Value", "Text"),
+                          htmlAttributes: new { @class = "form-control", @id = "Group", @required = true })
+                        @Html.ValidationMessageFor(x => x.MixedGroupEditViewModel.SelectedGroup, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+

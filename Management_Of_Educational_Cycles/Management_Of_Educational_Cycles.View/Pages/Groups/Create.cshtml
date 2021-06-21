@@ -49,6 +49,7 @@
                     </div>
                 </div>
 </form>
+        <button asp-page="/EducationalCycles/CreateMixedGroup"> Create Mixed Group</button>
     </div>
 </div>
 
@@ -56,38 +57,4 @@
     <a asp-page="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    <script type="text/javascript">
-            $('#Faculty').change(function () {
-                var selectedFaculty = $("#Faculty").val();
-                var departmentsSelect = $('#Department');
-                departmentsSelect.empty();
-                if (selectedFaculty != null && selectedFaculty != '') {
-                    $.ajax({
-                        type: "POST",
-                        url: "/Groups/Create?handler=Departments",
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader("XSRF-TOKEN",
-                                $('input:hidden[name="__RequestVerificationToken"]').val());
-                        },
-                        data: selectedFaculty,
-                        contentType: "json; charset=utf-8",
-                        success: function (departments) {
-                            if (departments != null && !jQuery.isEmptyObject(departments)) {
-                                //departmentsSelect.append($('<option/>', {
-                                //    value: null,
-                                //    text: "Choose Department"
-                                //}));
-                                $.each(departments, function (index, department) {
-                                    departmentsSelect.append("<option value='" + department.value + "'>" + department.text + "</option>");
-                                });
-                            };
-                        },
-                        failure: function (response) {
-                            alert(response);
-                        }
-                    });
-                }
-            });
-    </script>
-}
+

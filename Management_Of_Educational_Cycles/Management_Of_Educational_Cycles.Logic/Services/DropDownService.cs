@@ -25,9 +25,9 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             };
             return teacher;
         }
-        public async Task<GroupEditViewModel> CreateGroup()
+        public async Task<AcademicGroupEditViewModel> CreateAcademicGroup()
         {
-            var group = new GroupEditViewModel()
+            var group = new AcademicGroupEditViewModel()
             {
                 Faculties = await GetFaculties(),
                 Departments = GetDepartments()
@@ -70,7 +70,8 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                     Name = cycleToSave.CycleName,
                     Semester = cycleToSave.Semester,
                     NumberOfHours = cycleToSave.NumberOfHours,
-                    GroupId = Guid.Parse(cycleToSave.SelectedGroup)
+                    GroupId = Guid.Parse(cycleToSave.SelectedGroup),
+                    DepartmentId = Guid.Parse(cycleToSave.SelectedDepartment)
                 };
                 var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/create", workManagementCycle);
                 return true;
@@ -222,11 +223,11 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             {
                 Faculties = await GetFaculties(),
                 Departments = GetDepartments(),
-                Groups = GetGroups()
+                Groups =await GetGroups()
         };
             return cycle;
         }
-        public async Task<IEnumerable<SelectListItem>> GetGroups(Guid? departmentId)
+        public async Task<IEnumerable<SelectListItem>> GetAcademicGroups(Guid? departmentId)
         {
             var department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
              await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + departmentId)
@@ -243,7 +244,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             return new SelectList(groupsSelectListItems, "Value", "Text");
         }
 
-        public IEnumerable<SelectListItem> GetGroups()
+        public IEnumerable<SelectListItem> GetAcademicGroups()
         {
             List<SelectListItem> groups = new List<SelectListItem>()
             {
@@ -256,7 +257,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             return groups;
         }
 
-        public async Task<bool> SaveGroup(GroupEditViewModel groupToSave)
+        public async Task<bool> SaveAcademicGroup(AcademicGroupEditViewModel groupToSave)
         {
             if (groupToSave != null)
             {
@@ -292,14 +293,14 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             if (workManagementCycle.Group != null)
             {
                 cycle.SelectedGroup = workManagementCycle.GroupId.ToString();
-                if (workManagementCycle.Group.Department != null)
+                if (workManagementCycle.Department != null)
                 {
-                    cycle.Groups = await GetGroups(workManagementCycle.Group.DepartmentId);
-                    cycle.SelectedDepartment = workManagementCycle.Group.DepartmentId.ToString();
-                    if (workManagementCycle.Group.Department.FacultyId != null)
+                    cycle.Groups = await GetAcademicGroups(workManagementCycle.DepartmentId);
+                    cycle.SelectedDepartment = workManagementCycle.DepartmentId.ToString();
+                    if (workManagementCycle.Department.FacultyId != null)
                     {
-                        cycle.SelectedFaculty = workManagementCycle.Group.Department.FacultyId.ToString();
-                        cycle.Departments = await GetDepartments(workManagementCycle.Group.Department.FacultyId);
+                        cycle.SelectedFaculty = workManagementCycle.Department.FacultyId.ToString();
+                        cycle.Departments = await GetDepartments(workManagementCycle.Department.FacultyId);
                     }
                 }
             }
@@ -333,7 +334,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             {
                 Faculties = await GetFaculties(),
                 Departments = GetDepartments(),
-                Groups = GetGroups(),
+                Groups = GetAcademicGroups(),
                 Disciplines = await GetDisciplines()
             };
             return cycle;
@@ -372,7 +373,8 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                     NumberOfHours = cycleToSave.NumberOfHours,
                     GroupId = Guid.Parse(cycleToSave.SelectedGroup),
                     DisciplineId = Guid.Parse(cycleToSave.SelectedDiscipline),
-                    TypeOfClasses = cycleToSave.TypeOfClasses
+                    TypeOfClasses = cycleToSave.TypeOfClasses,
+                    DepartmentId = Guid.Parse(cycleToSave.SelectedDepartment)
                 };
                 var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/create", educationalCycle);
                 return true;
@@ -396,13 +398,13 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             };
             if (educationalCycle.Group != null){
                 cycle.SelectedGroup = educationalCycle.GroupId.ToString();
-                if (educationalCycle.Group.Department!= null)
+                if (educationalCycle.Department!= null)
                 {
-                    cycle.Groups = await GetGroups(educationalCycle.Group.DepartmentId);
-                    cycle.SelectedDepartment = educationalCycle.Group.DepartmentId.ToString();
-                    if (educationalCycle.Group.Department.FacultyId != null) {
-                        cycle.SelectedFaculty = educationalCycle.Group.Department.FacultyId.ToString();
-                        cycle.Departments = await GetDepartments(educationalCycle.Group.Department.FacultyId);
+                    cycle.Groups = await GetGroups(educationalCycle.DepartmentId);
+                    cycle.SelectedDepartment = educationalCycle.DepartmentId.ToString();
+                    if (educationalCycle.Department.FacultyId != null) {
+                        cycle.SelectedFaculty = educationalCycle.Department.FacultyId.ToString();
+                        cycle.Departments = await GetDepartments(educationalCycle.Department.FacultyId);
                     }
                 }
             }
@@ -466,9 +468,9 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             return false;
         }
 
-        public async Task<GroupEditViewModel> CreateGroupEditViewModel(AcademicGroup group)
+        public async Task<AcademicGroupEditViewModel> CreateAcademicGroupEditViewModel(AcademicGroup group)
         {
-            var groupEditViewModel = new GroupEditViewModel()
+            var groupEditViewModel = new AcademicGroupEditViewModel()
             {
                 GroupName = group.Name,
                 GroupId = group.Id.ToString(),
@@ -485,7 +487,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             return groupEditViewModel;
         }
 
-        public async Task<bool> UpdateGroup(GroupEditViewModel groupToUpdate)
+        public async Task<bool> UpdateAcademicGroup(AcademicGroupEditViewModel groupToUpdate)
         {
             if (groupToUpdate != null)
             {
@@ -501,6 +503,49 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             }
 
             return false;
+        }
+
+        public Task<MixedGroupEditViewModel> CreateMixedGroup()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SaveMixedGroup(MixedGroupEditViewModel mixedGroupEditViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+        public async Task<IEnumerable<SelectListItem>> GetGroups()
+        {
+            List<SelectListItem> groups = new List<SelectListItem>()
+            {
+                //new SelectListItem
+                //{
+                //    Value = null,
+                //    Text = "--- select group ---"
+                //}
+            };
+            return groups;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetGroups(Guid? departmentId)
+        {
+            var department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
+             await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + departmentId)
+             );
+
+            IEnumerable<SelectListItem> groupsSelectListItems = department.Groups.OrderBy(n => n.Name)
+            .Select(n =>
+                new SelectListItem
+                {
+                    Value = n.Id.ToString(),
+                    Text = n.Name
+                }).ToList();
+
+            return new SelectList(groupsSelectListItems, "Value", "Text");
         }
     }
 }
