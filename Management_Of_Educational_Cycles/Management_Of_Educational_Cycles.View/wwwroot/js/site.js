@@ -6,6 +6,7 @@
     departmentsSelect.empty();
     groupsSelect.empty();
     if (selectedFaculty != null && selectedFaculty != '') {
+        console.log(selectedFaculty.toString());
         $.ajax({
             type: "POST",
             url: "/WorkManagementCycles/Create?handler=Departments",

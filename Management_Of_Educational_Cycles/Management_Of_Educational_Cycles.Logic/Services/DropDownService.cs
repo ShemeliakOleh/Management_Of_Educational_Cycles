@@ -547,5 +547,21 @@ namespace Management_Of_Educational_Cycles.Logic.Services
 
             return new SelectList(groupsSelectListItems, "Value", "Text");
         }
+
+        public async Task<TeachersFilter> CreateTeachersFilter()
+        {
+            var teachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list")
+                );
+            TeachersFilter teachersFilter = new TeachersFilter()
+            {
+                Teachers = teachers,
+                Faculties = await GetFaculties(),
+                Departments = GetDepartments(),
+                TeacherName = "",
+                TeacherSurname = ""
+            };
+            return teachersFilter;
+        }
     }
 }

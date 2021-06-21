@@ -31,6 +31,7 @@ namespace Management_Of_Educational_Cycles.View
             services.AddRazorPages();
             services.AddTransient<IRequestSender, RequestSender>();
             services.AddTransient<IDropDownService, DropDownService>();
+            services.AddTransient(typeof(IPageSeparator<>), typeof(PageSeparator<>));
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
         }
 
