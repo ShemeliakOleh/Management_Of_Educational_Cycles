@@ -4,7 +4,16 @@
 @{
     ViewData["Title"] = "Index";
 }
+<title>Paginatejs | Ligne</title>
+<link rel="stylesheet" href="~/css/paginate.css">
+<link rel="stylesheet" href="~/css/">
+<script type="text/javascript" src="~/js/paginate.js"></script>
 
+<style>
+    * {
+        font-family: sans-serif;
+    }
+</style>
 <h1>Index</h1>
 
 <p>
@@ -16,8 +25,8 @@
         @Html.LabelFor(model => model.TeachersFilter.TeacherName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.TeachersFilter.TeacherName,
-              new { htmlAttributes = new { @class = "form-control"} })
-           
+              new { htmlAttributes = new { @class = "form-control" } })
+
         </div>
     </div>
     <div class="form-group">
@@ -25,7 +34,7 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.TeachersFilter.TeacherSurname,
               new { htmlAttributes = new { @class = "form-control" } })
-           
+
         </div>
     </div>
     <div class="form-group">
@@ -37,8 +46,8 @@
         <div class="col-md-5">
             @Html.DropDownListFor(x => Model.TeachersFilter.SelectedFaculty,
               new SelectList(Model.TeachersFilter.Faculties, "Value", "Text"),
-              htmlAttributes: new { @class = "form-control", id = "Faculty"})
-            
+              htmlAttributes: new { @class = "form-control", id = "Faculty" })
+
         </div>
         <div class="form-group">
             @if (Model.TeachersFilter.Departments == null)
@@ -49,7 +58,7 @@
             <div class="col-md-5">
                 @Html.DropDownListFor(x => Model.TeachersFilter.SelectedDepartment,
                   new SelectList(Model.TeachersFilter.Departments, "Value", "Text"),
-                  htmlAttributes: new { @class = "form-control", @id = "Department"})
+                  htmlAttributes: new { @class = "form-control", @id = "Department" })
             </div>
         </div>
         <div class="form-group">
@@ -58,8 +67,17 @@
             </div>
         </div>
     </div>
-    </form>
-    <table class="table">
+</form>
+<div class="container">
+  
+    <div class="panel">
+        <div class="body">
+            <div class="input-group">
+                <input type="search" id="searchBox" placeholder="Filtrar..." hidden="hidden">
+            </div>
+        </div>
+    </div>
+    <table class="myTable table hover" id="myTable">
         <thead>
             <tr>
                 <th>
@@ -103,3 +121,16 @@
             }
         </tbody>
     </table>
+</div>
+    @*<script>
+        let options = {
+            numberPerPage: 5, //Cantidad de datos por pagina
+            goBar: true, //Barra donde puedes digitar el numero de la pagina al que quiere ir
+            pageCounter: true, //Contador de paginas, en cual estas, de cuantas paginas
+        };
+
+        let filterOptions = {
+            el: '#searchBox' //Caja de texto para filtrar, puede ser una clase o un ID
+        };
+
+        paginate.init(".myTable", options, filterOptions);</script>*@

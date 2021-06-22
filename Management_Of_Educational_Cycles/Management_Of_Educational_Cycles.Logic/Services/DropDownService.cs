@@ -88,14 +88,19 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + facultyId)
             );
 
-            IEnumerable<SelectListItem> departmentsSelectListItems = faculty.Departments.OrderBy(n => n.Name)
+            List<SelectListItem> departmentsSelectListItems = faculty.Departments.OrderBy(n => n.Name)
             .Select(n =>
                 new SelectListItem
                 {
                     Value = n.Id.ToString(),
                     Text = n.Name
                 }).ToList();
-
+            var departmenttip = new SelectListItem()
+            {
+                Value = null,
+                Text = "--- select department ---"
+            };
+            departmentsSelectListItems.Insert(0, departmenttip);
             return new SelectList(departmentsSelectListItems, "Value", "Text");
         }
 
@@ -223,7 +228,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             {
                 Faculties = await GetFaculties(),
                 Departments = GetDepartments(),
-                Groups =await GetGroups()
+                Groups = GetGroups()
         };
             return cycle;
         }
@@ -518,7 +523,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
 
 
 
-        public async Task<IEnumerable<SelectListItem>> GetGroups()
+        public IEnumerable<SelectListItem> GetGroups()
         {
             List<SelectListItem> groups = new List<SelectListItem>()
             {
@@ -537,13 +542,19 @@ namespace Management_Of_Educational_Cycles.Logic.Services
              await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + departmentId)
              );
 
-            IEnumerable<SelectListItem> groupsSelectListItems = department.Groups.OrderBy(n => n.Name)
+            List<SelectListItem> groupsSelectListItems = department.Groups.OrderBy(n => n.Name)
             .Select(n =>
                 new SelectListItem
                 {
                     Value = n.Id.ToString(),
                     Text = n.Name
                 }).ToList();
+            var grouptip = new SelectListItem()
+            {
+                Value = null,
+                Text = "--- select group ---"
+            };
+            groupsSelectListItems.Insert(0, grouptip);
 
             return new SelectList(groupsSelectListItems, "Value", "Text");
         }

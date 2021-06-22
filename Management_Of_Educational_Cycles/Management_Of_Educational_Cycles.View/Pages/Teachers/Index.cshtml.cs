@@ -50,7 +50,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             {  
                 filteredTeachers = filteredTeachers.Where(x => x.Department.FacultyId == guid).ToList();
                 newTeachersFilter.SelectedFaculty = TeachersFilter.SelectedFaculty;
-
+                newTeachersFilter.Departments =await _dropDownService.GetDepartments(Guid.Parse(newTeachersFilter.SelectedFaculty));
             }
             if (Guid.TryParse(TeachersFilter.SelectedDepartment, out guid))
             {

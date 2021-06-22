@@ -35,7 +35,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         public Task<bool> UpdateAcademicGroup(AcademicGroupEditViewModel groupToUpdate);
         public Task<DepartmentEditViewModel> CreateDepartmentEditViewModel();
         public Task<IEnumerable<SelectListItem>> GetGroups(Guid? departmentId);
-        public Task<IEnumerable<SelectListItem>> GetGroups();
+        public IEnumerable<SelectListItem> GetGroups();
         public Task<bool> UpdateDepartment(DepartmentEditViewModel departmentToUpdate);
         public Task<Teacher> Convert2Teacher(TeacherEditViewModel teacherEditViewModel);
         public Task<bool> UpdateEducationalCycle(EducationalCycleEditViewModel cycleToUpdate);

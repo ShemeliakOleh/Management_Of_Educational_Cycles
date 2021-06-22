@@ -1,4 +1,19 @@
-﻿$('#Faculty').change(function () {
+﻿let options = {
+    numberPerPage: 11, //Cantidad de datos por pagina
+    goBar: true, //Barra donde puedes digitar el numero de la pagina al que quiere ir
+    pageCounter: true, //Contador de paginas, en cual estas, de cuantas paginas
+};
+
+let filterOptions = {
+    el: '#searchBox' //Caja de texto para filtrar, puede ser una clase o un ID
+};
+
+paginate.init(".myTable", options, filterOptions);
+
+
+
+
+$('#Faculty').change(function () {
 
     var selectedFaculty = $("#Faculty").val();
     var departmentsSelect = $('#Department');
@@ -18,17 +33,13 @@
             contentType: "json; charset=utf-8",
             success: function (departments) {
                 if (departments != null && !jQuery.isEmptyObject(departments)) {
-                    departmentsSelect.append($('<option/>', {
-                        value: null,
-                        text: "--- select department ---"
-                    }));
                     $.each(departments, function (index, department) {
                         departmentsSelect.append("<option value='" + department.value + "'>" + department.text + "</option>");
                     });
                 };
             },
             failure: function (response) {
-                alert(response);
+                console.log(response);
             }
         });
     }
@@ -49,17 +60,13 @@ $('#Department').change(function () {
             contentType: "json; charset=utf-8",
             success: function (groups) {
                 if (groups != null && !jQuery.isEmptyObject(groups)) {
-                    groupsSelect.append($('<option/>', {
-                        value: null,
-                        text: "--- select group ---"
-                    }));
                     $.each(groups, function (index, group) {
                         groupsSelect.append("<option value='" + group.value + "'>" + group.text + "</option>");
                     });
                 };
             },
             failure: function (response) {
-                alert(response);
+                console.log(response);
             }
         });
     }
