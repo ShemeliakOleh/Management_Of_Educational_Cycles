@@ -7,53 +7,53 @@
 
 <h1>Details</h1>
 
-@*<div>
+<div>
     <table class="myTable table hover" id="myTable">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeachersFilter.Teachers[0].Name)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].DisciplineName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeachersFilter.Teachers[0].Surname)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].LectureHours)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeachersFilter.Teachers[0].Department)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].LaboratorHours)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeachersFilter.Teachers[0].Department.Faculty)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].SeminarHours)
                 </th>
-                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].TotalHours)
+                </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.TeachersFilter.Teachers)
+            @foreach (var item in Model.TeacherDisplayViewModel.Disciplines)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Surname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Department.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Department.Faculty.Name)
-                    </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisciplineName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LectureHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LaboratorHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeminarHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalHours)
+                </td>
 
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
-</div>*@
+</div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Teacher.Id">Edit</a> |
+    
     <a asp-page="./Index">Back to List</a>
 </div>

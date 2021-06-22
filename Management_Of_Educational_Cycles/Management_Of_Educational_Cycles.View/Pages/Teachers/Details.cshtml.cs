@@ -16,25 +16,21 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
     public class DetailsModel : BasePageModel
     {
      
-        public DetailsModel(IRequestSender requestSender) : base(requestSender)
+        public DetailsModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
 
         }
 
-        public Teacher Teacher { get; set; }
+        public TeacherDisplayViewModel TeacherDisplayViewModel { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + id)
-                );
-
-            if (Teacher == null)
+ 
+            
+            TeacherDisplayViewModel =await _dropDownService.CreateTeacherDisplayViewModel(id);
+            
+            
+            if (TeacherDisplayViewModel == null)
             {
                 return NotFound();
             }

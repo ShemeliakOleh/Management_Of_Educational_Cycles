@@ -50,7 +50,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
         public async Task<Teacher> GetById(Guid? id)
         {
             var teacher = await _context.Teachers.Include(u => u.WorkManagementCycles).Include(u => u.EducationalCycles)
-                .Include(u => u.Department).FirstOrDefaultAsync(u => u.Id == id);
+                .Include(u => u.Department).ThenInclude(x=>x.Faculty).FirstOrDefaultAsync(u => u.Id == id);
             return teacher;
         }
 

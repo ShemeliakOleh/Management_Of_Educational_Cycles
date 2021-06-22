@@ -596,5 +596,53 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             };
             return teachersFilter;
         }
+
+        public async Task<TeacherDisplayViewModel> CreateTeacherDisplayViewModel(Guid? id)
+        {
+            var teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + id)
+                );
+
+            List<DisciplineViewModel> disciplineViewModels = new List<DisciplineViewModel>();
+            var Discipines = teacher.EducationalCycles.Select(x => x.Discipline.Name).Distinct().ToList();
+            var cyclesWithLecurersType = teacher.EducationalCycles.Where(x => x.TypeOfClasses == TypeOfClasses.Lecture).ToList();
+            var cyclesWithLaboratorType = teacher.EducationalCycles.Where(x => x.TypeOfClasses == TypeOfClasses.Laboratory).ToList();
+            var cyclesWithSeminarType = teacher.EducationalCycles.Where(x => x.TypeOfClasses == TypeOfClasses.Seminar).ToList();
+            foreach(var disciplineName in Discipines)
+            {
+                var disciplineViewModel = new DisciplineViewModel()
+                {
+                    DisciplineName = disciplineName
+                };
+                var tempcycle = cyclesWithLecurersType.SingleOrDefault(x => x.Discipline.Name == disciplineViewModel.DisciplineName);
+                if ( tempcycle  != null)
+                {
+                    disciplineViewModel.LectureHours = tempcycle.NumberOfHours;
+                }
+                tempcycle = cyclesWithLaboratorType.SingleOrDefault(x => x.Discipline.Name == disciplineViewModel.DisciplineName);
+                if (tempcycle != null)
+                {
+                    disciplineViewModel.LaboratorHours = tempcycle.NumberOfHours;
+                }
+                tempcycle = cyclesWithSeminarType.SingleOrDefault(x => x.Discipline.Name == disciplineViewModel.DisciplineName);
+                if (tempcycle != null)
+                {
+                    disciplineViewModel.SeminarHours = tempcycle.NumberOfHours;
+                }
+                disciplineViewModels.Add(disciplineViewModel);  
+                
+            }
+
+            TeacherDisplayViewModel teacherDisplayViewModel = new TeacherDisplayViewModel()
+            {
+                FacultyName = teacher.Department.Faculty.Name,
+                DepartmentName = teacher.Department.Name,
+                Disciplines = disciplineViewModels,
+                TeacherId = teacher.Id,
+                TeacherName = teacher.Name,
+                TeacherSurname = teacher.Surname   
+            };
+            return teacherDisplayViewModel;
+        }
     }
 }
