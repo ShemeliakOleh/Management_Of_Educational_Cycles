@@ -69,6 +69,17 @@
                           htmlAttributes: new { @class = "form-control", @id = "Group", @required = true })
                         @Html.ValidationMessageFor(x => x.educationalCycleEditViewModel.SelectedDiscipline, "", new { @class = "text-danger" })
                     </div>
+                    @if (Model.educationalCycleEditViewModel.TypesOfClasses == null)
+                    {
+                        Model.educationalCycleEditViewModel.TypesOfClasses = new List<SelectListItem>();
+                    }
+                    @Html.LabelFor(x => Model.educationalCycleEditViewModel.SelectedTypeOfClasses, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.DropDownListFor(x => Model.educationalCycleEditViewModel.SelectedTypeOfClasses,
+                          new SelectList(Model.educationalCycleEditViewModel.TypesOfClasses, "Value", "Text"),
+                          htmlAttributes: new { @class = "form-control", id = "TypeOfClasses", @required = true })
+                        @Html.ValidationMessageFor(x => x.educationalCycleEditViewModel.SelectedTypeOfClasses, "", new { @class = "text-danger" })
+                    </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="educationalCycleEditViewModel.NumberOfHours" class="control-label"></label>
@@ -79,11 +90,6 @@
                     <label asp-for="educationalCycleEditViewModel.Semester" class="control-label"></label>
                     <input asp-for="educationalCycleEditViewModel.Semester" class="form-control" />
                     <span asp-validation-for="educationalCycleEditViewModel.Semester" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="educationalCycleEditViewModel.TypeOfClasses" class="control-label"></label>
-                    <input asp-for="educationalCycleEditViewModel.TypeOfClasses" class="form-control" />
-                    <span asp-validation-for="educationalCycleEditViewModel.TypeOfClasses" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />

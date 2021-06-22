@@ -66,4 +66,5 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 
 
     }
+    
 }

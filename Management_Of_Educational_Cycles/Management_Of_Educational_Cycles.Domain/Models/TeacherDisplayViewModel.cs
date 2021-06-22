@@ -23,5 +23,13 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 
         [Display(Name = "Department")]
         public string DepartmentName { get; set; }
+
+        public List<WorkManagementCycle> workManagementCycles { get; set; }
+
+        public List<EducationalCycle> educationalCycles { get; set; }
+
+
+
+
     }
 }

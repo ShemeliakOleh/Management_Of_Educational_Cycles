@@ -45,6 +45,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 
         [Required]
         [Display(Name = "TypeOfClasses")]
-        public string TypeOfClasses { get; set; }
+        public TypeOfClasses SelectedTypeOfClasses { get; set; }
+        public IEnumerable<SelectListItem> TypesOfClasses { get; set; }
     }
 }

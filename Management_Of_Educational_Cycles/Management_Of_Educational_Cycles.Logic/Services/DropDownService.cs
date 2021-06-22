@@ -340,9 +340,31 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 Faculties = await GetFaculties(),
                 Departments = GetDepartments(),
                 Groups = GetAcademicGroups(),
-                Disciplines = await GetDisciplines()
+                Disciplines = await GetDisciplines(),
+                TypesOfClasses = GetTypesOfClasses()
             };
             return cycle;
+        }
+
+        private IEnumerable<SelectListItem> GetTypesOfClasses()
+        {
+            List<SelectListItem> typesOfClassesSelectListItems = new List<SelectListItem>();
+            var listOfTypes = Enum.GetValues(typeof(TypeOfClasses));
+            foreach(var type in listOfTypes)
+            {
+                typesOfClassesSelectListItems.Add(new SelectListItem()
+                {
+                    Text = type.ToString(),
+                    Value = ((int)type).ToString()
+                });
+            }
+            var typeOfClassestip = new SelectListItem()
+            {
+                Value = null,
+                Text = "--- select TypeOfClasses ---"
+            };
+            typesOfClassesSelectListItems.Insert(0, typeOfClassestip);
+            return new SelectList(typesOfClassesSelectListItems, "Value", "Text");
         }
 
         private async Task<IEnumerable<SelectListItem>> GetDisciplines()
@@ -378,7 +400,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                     NumberOfHours = cycleToSave.NumberOfHours,
                     GroupId = Guid.Parse(cycleToSave.SelectedGroup),
                     DisciplineId = Guid.Parse(cycleToSave.SelectedDiscipline),
-                    TypeOfClasses = cycleToSave.TypeOfClasses,
+                    TypeOfClasses = cycleToSave.SelectedTypeOfClasses,
                     DepartmentId = Guid.Parse(cycleToSave.SelectedDepartment)
                 };
                 var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/create", educationalCycle);
@@ -395,7 +417,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 CycleName = educationalCycle.Name,
                 NumberOfHours = educationalCycle.NumberOfHours,
                 Semester = educationalCycle.Semester,
-                TypeOfClasses = educationalCycle.TypeOfClasses,
+                SelectedTypeOfClasses = educationalCycle.TypeOfClasses,
                 CycleId = educationalCycle.Id,
                 Faculties = await GetFaculties(),
                 Disciplines = await GetDisciplines(),
@@ -431,7 +453,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                     Name = cycleToUpdate.CycleName,
                     Semester = cycleToUpdate.Semester,
                     NumberOfHours = cycleToUpdate.NumberOfHours,
-                    TypeOfClasses = cycleToUpdate.TypeOfClasses,
+                    TypeOfClasses = cycleToUpdate.SelectedTypeOfClasses,
                     DisciplineId = Guid.Parse(cycleToUpdate.SelectedDiscipline),
                     GroupId = Guid.Parse(cycleToUpdate.SelectedGroup)
                 };
