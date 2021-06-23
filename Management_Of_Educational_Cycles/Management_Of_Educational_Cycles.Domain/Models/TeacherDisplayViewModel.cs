@@ -23,9 +23,8 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 
         [Display(Name = "Department")]
         public string DepartmentName { get; set; }
-
-
-        public List<DisciplineViewModel> Disciplines { get; set; }
+        public List<DisciplineViewModel> FirstSemesterDisciplines { get; set; }
+        public List<DisciplineViewModel> SecondSemesterDisciplines { get; set; }
 
 
 

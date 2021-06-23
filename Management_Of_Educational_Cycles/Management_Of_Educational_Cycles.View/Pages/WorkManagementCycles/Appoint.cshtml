@@ -21,7 +21,7 @@
     </dl>
 </div>
 <br><br>
-    @*<form method="post">
+    <form method="post">
         <input type="hidden" name="workManagementCycleId" value="@Model.WorkManagementCycle.Id" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -35,14 +35,14 @@
             <span asp-validation-for="Filter.TeacherSurname" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Filter.Department" class="control-label"></label>
-            <input asp-for="Filter.Department" class="form-control" />
-            <span asp-validation-for="Filter.Department" class="text-danger"></span>
+            <label asp-for="Filter.SelectedDepartment" class="control-label"></label>
+            <input asp-for="Filter.SelectedDepartment" class="form-control" />
+            <span asp-validation-for="Filter.SelectedDepartment" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Filter.Faculty" class="control-label"></label>
-            <input asp-for="Filter.Faculty" class="form-control" />
-            <span asp-validation-for="Filter.Faculty" class="text-danger"></span>
+            <label asp-for="Filter.SelectedFaculty" class="control-label"></label>
+            <input asp-for="Filter.SelectedFaculty" class="form-control" />
+            <span asp-validation-for="Filter.SelectedFaculty" class="text-danger"></span>
         </div>
 
         <div class="form-group">
@@ -77,4 +77,4 @@
                 }
             </table>
         </div>
-    </form>*@
+    </form>

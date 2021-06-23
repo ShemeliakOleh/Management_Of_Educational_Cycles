@@ -34,9 +34,6 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
 
-
-            //WorkManagementCycle = await _context.WorkManagementCycles.Include(x=>x.Group).FirstOrDefaultAsync(m => m.Id == id);
-
             if (WorkManagementCycle == null)
             {
                 return NotFound();
@@ -49,67 +46,67 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         }
 
 
-        //public async Task<IActionResult> OnPostAsync(Guid? workManagementCycleId, Guid? teacherId)
-        //{
-        //    if (workManagementCycleId != null)
-        //    {
-        //        WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-        //       await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + workManagementCycleId));
-        //        if ((Action == "Add" || Action == "Delete") && teacherId != null)
-        //        {
-        //            if (Action == "Add")
-        //            {
-        //                var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint?workManagementCycleId="+workManagementCycleId+"&teacherId="+teacherId);
-                        
-        //            }
-        //            else
-        //            {
-        //                var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/throwOff?workManagementCycleId=" + workManagementCycleId + "&teacherId=" + teacherId);
+        public async Task<IActionResult> OnPostAsync(Guid? workManagementCycleId, Guid? teacherId)
+        {
+            if (workManagementCycleId != null)
+            {
+                WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + workManagementCycleId));
+                if ((Action == "Add" || Action == "Delete") && teacherId != null)
+                {
+                    if (Action == "Add")
+                    {
+                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint?workManagementCycleId=" + workManagementCycleId + "&teacherId=" + teacherId);
 
-        //            }
-        //            WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-        //       await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + workManagementCycleId));
+                    }
+                    else
+                    {
+                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/throwOff?workManagementCycleId=" + workManagementCycleId + "&teacherId=" + teacherId);
 
-        //            return Page();
-        //        }
-        //        if (Action == "Find")
-        //        {
-        //            if (Filter != null)
-        //            {
-        //                var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
-        //                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
-        //                var filteredTeachers = new List<Teacher>();
-        //                if (Filter.TeacherName != null)
-        //                {
-        //                    filteredTeachers = allTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
-        //                }
-        //                if (Filter.TeacherSurname != null)
-        //                {
-        //                    filteredTeachers = filteredTeachers.Where(x => x.Surname.ToLower().Contains(Filter.TeacherSurname.ToLower())).ToList();
-                            
-        //                }
-        //                if(Filter.Faculty != null)
-        //                {
-        //                    filteredTeachers = filteredTeachers.Where(x => x.Department.Faculty.Name.ToLower().Contains(Filter.Faculty.ToLower())).ToList();
-        //                }
-        //                if(Filter.Department != null)
-        //                {
-        //                    filteredTeachers = filteredTeachers.Where(x => x.Department.Name.ToLower().Contains(Filter.Department.ToLower())).ToList();
-        //                }
-        //                ListOfTeachers = filteredTeachers;
-        //                return Page();
-        //            }
-        //            else
-        //            {
-        //                return Page();
-        //            }
-        //        }
+                    }
+                    WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + workManagementCycleId));
 
-        //    }
+                    return Page();
+                }
+                if (Action == "Find")
+                {
+                    if (Filter != null)
+                    {
+                        var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
+                        await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
+                        var filteredTeachers = allTeachers;
+                        if (Filter.TeacherName != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
+                        }
+                        if (Filter.TeacherSurname != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Surname.ToLower().Contains(Filter.TeacherSurname.ToLower())).ToList();
+
+                        }
+                        if (Filter.SelectedFaculty != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Department.Faculty.Name.ToLower().Contains(Filter.SelectedFaculty.ToLower())).ToList();
+                        }
+                        if (Filter.SelectedDepartment != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Department.Name.ToLower().Contains(Filter.SelectedDepartment.ToLower())).ToList();
+                        }
+                        ListOfTeachers = filteredTeachers;
+                        return Page();
+                    }
+                    else
+                    {
+                        return Page();
+                    }
+                }
+
+            }
 
 
 
-        //    return RedirectToPage("./Index");
-        //}
+            return RedirectToPage("./Index");
+        }
     }
 }

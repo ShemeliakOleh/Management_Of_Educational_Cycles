@@ -8,47 +8,93 @@
 <h1>Details</h1>
 
 <div>
+    <h1 class="col-form-label-lg">First Semester</h1>
     <table class="myTable table hover" id="myTable">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].DisciplineName)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].DisciplineName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].LectureHours)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].LectureHours)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].LaboratorHours)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].LaboratorHours)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].SeminarHours)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].SeminarHours)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.Disciplines[0].TotalHours)
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].TotalHours)
                 </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.TeacherDisplayViewModel.Disciplines)
+            @foreach (var item in Model.TeacherDisplayViewModel.FirstSemesterDisciplines)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DisciplineName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LectureHours)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LaboratorHours)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SeminarHours)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalHours)
-                </td>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisciplineName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LectureHours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LaboratorHours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SeminarHours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalHours)
+                    </td>
 
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h1 class="col-form-label-lg">Second Semester</h1>
+    <table class="myTable table hover" id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].DisciplineName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].LectureHours)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].LaboratorHours)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].SeminarHours)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].TotalHours)
+                </th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TeacherDisplayViewModel.SecondSemesterDisciplines)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisciplineName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LectureHours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LaboratorHours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SeminarHours)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalHours)
+                    </td>
+
+                </tr>
             }
         </tbody>
     </table>
