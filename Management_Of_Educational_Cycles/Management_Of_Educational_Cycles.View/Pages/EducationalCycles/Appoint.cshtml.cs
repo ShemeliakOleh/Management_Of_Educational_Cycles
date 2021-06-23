@@ -38,67 +38,67 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             }
             return Page();
         }
-        //public async Task<IActionResult> OnPostAsync(Guid? educationalCycleId, Guid? teacherId)
-        //{
-        //    if (educationalCycleId != null)
-        //    {
-        //        EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-        //       await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + educationalCycleId));
-        //        if ((Action == "Add" || Action == "Delete") && teacherId != null)
-        //        {
-        //            if (Action == "Add")
-        //            {
-        //                var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/appoint?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
+        public async Task<IActionResult> OnPostAsync(Guid? educationalCycleId, Guid? teacherId)
+        {
+            if (educationalCycleId != null)
+            {
+                EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + educationalCycleId));
+                if ((Action == "Add" || Action == "Delete") && teacherId != null)
+                {
+                    if (Action == "Add")
+                    {
+                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/appoint?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
 
-        //            }
-        //            else
-        //            {
-        //                var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/throwOff?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
+                    }
+                    else
+                    {
+                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/throwOff?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
 
-        //            }
-        //            EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-        //       await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + educationalCycleId));
+                    }
+                    EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + educationalCycleId));
 
-        //            return Page();
-        //        }
-        //        if (Action == "Find")
-        //        {
-        //            if (Filter != null)
-        //            {
-        //                var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
-        //                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
-        //                var filteredTeachers = new List<Teacher>();
-        //                if (Filter.TeacherName != null)
-        //                {
-        //                    filteredTeachers = allTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
-        //                }
-        //                if (Filter.TeacherSurname != null)
-        //                {
-        //                    filteredTeachers = filteredTeachers.Where(x => x.Surname.ToLower().Contains(Filter.TeacherSurname.ToLower())).ToList();
+                    return Page();
+                }
+                if (Action == "Find")
+                {
+                    if (Filter != null)
+                    {
+                        var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
+                        await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
+                        var filteredTeachers = allTeachers;
+                        if (Filter.TeacherName != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
+                        }
+                        if (Filter.TeacherSurname != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Surname.ToLower().Contains(Filter.TeacherSurname.ToLower())).ToList();
 
-        //                }
-        //                if (Filter.Faculty != null)
-        //                {
-        //                    filteredTeachers = filteredTeachers.Where(x => x.Department.Faculty.Name.ToLower().Contains(Filter.Faculty.ToLower())).ToList();
-        //                }
-        //                if (Filter.Department != null)
-        //                {
-        //                    filteredTeachers = filteredTeachers.Where(x => x.Department.Name.ToLower().Contains(Filter.Department.ToLower())).ToList();
-        //                }
-        //                ListOfTeachers = filteredTeachers;
-        //                return Page();
-        //            }
-        //            else
-        //            {
-        //                return Page();
-        //            }
-        //        }
+                        }
+                        if (Filter.SelectedFaculty != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Department.Faculty.Name.ToLower().Contains(Filter.SelectedFaculty.ToLower())).ToList();
+                        }
+                        if (Filter.SelectedDepartment != null)
+                        {
+                            filteredTeachers = filteredTeachers.Where(x => x.Department.Name.ToLower().Contains(Filter.SelectedDepartment.ToLower())).ToList();
+                        }
+                        ListOfTeachers = filteredTeachers;
+                        return Page();
+                    }
+                    else
+                    {
+                        return Page();
+                    }
+                }
 
-        //    }
+            }
 
 
 
-        //    return RedirectToPage("./Index");
-        //}
+            return RedirectToPage("./Index");
+        }
     }
 }
