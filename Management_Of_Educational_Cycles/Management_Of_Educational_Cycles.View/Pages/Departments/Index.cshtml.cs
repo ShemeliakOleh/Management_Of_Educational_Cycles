@@ -21,7 +21,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
             Departments = new List<Department>();
         }
 
-        public IList<Department> Departments { get;set; }
+        public List<Department> Departments { get;set; }
 
         public async Task OnGetAsync()
         {

@@ -21,7 +21,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
             Faculties = new List<Faculty>();
         }
 
-        public IList<Faculty> Faculties { get;set; }
+        public List<Faculty> Faculties { get;set; }
 
         public async Task OnGetAsync()
         {

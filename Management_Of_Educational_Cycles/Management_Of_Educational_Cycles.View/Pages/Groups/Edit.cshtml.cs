@@ -32,7 +32,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             {
                 return NotFound();
             }
-            var group = await _requestSender.GetContetFromRequestAsyncAs<IGroup>(
+            var group = await _requestSender.GetContetFromRequestAsyncAs<AcademicGroup>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/one?id=" + id)
                 );
 

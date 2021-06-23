@@ -15,13 +15,14 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
 {
     public class DetailsModel : BasePageModel
     {
-     
+
         public DetailsModel(IRequestSender requestSender) : base(requestSender)
         {
 
         }
 
         public Faculty Faculty { get; set; }
+        public List<Department> Departments {get; set;}
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -34,7 +35,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
             Faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
                 await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + id)
                 );
-
+            Departments = Faculty.Departments;
             if (Faculty == null)
             {
                 return NotFound();
