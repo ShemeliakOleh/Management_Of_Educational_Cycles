@@ -15,19 +15,29 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
 {
     public class IndexModel : BasePageModel
     {
-       
-        public IndexModel(IRequestSender requestSender) : base(requestSender)
+        [BindProperty(SupportsGet = true)]
+        public FacultiesFilter FacultiesFilter { get; set; }
+        public IndexModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
-            Faculties = new List<Faculty>();
+            FacultiesFilter = new FacultiesFilter();
         }
-
-        public List<Faculty> Faculties { get;set; }
-
+       
         public async Task OnGetAsync()
         {
-            Faculties = await _requestSender.GetContetFromRequestAsyncAs<List<Faculty>>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/list")
-                );
+            FacultiesFilter = await _dropDownService.CreateFacultiesFilter();
+        }
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if(FacultiesFilter.FacultyName != null)
+            {
+                FacultiesFilter = await _dropDownService.FilterFacultiesByName(FacultiesFilter.FacultyName);
+            }
+            else
+            {
+                FacultiesFilter = await _dropDownService.CreateFacultiesFilter();
+            }
+            return Page();
+
         }
     }
 }

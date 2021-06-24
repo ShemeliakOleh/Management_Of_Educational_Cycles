@@ -10,27 +10,45 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Groups[0].Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Groups) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.GroupsFilter.GroupName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.GroupsFilter.GroupName,
+              new { htmlAttributes = new { @class = "form-control" } })
+
+        </div>
+    </div>
+    <div class="form-group">
+        @if (Model.GroupsFilter.Faculties == null)
+        {
+            Model.GroupsFilter.Faculties = new List<SelectListItem>();
+        }
+        @Html.LabelFor(x => Model.GroupsFilter.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @Html.DropDownListFor(x => Model.GroupsFilter.SelectedFaculty,
+              new SelectList(Model.GroupsFilter.Faculties, "Value", "Text"),
+              htmlAttributes: new { @class = "form-control", id = "Faculty" })
+
+        </div>
+        <div class="form-group">
+            @if (Model.GroupsFilter.Departments == null)
+            {
+                Model.GroupsFilter.Departments = new List<SelectListItem>();
+            }
+
+            <div class="col-md-5">
+                @Html.DropDownListFor(x => Model.GroupsFilter.SelectedDepartment,
+                  new SelectList(Model.GroupsFilter.Departments, "Value", "Text"),
+                  htmlAttributes: new { @class = "form-control", @id = "Department" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Find" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+@await Html.PartialAsync("_GroupsList", Model.GroupsFilter.Groups)

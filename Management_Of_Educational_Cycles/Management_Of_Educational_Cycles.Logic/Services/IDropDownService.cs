@@ -18,6 +18,10 @@ namespace Management_Of_Educational_Cycles.Logic.Services
         public Task<bool> SaveTeacher(TeacherEditViewModel teacherToSave);
         public Task<bool> SaveWorkManagementCycle(WorkManagementCycleEditViewModel cycleToSave);
         public Task<bool> UpdateWorkManagementCycle(WorkManagementCycleEditViewModel cycleToUpdate);
+        public Task<GroupsFilter> CreateGroupsFilter();
+        public Task<DepartmentsFilter> CreateDepartmentsFilter();
+        public Task<FacultiesFilter> CreateFacultiesFilter();
+        public Task<FacultiesFilter> FilterFacultiesByName(string facultyName);
         public Task<TeacherDisplayViewModel> CreateTeacherDisplayViewModel(Guid? id);
         public Task<bool> SaveAcademicGroup(AcademicGroupEditViewModel groupToSave);
         public Task<MixedGroupEditViewModel> CreateMixedGroup();

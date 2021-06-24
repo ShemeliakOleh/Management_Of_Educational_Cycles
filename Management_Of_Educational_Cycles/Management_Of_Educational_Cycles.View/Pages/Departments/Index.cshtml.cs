@@ -16,18 +16,42 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
     public class IndexModel : BasePageModel
     {
      
-        public IndexModel(IRequestSender requestSender) : base(requestSender)
+        public IndexModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
         {
-            Departments = new List<Department>();
+            DepartmentsFilter = new DepartmentsFilter();
         }
-
-        public List<Department> Departments { get;set; }
+        [BindProperty(SupportsGet = true)]
+        public DepartmentsFilter DepartmentsFilter { get; set; }
 
         public async Task OnGetAsync()
         {
-            Departments = await _requestSender.GetContetFromRequestAsyncAs<List<Department>>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/list")
-                );
+            DepartmentsFilter = await _dropDownService.CreateDepartmentsFilter();
         }
+        public async Task<IActionResult> OnPostAsync()
+        {
+           
+            var newDepartmentsFilter = await _dropDownService.CreateDepartmentsFilter();
+            List<Department> filteredDepartments = newDepartmentsFilter.Departments;
+            if (DepartmentsFilter.DepartmentName != null)
+            {
+                filteredDepartments = filteredDepartments.Where(x => x.Name.ToLower().Contains(DepartmentsFilter.DepartmentName.ToLower())).ToList();
+                newDepartmentsFilter.DepartmentName = DepartmentsFilter.DepartmentName;
+            }
+           
+            Guid guid;
+            if (Guid.TryParse(DepartmentsFilter.SelectedFaculty, out guid))
+            {
+                filteredDepartments = filteredDepartments.Where(x => x.FacultyId == guid).ToList();
+                newDepartmentsFilter.SelectedFaculty = DepartmentsFilter.SelectedFaculty;
+                
+            }
+           
+            newDepartmentsFilter.Departments = filteredDepartments;
+            DepartmentsFilter = newDepartmentsFilter;
+            return Page();
+
+        }
+
+
     }
 }

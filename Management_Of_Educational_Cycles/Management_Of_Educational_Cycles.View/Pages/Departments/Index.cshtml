@@ -10,5 +10,35 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.DepartmentsFilter.DepartmentName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DepartmentsFilter.DepartmentName,
+              new { htmlAttributes = new { @class = "form-control" } })
 
-@await Html.PartialAsync("_DepartmentsList", Model.Departments)
+        </div>
+    </div>
+    
+    <div class="form-group">
+        @if (Model.DepartmentsFilter.Faculties == null)
+        {
+            Model.DepartmentsFilter.Faculties = new List<SelectListItem>();
+        }
+        @Html.LabelFor(x => Model.DepartmentsFilter.SelectedFaculty, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @Html.DropDownListFor(x => Model.DepartmentsFilter.SelectedFaculty,
+              new SelectList(Model.DepartmentsFilter.Faculties, "Value", "Text"),
+              htmlAttributes: new { @class = "form-control", id = "Faculty" })
+
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Find" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@await Html.PartialAsync("_DepartmentsList", Model.DepartmentsFilter.Departments)

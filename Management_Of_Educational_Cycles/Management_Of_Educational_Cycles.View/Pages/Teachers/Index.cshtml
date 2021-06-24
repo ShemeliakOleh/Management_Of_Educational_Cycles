@@ -4,11 +4,10 @@
 @{
     ViewData["Title"] = "Index";
 }
-<title>Paginatejs | Ligne</title>
 <link rel="stylesheet" href="~/css/paginate.css">
 <link rel="stylesheet" href="~/css/">
 <script type="text/javascript" src="~/js/paginate.js"></script>
-
+<script type="text/javascript" src="~/js/paginateOptions.js"></script>
 <style>
     * {
         font-family: sans-serif;
@@ -77,7 +76,7 @@
             </div>
         </div>
     </div>
-    <table class="myTable table hover" id="myTable">
+    <table class="myTable table hover">
         <thead>
             <tr>
                 <th>
@@ -123,3 +122,16 @@
     </table>
 </div>
   
+<script>
+    let options = {
+        numberPerPage: 11,
+        goBar: true,
+        pageCounter: true,
+    };
+
+    let filterOptions = {
+        el: '#searchBox'
+    };
+
+    paginate.init('.myTable', options, filterOptions);
+</script>

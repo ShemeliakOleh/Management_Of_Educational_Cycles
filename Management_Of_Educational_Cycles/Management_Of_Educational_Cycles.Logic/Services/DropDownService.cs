@@ -650,6 +650,68 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             }
             return DisciplineViewModels;
         }
-     
+
+        public async Task<FacultiesFilter> CreateFacultiesFilter()
+        {
+            FacultiesFilter facultiesFilter = new FacultiesFilter();
+            facultiesFilter.Faculties =await GetFacultiesList();
+            facultiesFilter.FacultyName = "";
+            return facultiesFilter;
+        }
+
+        public async Task<FacultiesFilter> FilterFacultiesByName(string facultyName)
+        {
+            return new FacultiesFilter()
+            {
+                FacultyName = facultyName,
+                Faculties = (await GetFacultiesList()).Where(x => x.Name.ToLower().Contains(facultyName.ToLower())).ToList()
+            };
+        }
+        public async Task<List<Faculty>> GetFacultiesList()
+        {
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Faculty>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/list")
+                );
+        }
+        public async Task<List<Department>> GetDepartmentsList()
+        {
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Department>>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/list")
+               );
+            
+        }
+        
+        public async Task<DepartmentsFilter> CreateDepartmentsFilter()
+        {
+            DepartmentsFilter departmentsFilter = new DepartmentsFilter()
+            {
+                DepartmentName = "",
+                Faculties = await GetFaculties(),
+                Departments = await GetDepartmentsList()
+
+            };
+            return departmentsFilter;
+        }
+
+        public async Task<GroupsFilter> CreateGroupsFilter()
+        {
+            GroupsFilter groupsFilter = new GroupsFilter()
+            {
+                GroupName = "",
+                Faculties = await GetFaculties(),
+                Departments = GetDepartments(),
+                Groups = await GetGroupsList()
+
+            };
+            return groupsFilter;
+        }
+
+        private async Task<List<AcademicGroup>> GetGroupsList()
+        {
+            var groups = await _requestSender.GetContetFromRequestAsyncAs<List<AcademicGroup>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/list")
+                );
+            return groups;
+        }
     }
 }
