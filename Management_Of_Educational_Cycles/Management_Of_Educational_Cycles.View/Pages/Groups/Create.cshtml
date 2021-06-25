@@ -10,13 +10,20 @@
 <h4>Group</h4>
 <hr />
 <div class="row">
+    
     <div class="col-md-4">
+
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="GroupEditViewModel.GroupName" class="control-label"></label>
                 <input asp-for="GroupEditViewModel.GroupName" class="form-control" />
                 <span asp-validation-for="GroupEditViewModel.GroupName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupEditViewModel.NumberOfStudents" class="control-label"></label>
+                <input asp-for="GroupEditViewModel.NumberOfStudents" class="form-control" />
+                <span asp-validation-for="GroupEditViewModel.NumberOfStudents" class="text-danger"></span>
             </div>
             <div class="form-group">
                 @if (Model.GroupEditViewModel.Faculties == null)
@@ -48,8 +55,9 @@
                         <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
                 </div>
-</form>
-        <button asp-page="/EducationalCycles/CreateMixedGroup"> Create Mixed Group</button>
+            </div>
+        </form>
+        @*<a class="nav-link text-dark" asp-area="" asp-page="/Groups/CreateMixedGroup">Create MixedGroup</a>*@
     </div>
 </div>
 

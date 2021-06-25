@@ -14,7 +14,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities
         public DbSet<Discipline> Disciplines { get; set; }
         public DbSet<Faculty> Faculties { get; set; }
         public DbSet<AcademicGroup> AcademicGroups { get; set; }
-        public DbSet<Group> MixedGroups { get; set; }
+        public DbSet<MixedGroup> MixedGroups { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<EducationalCycle> EducationalCycles { get; set; }
         public DbSet<WorkManagementCycle> WorkManagementCycles { get; set; }

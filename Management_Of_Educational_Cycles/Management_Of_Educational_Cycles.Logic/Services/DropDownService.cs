@@ -270,6 +270,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 var group = new AcademicGroup()
                 {
                     Name = groupToSave.GroupName,
+                    NumberOfStudents = groupToSave.NumberOfStudents,
                     DepartmentId = Guid.Parse(groupToSave.SelectedDepartment)
 
                 };
@@ -523,6 +524,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 {
                     Id = Guid.Parse(groupToUpdate.GroupId),
                     Name = groupToUpdate.GroupName,
+                    NumberOfStudents = groupToUpdate.NumberOfStudents,
                     DepartmentId = Guid.Parse(groupToUpdate.SelectedDepartment)
                 };
                 var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/AcademicGroups/update", group);
@@ -532,9 +534,15 @@ namespace Management_Of_Educational_Cycles.Logic.Services
             return false;
         }
 
-        public Task<MixedGroupEditViewModel> CreateMixedGroup()
+        public async Task<MixedGroupEditViewModel> CreateMixedGroup()
         {
-            throw new NotImplementedException();
+            MixedGroupEditViewModel mixedGroupEditViewModel = new MixedGroupEditViewModel()
+            {
+                Faculties = await GetFaculties(),
+                Departments = GetDepartments(),
+                Groups = GetGroups(),
+            };
+            return mixedGroupEditViewModel;
         }
 
         public Task<bool> SaveMixedGroup(MixedGroupEditViewModel mixedGroupEditViewModel)
@@ -621,6 +629,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services
 
             List<DisciplineViewModel> DisciplineViewModels = new List<DisciplineViewModel>();
             var SemesterDiscipines =teacher.EducationalCycles.Where(x => x.Semester == semester).Select(x => x.Discipline.Name).Distinct().ToList();
+            int totalDisciplineHours = 0;
             foreach (var disciplineName in SemesterDiscipines)
             {
                 var disciplineViewModel = new DisciplineViewModel()
@@ -632,19 +641,35 @@ namespace Management_Of_Educational_Cycles.Logic.Services
                 if (tempcycle != null)
                 {
                     disciplineViewModel.LectureHours = tempcycle.NumberOfHours;
+                    totalDisciplineHours += tempcycle.NumberOfHours;
                 }
                 tempcycle = teacher.EducationalCycles.Where(x => x.TypeOfClasses == TypeOfClasses.Laboratory && x.Semester == semester)
                     .SingleOrDefault(x => x.Discipline.Name == disciplineViewModel.DisciplineName);
                 if (tempcycle != null)
                 {
                     disciplineViewModel.LaboratorHours = tempcycle.NumberOfHours;
+                    totalDisciplineHours += tempcycle.NumberOfHours;
                 }
                 tempcycle = teacher.EducationalCycles.Where(x => x.TypeOfClasses == TypeOfClasses.Seminar && x.Semester == semester)
                     .SingleOrDefault(x => x.Discipline.Name == disciplineViewModel.DisciplineName);
                 if (tempcycle != null)
                 {
                     disciplineViewModel.SeminarHours = tempcycle.NumberOfHours;
+                    totalDisciplineHours += tempcycle.NumberOfHours;
                 }
+                disciplineViewModel.TotalHours = totalDisciplineHours;
+                DisciplineViewModels.Add(disciplineViewModel);
+
+            }
+            SemesterDiscipines = teacher.WorkManagementCycles.Where(x => x.Semester == semester).Select(x => x.Name).Distinct().ToList();
+            foreach (var disciplineName in SemesterDiscipines)
+            {
+                var disciplineViewModel = new DisciplineViewModel()
+                {
+                    DisciplineName = disciplineName,
+                    TotalHours = teacher.WorkManagementCycles.SingleOrDefault(x => x.Name == disciplineName).NumberOfHours
+                };
+               
                 DisciplineViewModels.Add(disciplineViewModel);
 
             }

@@ -10,11 +10,14 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
    public class AcademicGroupEditViewModel
     {
-        [Display(Name = "Name")]
+        [Display(Name = "Id")]
         public string GroupId { get; set; }
 
         [Display(Name = "Name")]
         public string GroupName { get; set; }
+
+        [Display(Name = "NumberOfStudents")]
+        public int NumberOfStudents { get; set; }
 
         [Required]
         [Display(Name = "Faculty")]

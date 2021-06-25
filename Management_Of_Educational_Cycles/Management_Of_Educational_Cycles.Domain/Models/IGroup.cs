@@ -9,5 +9,6 @@ namespace Management_Of_Educational_Cycles.Domain.Models
     public interface IGroup
     {
         public string Name { get; set; }
+        public int NumberOfStudents { get; set; }
     }
 }

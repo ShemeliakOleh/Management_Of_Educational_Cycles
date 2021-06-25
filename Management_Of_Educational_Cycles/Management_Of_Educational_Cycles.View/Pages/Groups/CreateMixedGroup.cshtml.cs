@@ -35,22 +35,46 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid && MixedGroupEditViewModel != null && MixedGroupEditViewModel.SelectedDepartment != null)
+            if(MixedGroupEditViewModel.Action == "AddAcademicGroup")
             {
-                return null;
-            }
+                var selectedGroups = MixedGroupEditViewModel.SelectedGroups;
+                Guid academicGroupId;
+                if (Guid.TryParse(MixedGroupEditViewModel.SelectedGroup, out academicGroupId))
+                {
+                    var group = await _requestSender.GetContetFromRequestAsyncAs<AcademicGroup>(
+            await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/one?id=" + academicGroupId)
+            );
+                    MixedGroupEditViewModel = await _dropDownService.CreateMixedGroup();
+                    MixedGroupEditViewModel.SelectedGroups = selectedGroups;
+                    MixedGroupEditViewModel.SelectedGroups.Add(group);
+                }
+                else
+                {
 
-            bool saved = await _dropDownService.SaveMixedGroup(MixedGroupEditViewModel);
-            if (saved)
+                }
+                return Page();
+            }
+            else 
             {
+                bool saved = false;
+                if (!ModelState.IsValid && MixedGroupEditViewModel != null && MixedGroupEditViewModel.SelectedGroups.Count >= 0)
+                {
+                    saved = await _dropDownService.SaveMixedGroup(MixedGroupEditViewModel);
+                }
+
+
+                if (saved)
+                {
+                    return RedirectToPage("./Index");
+                }
+                else
+                {
+                    //DO something //////////////////!
+                }
                 return RedirectToPage("./Index");
             }
-            else
-            {
-                //DO something //////////////////!
-            }
-            return RedirectToPage("./Index");
         }
+
 
     }
 }

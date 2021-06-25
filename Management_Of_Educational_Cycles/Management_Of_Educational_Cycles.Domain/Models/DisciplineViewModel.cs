@@ -22,9 +22,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         public int SeminarHours { get; set; }
 
         [Display(Name = "Total number")]
-        public int TotalHours {
-            get { return LectureHours + LaboratorHours + SeminarHours; } 
-        }
+        public int TotalHours { get; set; }
         public DisciplineViewModel()
         {
             LectureHours = 0;

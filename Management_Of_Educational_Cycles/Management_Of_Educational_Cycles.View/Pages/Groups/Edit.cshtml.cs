@@ -41,7 +41,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 GroupEditViewModel = await _dropDownService.CreateAcademicGroupEditViewModel(group as AcademicGroup);
                 return Page();
             }
-            if(group is Group)
+            if(group is MixedGroup)
             {
                 string url = Url.Page("EditMixedGroup", id );
                 return Redirect(url);
