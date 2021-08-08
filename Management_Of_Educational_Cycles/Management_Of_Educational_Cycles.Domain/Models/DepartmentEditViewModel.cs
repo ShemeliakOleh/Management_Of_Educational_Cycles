@@ -13,11 +13,11 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         [Display(Name = "Department Id")]
         public string DepartmentId { get; set; }
 
-        [Display(Name = "Name")]
+        [Display(Name = "Назва")]
         public string DepartmentName { get; set; }
 
         [Required]
-        [Display(Name = "Faculty")]
+        [Display(Name = "Факультет")]
         public string SelectedFaculty { get; set; }
         public IEnumerable<SelectListItem> Faculties { get; set; }
     }

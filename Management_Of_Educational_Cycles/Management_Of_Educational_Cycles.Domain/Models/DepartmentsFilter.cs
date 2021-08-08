@@ -10,9 +10,9 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
    public class DepartmentsFilter
     {
-        [Display(Name = "Name")]
+        [Display(Name = "Назва")]
         public string DepartmentName { get; set; }
-        [Display(Name = "Faculty")]
+        [Display(Name = "Факультет")]
         public string SelectedFaculty { get; set; }
         public IEnumerable<SelectListItem> Faculties { get; set; }
         public List<Department> Departments { get; set; }

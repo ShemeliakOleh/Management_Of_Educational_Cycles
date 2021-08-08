@@ -12,16 +12,16 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         [Display(Name = "Teacher Id")]
         public Guid? TeacherId { get; set; }
 
-        [Display(Name = "Teacher Name")]
+        [Display(Name = "Ім'я")]
         public string TeacherName { get; set; }
 
-        [Display(Name = "Teacher Surname")]
+        [Display(Name = "Прізвище")]
         public string TeacherSurname { get; set; }
 
-        [Display(Name = "Faculty")]
+        [Display(Name = "Факультет")]
         public string FacultyName { get; set; }
 
-        [Display(Name = "Department")]
+        [Display(Name = "Кафедра")]
         public string DepartmentName { get; set; }
         public List<DisciplineViewModel> FirstSemesterDisciplines { get; set; }
         public List<DisciplineViewModel> SecondSemesterDisciplines { get; set; }

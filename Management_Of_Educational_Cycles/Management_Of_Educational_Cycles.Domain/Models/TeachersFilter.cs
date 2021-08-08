@@ -10,15 +10,15 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
     public class TeachersFilter
     {
-        [Display(Name = "Name")]
+        [Display(Name = "Ім'я")]
         public string TeacherName { get; set; }
-        [Display(Name = "Surname")]
+        [Display(Name = "Прізвище")]
         public string TeacherSurname { get; set; }
-        [Display(Name = "Faculty")]
+        [Display(Name = "Факультет")]
         public string SelectedFaculty { get; set; }
         public IEnumerable<SelectListItem> Faculties { get; set; }
 
-        [Display(Name = "Department")]
+        [Display(Name = "Кафедра")]
         public string SelectedDepartment { get; set; }
         public IEnumerable<SelectListItem> Departments { get; set; }
 

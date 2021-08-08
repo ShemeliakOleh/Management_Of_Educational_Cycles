@@ -23,12 +23,12 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         [Required]
         [Display(Name = "Faculty")]
         public string SelectedFaculty { get; set; }
-        public IEnumerable<SelectListItem> Faculties { get; set; }
+        public List<SelectListItem> Faculties { get; set; }
 
         [Required]
         [Display(Name = "Department")]
         public string SelectedDepartment { get; set; }
-        public IEnumerable<SelectListItem> Departments { get; set; }
+        public List<SelectListItem> Departments { get; set; }
 
     }
 }

@@ -9,7 +9,7 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
    public class FacultiesFilter
     {
-        [Display (Name ="Name")]
+        [Display (Name ="Назва")]
         public string FacultyName { get; set; }
         public List<Faculty> Faculties { get; set; }
         public FacultiesFilter()

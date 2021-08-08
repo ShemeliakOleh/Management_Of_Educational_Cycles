@@ -13,28 +13,28 @@ namespace Management_Of_Educational_Cycles.Domain.Models
         [Display(Name = "Id")]
         public Guid? CycleId { get; set; }
 
-        [Display(Name = "Name")]
+        [Display(Name = "Назва")]
         public string CycleName { get; set; }
 
 
-        [Display(Name = "Number of hours")]
+        [Display(Name = "Кількість годин")]
         public int NumberOfHours { get; set; }
 
-        [Display(Name = "Semester")]
+        [Display(Name = "Семестр")]
         public int Semester { get; set; }
 
         [Required]
-        [Display(Name = "Faculty")]
+        [Display(Name = "Факультет")]
         public string SelectedFaculty { get; set; }
         public IEnumerable<SelectListItem> Faculties { get; set; }
 
         [Required]
-        [Display(Name = "Department")]
+        [Display(Name = "Кафедра")]
         public string SelectedDepartment { get; set; }
         public IEnumerable<SelectListItem> Departments { get; set; }
 
         [Required]
-        [Display(Name = "Group")]
+        [Display(Name = "Група")]
         public string SelectedGroup { get; set; }
         public IEnumerable<SelectListItem> Groups { get; set; }
     }

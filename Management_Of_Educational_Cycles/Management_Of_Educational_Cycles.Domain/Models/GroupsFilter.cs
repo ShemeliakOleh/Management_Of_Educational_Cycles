@@ -10,13 +10,13 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
    public class GroupsFilter
     {
-        [Display (Name = "Name")]
+        [Display (Name = "Назва")]
         public string GroupName { get; set; }
-        [Display (Name = "Faculty")]
+        [Display (Name = "Факультет")]
         public string SelectedFaculty { get; set; }
         public IEnumerable<SelectListItem> Faculties { get; set; }
 
-        [Display(Name = "Department")]
+        [Display(Name = "Кафедра")]
         public string SelectedDepartment { get; set; }
         public IEnumerable<SelectListItem> Departments { get; set; }
         public List<AcademicGroup> Groups { get; set; }

@@ -9,19 +9,21 @@ namespace Management_Of_Educational_Cycles.Domain.Models
 {
    public class DisciplineViewModel
     {
-        [Display(Name = "Discipline")]
+        [Display(Name = "Дисципліна")]
         public string DisciplineName { get; set; }
 
-        [Display(Name = "Number of lecturers hours")]
+        [Display(Name = "Кількість лекційних годин")]
         public int LectureHours { get; set; }
 
-        [Display(Name = "Number of laborators hours")]
+        [Display(Name = "Кількість лабораторних годин")]
         public int LaboratorHours { get; set; }
 
-        [Display(Name = " Number of seminars hours")]
+        [Display(Name = "Кількість семінарських годин")]
         public int SeminarHours { get; set; }
+        [Display(Name = "Група")]
+        public AcademicGroup Group { get; set; }
 
-        [Display(Name = "Total number")]
+        [Display(Name = "Загальна кількість годин")]
         public int TotalHours { get; set; }
         public DisciplineViewModel()
         {
