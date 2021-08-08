@@ -32,7 +32,7 @@ namespace Management_Of_Educational_Cycles.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("TempConnection"),
+                options.UseSqlServer(Configuration.GetConnectionString("DbConnection"),
                 optionsBuilder => optionsBuilder.MigrationsAssembly("Management_Of_Educational_Cycles.API")));
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

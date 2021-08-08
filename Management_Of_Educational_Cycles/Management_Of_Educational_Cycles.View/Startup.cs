@@ -1,4 +1,3 @@
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Logic.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,8 +25,7 @@ namespace Management_Of_Educational_Cycles.View
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("TempConnection")));
+            
             services.AddRazorPages();
             services.AddTransient<IRequestSender, RequestSender>();
             services.AddTransient<IDropDownService, DropDownService>();
