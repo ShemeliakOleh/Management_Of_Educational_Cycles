@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Management_Of_Educational_Cycles.Domain.Entities;
+
 using Management_Of_Educational_Cycles.Domain.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
-using Management_Of_Educational_Cycles.Logic.Services;
 using System.IO;
+using Management_Of_Educational_Cycles.Logic.Interfaces;
+using Management_Of_Educational_Cycles.Logic.Services;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
@@ -21,14 +20,14 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
         [BindProperty(SupportsGet = true)]
         public TeacherEditViewModel TeacherEditViewModel { get; set; }
 
-        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public CreateModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
            
         }
 
         public async Task<IActionResult> OnGet()
         {
-            TeacherEditViewModel = await _dropDownService.CreateTeacher();
+            TeacherEditViewModel = await viewManager.teachersProvider.CreateTeacher();
             return Page();
         }
 
@@ -42,7 +41,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             //Teacher.Surname = TeacherCreateViewModel.TeacherSurname;
             //Teacher.Faculty = TeacherCreateViewModel.SelectedFaculty; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-            bool saved = await _dropDownService.SaveTeacher(TeacherEditViewModel);
+            bool saved = await viewManager.teachersProvider.SaveTeacher(TeacherEditViewModel);
             if (saved)
             {
                 return RedirectToPage("./Index");

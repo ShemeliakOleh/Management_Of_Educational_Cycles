@@ -21,14 +21,14 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         [BindProperty(SupportsGet = true)]
         public WorkManagementCycleEditViewModel WorkManagementCycleEditViewModel { get; set; }
 
-        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public CreateModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
          
         }
 
         public async Task<IActionResult> OnGet()
         {
-            WorkManagementCycleEditViewModel = await _dropDownService.CreateWorkMangementCycle();
+            WorkManagementCycleEditViewModel = await viewManager.workManagementCyclesProvider.CreateWorkMangementCycle();
             return Page();
         }
         public async Task<IActionResult> OnPostAsync()
@@ -43,7 +43,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 
 
 
-            await _dropDownService.SaveWorkManagementCycle(WorkManagementCycleEditViewModel);
+            await viewManager.workManagementCyclesProvider.SaveWorkManagementCycle(WorkManagementCycleEditViewModel);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something

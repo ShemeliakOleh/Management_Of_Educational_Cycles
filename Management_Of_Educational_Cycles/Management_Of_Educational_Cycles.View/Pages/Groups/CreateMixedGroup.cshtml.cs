@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -20,14 +19,14 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
         [BindProperty(SupportsGet = true)]
         public MixedGroupEditViewModel MixedGroupEditViewModel { get; set; }
 
-        public CreateMixedGroupModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public CreateMixedGroupModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
 
         public async Task<IActionResult> OnGet()
         {
-            MixedGroupEditViewModel = await _dropDownService.CreateMixedGroup();
+            MixedGroupEditViewModel = await viewManager.groupsProvider.CreateMixedGroup();
             return Page();
         }
 
@@ -41,10 +40,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 Guid academicGroupId;
                 if (Guid.TryParse(MixedGroupEditViewModel.SelectedGroup, out academicGroupId))
                 {
-                    var group = await _requestSender.GetContetFromRequestAsyncAs<AcademicGroup>(
-            await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/one?id=" + academicGroupId)
-            );
-                    MixedGroupEditViewModel = await _dropDownService.CreateMixedGroup();
+              
+                    var group = await dataManager.groupsRepository.GetById(academicGroupId);
+                    MixedGroupEditViewModel = await viewManager.groupsProvider.CreateMixedGroup();
                     MixedGroupEditViewModel.SelectedGroups = selectedGroups;
                     MixedGroupEditViewModel.SelectedGroups.Add(group);
                 }
@@ -59,7 +57,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 bool saved = false;
                 if (!ModelState.IsValid && MixedGroupEditViewModel != null && MixedGroupEditViewModel.SelectedGroups.Count >= 0)
                 {
-                    saved = await _dropDownService.SaveMixedGroup(MixedGroupEditViewModel);
+                    saved = await viewManager.groupsProvider.SaveMixedGroup(MixedGroupEditViewModel);
                 }
 
 

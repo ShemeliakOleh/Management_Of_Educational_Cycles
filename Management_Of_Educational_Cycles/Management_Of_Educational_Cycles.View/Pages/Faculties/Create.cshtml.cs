@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -17,7 +16,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
     public class CreateModel : BasePageModel
     {
      
-        public CreateModel(IRequestSender requestSender) : base(requestSender)
+        public CreateModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -38,7 +37,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
                 return Page();
             }
 
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Faculties/create", Faculty);
+            var response = await dataManager.facultiesRepository.CreateFaculty(Faculty);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something

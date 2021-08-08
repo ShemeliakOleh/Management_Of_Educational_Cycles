@@ -18,14 +18,14 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
     {
         [BindProperty(SupportsGet = true)]
         public DepartmentEditViewModel DepartmentEditViewModel{ get; set; }
-        public CreateModel(IRequestSender requestSender, IDropDownService _dropDownService) : base(requestSender,_dropDownService)
+        public CreateModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
           
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            DepartmentEditViewModel =await _dropDownService.CreateDepartmentEditViewModel();
+            DepartmentEditViewModel =await viewManager.departmentsProvider.CreateDepartmentEditViewModel();
             return Page();
         }
 
@@ -38,7 +38,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return Page();
             }
 
-            bool saved =await _dropDownService.SaveDepartment(DepartmentEditViewModel);
+            bool saved =await viewManager.departmentsProvider.SaveDepartment(DepartmentEditViewModel);
             if (saved)
             {
                 return RedirectToPage("./Index");

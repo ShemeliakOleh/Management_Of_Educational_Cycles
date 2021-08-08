@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
-using Management_Of_Educational_Cycles.Domain.Models;
-using System.Net.Http;
-using Newtonsoft.Json;
+﻿using Management_Of_Educational_Cycles.Domain.Models;
 using Management_Of_Educational_Cycles.Logic.Services;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Management_Of_Educational_Cycles.View.Pages.Departments
 {
     public class DeleteModel : BasePageModel
     {
        
-        public DeleteModel(IRequestSender requestSender) : base(requestSender)
+        public DeleteModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -31,9 +24,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return NotFound();
             }
 
-            Department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + id)
-                );
+            Department = await dataManager.departmentsRepository.GetById(id);
 
             if (Department == null)
             {
@@ -49,7 +40,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return NotFound();
             }
 
-            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/remove?id=" + id);
+            var response = await dataManager.departmentsRepository.DeleteById(id);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something

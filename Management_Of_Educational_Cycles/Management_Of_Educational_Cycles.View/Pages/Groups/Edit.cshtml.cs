@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -19,7 +18,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
     {
         [BindProperty(SupportsGet = true)]
         public AcademicGroupEditViewModel GroupEditViewModel { get; set; }
-        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender , dropDownService)
+        public EditModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
             
         }
@@ -32,13 +31,11 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             {
                 return NotFound();
             }
-            var group = await _requestSender.GetContetFromRequestAsyncAs<AcademicGroup>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/one?id=" + id)
-                );
+            var group = await dataManager.groupsRepository.GetById(id);
 
             if(group is AcademicGroup)
             {
-                GroupEditViewModel = await _dropDownService.CreateAcademicGroupEditViewModel(group as AcademicGroup);
+                GroupEditViewModel = await viewManager.groupsProvider.CreateAcademicGroupEditViewModel(group as AcademicGroup);
                 return Page();
             }
             if(group is MixedGroup)
@@ -63,7 +60,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return Page();
             }
 
-            await _dropDownService.UpdateAcademicGroup(GroupEditViewModel);
+            await viewManager.groupsProvider.UpdateAcademicGroup(GroupEditViewModel);
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something

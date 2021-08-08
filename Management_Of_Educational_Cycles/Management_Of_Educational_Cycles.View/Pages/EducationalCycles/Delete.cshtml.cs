@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -16,7 +15,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
     public class DeleteModel : BasePageModel
     {
      
-        public DeleteModel(IRequestSender requestSender) : base(requestSender)
+        public DeleteModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -31,9 +30,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
                 return NotFound();
             }
 
-            EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id)
-                );
+            EducationalCycle = await dataManager.educationalCyclesRepository.GetById(id);
 
             if (EducationalCycle == null)
             {
@@ -49,7 +46,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
                 return NotFound();
             }
 
-            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/remove?id=" + id);
+            var response = await dataManager.educationalCyclesRepository.DeleteById(id);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something

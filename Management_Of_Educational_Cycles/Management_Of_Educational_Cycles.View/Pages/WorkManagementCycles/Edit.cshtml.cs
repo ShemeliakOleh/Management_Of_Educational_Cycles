@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -22,7 +21,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         [BindProperty(SupportsGet = true)]
         public WorkManagementCycleEditViewModel WorkManagementCycleEditViewModel { get; set; }
 
-        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public EditModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
           
         }
@@ -33,10 +32,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             {
                 return NotFound();
             }
-            var cycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id)
-                );
-            WorkManagementCycleEditViewModel = await _dropDownService.CreateWorkMangementCycle(cycle);
+            var cycle = await dataManager.workManagementCyclesRepository.GetById(id);
+            WorkManagementCycleEditViewModel = await viewManager.workManagementCyclesProvider.CreateWorkMangementCycle(cycle);
             return Page();
 
             if (WorkManagementCycleEditViewModel == null)
@@ -53,7 +50,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             {
                 return Page();
             }
-            await _dropDownService.UpdateWorkManagementCycle(WorkManagementCycleEditViewModel);
+            await viewManager.workManagementCyclesProvider.UpdateWorkManagementCycle(WorkManagementCycleEditViewModel);
             //if (response.IsSuccessStatusCode)
             //{
             //    return RedirectToPage("./Index");

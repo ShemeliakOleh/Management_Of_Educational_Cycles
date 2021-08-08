@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -22,7 +21,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
         [BindProperty(SupportsGet = true)]
         public TeacherEditViewModel TeacherEditViewModel { get; set; }
 
-        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public EditModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
          
         }
@@ -34,15 +33,12 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             {
                 return NotFound();
             }
-            var teacher = await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + id)
-                );
-
+            var teacher = await dataManager.teachersRepository.GetById(id);
             if (teacher == null)
             {
                 return NotFound();
             }
-            TeacherEditViewModel = await _dropDownService.CreateTeacher(teacher);
+            TeacherEditViewModel = await viewManager.teachersProvider.CreateTeacher(teacher);
             
             return Page();
         }
@@ -53,10 +49,9 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             {
                 return null;
             }
-            var teacher = await _dropDownService.Convert2Teacher(TeacherEditViewModel);
+            var teacher = await viewManager.teachersProvider.Convert2Teacher(TeacherEditViewModel);
             teacher.Id = TeacherEditViewModel.TeacherId;
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/update",teacher);
-
+            var response = await dataManager.teachersRepository.UpdateTeacher(teacher);
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something

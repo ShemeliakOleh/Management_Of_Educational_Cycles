@@ -16,21 +16,22 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
     public class IndexModel : BasePageModel
     {
      
-        public IndexModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public IndexModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
             DepartmentsFilter = new DepartmentsFilter();
         }
-        [BindProperty(SupportsGet = true)]
+        
+       [BindProperty(SupportsGet = true)]
         public DepartmentsFilter DepartmentsFilter { get; set; }
 
         public async Task OnGetAsync()
         {
-            DepartmentsFilter = await _dropDownService.CreateDepartmentsFilter();
+            DepartmentsFilter = await viewManager.departmentsProvider.CreateDepartmentsFilter();
         }
         public async Task<IActionResult> OnPostAsync()
         {
            
-            var newDepartmentsFilter = await _dropDownService.CreateDepartmentsFilter();
+            var newDepartmentsFilter = await viewManager.departmentsProvider.CreateDepartmentsFilter();
             List<Department> filteredDepartments = newDepartmentsFilter.Departments;
             if (DepartmentsFilter.DepartmentName != null)
             {

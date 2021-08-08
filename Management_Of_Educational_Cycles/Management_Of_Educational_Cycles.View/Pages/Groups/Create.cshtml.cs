@@ -20,14 +20,14 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
         [BindProperty(SupportsGet = true)]
         public AcademicGroupEditViewModel GroupEditViewModel { get; set; }
 
-        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public CreateModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
             
         }
 
         public async Task<IActionResult> OnGet()
         {
-            GroupEditViewModel =await _dropDownService.CreateAcademicGroup();
+            GroupEditViewModel =await viewManager.groupsProvider.CreateAcademicGroup();
             return Page();
         }
 
@@ -40,7 +40,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
                 return null;
             }
 
-            bool saved = await _dropDownService.SaveAcademicGroup(GroupEditViewModel);
+            bool saved = await viewManager.groupsProvider.SaveAcademicGroup(GroupEditViewModel);
             if (saved)
             {
                 return RedirectToPage("./Index");

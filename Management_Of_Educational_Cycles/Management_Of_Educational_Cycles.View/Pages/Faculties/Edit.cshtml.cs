@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -18,7 +17,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
     public class EditModel : BasePageModel
     {
        
-        public EditModel(IRequestSender requestSender) : base(requestSender)
+        public EditModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -32,11 +31,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
             {
                 return NotFound();
             }
-
-            Faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + id)
-                );
-
+            
+            Faculty = await dataManager.facultiesRepository.GetById(id);
             if (Faculty == null)
             {
                 return NotFound();
@@ -53,7 +49,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
                 return Page();
             }
 
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Faculties/update", Faculty);
+            var response = await dataManager.facultiesRepository.UpdateFaculty(Faculty);
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something

@@ -12,16 +12,13 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
     public class AppointModel : BasePageModel
     {
         public EducationalCycle EducationalCycle { get; set; }
-        [BindProperty]
-        public TeachersFilter Filter { get; set; }
-        [BindProperty]
-        public List<Teacher> ListOfTeachers { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public TeachersFilter TeachersFilter { get; set; }
         [BindProperty]
         public string Action { get; set; }
-        public AppointModel(IRequestSender requestSender) : base(requestSender)
+        public AppointModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
-
-            ListOfTeachers = new List<Teacher>();
+            TeachersFilter = new TeachersFilter();
         }
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -29,9 +26,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return NotFound();
             }
-            EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id));
-
+            TeachersFilter = await viewManager.teachersProvider.CreateTeachersFilter();
+            EducationalCycle = await dataManager.educationalCyclesRepository.GetById(id);
             if (EducationalCycle == null)
             {
                 return NotFound();
@@ -42,50 +38,51 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
         {
             if (educationalCycleId != null)
             {
-                EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + educationalCycleId));
+                EducationalCycle = await dataManager.educationalCyclesRepository.GetById(educationalCycleId);
                 if ((Action == "Add" || Action == "Delete") && teacherId != null)
                 {
                     if (Action == "Add")
                     {
-                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/appoint?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
-
+                        var response = await viewManager.educationalCyclesProvider.AppointTeacherForCycle(educationalCycleId,teacherId);
                     }
                     else
                     {
-                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/throwOff?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
-
+                        var response = await viewManager.educationalCyclesProvider.ThrowOffTeacherForCycle(educationalCycleId, teacherId);
                     }
-                    EducationalCycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + educationalCycleId));
-
+                    EducationalCycle = await dataManager.educationalCyclesRepository.GetById(educationalCycleId);
                     return Page();
                 }
                 if (Action == "Find")
                 {
-                    if (Filter != null)
+                    if (TeachersFilter != null)
                     {
-                        var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
-                        await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
-                        var filteredTeachers = allTeachers;
-                        if (Filter.TeacherName != null)
+                        var newTeachersFilter = await viewManager.teachersProvider.CreateTeachersFilter();
+                        List<Teacher> filteredTeachers = newTeachersFilter.Teachers;
+                        if (TeachersFilter.TeacherName != null)
                         {
-                            filteredTeachers = filteredTeachers.Where(x => x.Name.ToLower().Contains(Filter.TeacherName.ToLower())).ToList();
+                            filteredTeachers = filteredTeachers.Where(x => x.Name.ToLower().Contains(TeachersFilter.TeacherName.ToLower())).ToList();
+                            newTeachersFilter.TeacherName = TeachersFilter.TeacherName;
                         }
-                        if (Filter.TeacherSurname != null)
+                        if (TeachersFilter.TeacherSurname != null)
                         {
-                            filteredTeachers = filteredTeachers.Where(x => x.Surname.ToLower().Contains(Filter.TeacherSurname.ToLower())).ToList();
+                            filteredTeachers = filteredTeachers.Where(x => x.Surname.ToLower().Contains(TeachersFilter.TeacherSurname.ToLower())).ToList();
+                            newTeachersFilter.TeacherSurname = TeachersFilter.TeacherSurname;
 
                         }
-                        if (Filter.SelectedFaculty != null)
+                        Guid guid;
+                        if (Guid.TryParse(TeachersFilter.SelectedFaculty, out guid))
                         {
-                            filteredTeachers = filteredTeachers.Where(x => x.Department.Faculty.Name.ToLower().Contains(Filter.SelectedFaculty.ToLower())).ToList();
+                            filteredTeachers = filteredTeachers.Where(x => x.Department.FacultyId == guid).ToList();
+                            newTeachersFilter.SelectedFaculty = TeachersFilter.SelectedFaculty;
+                            newTeachersFilter.Departments = await viewManager.departmentsProvider.GetDepartmentsByFaculty(Guid.Parse(newTeachersFilter.SelectedFaculty));
                         }
-                        if (Filter.SelectedDepartment != null)
+                        if (Guid.TryParse(TeachersFilter.SelectedDepartment, out guid))
                         {
-                            filteredTeachers = filteredTeachers.Where(x => x.Department.Name.ToLower().Contains(Filter.SelectedDepartment.ToLower())).ToList();
+                            filteredTeachers = filteredTeachers.Where(x => x.DepartmentId == guid).ToList();
+                            newTeachersFilter.SelectedDepartment = TeachersFilter.SelectedDepartment;
                         }
-                        ListOfTeachers = filteredTeachers;
+                        newTeachersFilter.Teachers = filteredTeachers;
+                        TeachersFilter = newTeachersFilter;
                         return Page();
                     }
                     else

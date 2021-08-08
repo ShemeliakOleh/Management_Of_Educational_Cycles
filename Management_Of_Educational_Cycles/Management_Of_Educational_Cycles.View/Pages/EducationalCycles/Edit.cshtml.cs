@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -18,7 +17,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
     public class EditModel : BasePageModel {
         [BindProperty(SupportsGet = true)]
         public EducationalCycleEditViewModel educationalCycleEditViewModel { get; set; }
-        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public EditModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -30,10 +29,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return NotFound();
             }
-            var cycle = await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id)
-                );
-            educationalCycleEditViewModel = await _dropDownService.CreateEducationalCycle(cycle);
+            var cycle = await dataManager.educationalCyclesRepository.GetById(id);
+            educationalCycleEditViewModel = await viewManager.educationalCyclesProvider.CreateEducationalCycle(cycle);
             return Page();
 
             if (educationalCycleEditViewModel == null)
@@ -49,7 +46,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return Page();
             }
-            await _dropDownService.UpdateEducationalCycle(educationalCycleEditViewModel);
+            await viewManager.educationalCyclesProvider.UpdateEducationalCycle(educationalCycleEditViewModel);
             //if (response.IsSuccessStatusCode)
             //{
             //    return RedirectToPage("./Index");

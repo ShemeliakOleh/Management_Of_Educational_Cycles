@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -20,7 +19,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
 
         [BindProperty(SupportsGet = true)]
         public DepartmentEditViewModel DepartmentEditViewModel { get; set; }
-        public EditModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public EditModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -31,10 +30,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
             {
                 return NotFound();
             }
-            var department = await _requestSender.GetContetFromRequestAsyncAs<Department>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + id)
-                );
-            DepartmentEditViewModel = await _dropDownService.CreateDepartmentEditViewModel(department);
+            var department = await dataManager.departmentsRepository.GetById(id);
+            DepartmentEditViewModel = await viewManager.departmentsProvider.CreateDepartmentEditViewModel(department);
             return Page();
 
             if (DepartmentEditViewModel == null)
@@ -51,7 +48,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Departments
                 return Page();
             }
 
-            await _dropDownService.UpdateDepartment(DepartmentEditViewModel);
+            await viewManager.departmentsProvider.UpdateDepartment(DepartmentEditViewModel);
 
             //if (response.IsCompletedSuccessfully)
             //{

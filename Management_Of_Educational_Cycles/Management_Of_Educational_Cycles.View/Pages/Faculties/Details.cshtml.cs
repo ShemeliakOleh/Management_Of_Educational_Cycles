@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -16,7 +15,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
     public class DetailsModel : BasePageModel
     {
 
-        public DetailsModel(IRequestSender requestSender) : base(requestSender)
+        public DetailsModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -32,9 +31,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Faculties
             }
 
             
-            Faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + id)
-                );
+            Faculty = await dataManager.facultiesRepository.GetById(id);
             Departments = Faculty.Departments;
             if (Faculty == null)
             {

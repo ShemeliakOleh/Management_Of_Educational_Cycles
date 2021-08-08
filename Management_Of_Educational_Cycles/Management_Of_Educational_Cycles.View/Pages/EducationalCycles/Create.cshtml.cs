@@ -20,14 +20,14 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
         [BindProperty(SupportsGet = true)]
         public EducationalCycleEditViewModel educationalCycleEditViewModel { get; set; }
 
-        public CreateModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public CreateModel(EntitieViewModelsManager viewManager): base(viewManager)
         {
            
         }
 
-        public async Task<IActionResult> OnGet()
+        public IActionResult OnGet()
         {
-            educationalCycleEditViewModel = await _dropDownService.CreateEducationalCycle();
+            educationalCycleEditViewModel = viewManager.educationalCyclesProvider.CreateEducationalCycleEditViewModel();
             return Page();
         }
         public async Task<IActionResult> OnPostAsync()
@@ -36,7 +36,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
             {
                 return Page();
             }
-            await _dropDownService.SaveEducationalCycle(educationalCycleEditViewModel);
+            await viewManager.educationalCyclesProvider.SaveEducationalCycle(educationalCycleEditViewModel);
             //if (response.IsSuccessStatusCode)
             //{
             //    //DO something

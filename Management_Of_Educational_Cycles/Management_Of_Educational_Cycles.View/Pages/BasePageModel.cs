@@ -1,4 +1,5 @@
-﻿using Management_Of_Educational_Cycles.Logic.Services;
+﻿using Management_Of_Educational_Cycles.Logic.Interfaces;
+using Management_Of_Educational_Cycles.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,18 +13,17 @@ namespace Management_Of_Educational_Cycles.View.Pages
 {
     public abstract class BasePageModel:PageModel
     {
-        protected IDropDownService _dropDownService;
-        protected IRequestSender _requestSender;
-        public BasePageModel(IRequestSender requestSender, IDropDownService dropDownService)
+        protected EntitieViewModelsManager viewManager;
+        protected DataManager dataManager;
+        protected BasePageModel(EntitieViewModelsManager viewManager, DataManager dataManager)
         {
-            _requestSender = requestSender;
-            _dropDownService = dropDownService;
+            this.viewManager = viewManager;
+            this.dataManager = dataManager;
         }
-        public BasePageModel(IRequestSender requestSender)
+        public BasePageModel(EntitieViewModelsManager viewManager)
         {
-            _requestSender = requestSender;
+            this.viewManager = viewManager;
         }
-
 
         public async Task<IActionResult> OnPostDepartmentsAsync()
         {
@@ -37,7 +37,7 @@ namespace Management_Of_Educational_Cycles.View.Pages
             if (requestBody.Length > 0)
             {
                 var facultyId = Guid.Parse(requestBody);
-                IEnumerable<SelectListItem> departmentsAsSelectList = await _dropDownService.GetDepartments(facultyId);
+                IEnumerable<SelectListItem> departmentsAsSelectList = await viewManager.departmentsProvider.GetDepartmentsByFaculty(facultyId);
                 return new JsonResult(departmentsAsSelectList);
             }
             return null;
@@ -54,7 +54,7 @@ namespace Management_Of_Educational_Cycles.View.Pages
             if (requestBody.Length > 0)
             {
                 var departmentId = Guid.Parse(requestBody);
-                IEnumerable<SelectListItem> groupsAsSelectList = await _dropDownService.GetGroups(departmentId);
+                IEnumerable<SelectListItem> groupsAsSelectList = await viewManager.groupsProvider.GetGroupsByDepartment(departmentId);
                 return new JsonResult(groupsAsSelectList);
             }
             return null;

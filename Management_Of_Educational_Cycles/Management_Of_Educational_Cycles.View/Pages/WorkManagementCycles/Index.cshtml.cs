@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -16,7 +15,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
     public class IndexModel : BasePageModel
     {
 
-        public IndexModel(IRequestSender requestSender):base(requestSender)
+        public IndexModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -26,9 +25,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         public async Task OnGetAsync()
         {
 
-            WorkManagementCycles = await _requestSender.GetContetFromRequestAsyncAs<List<WorkManagementCycle>>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/list")
-                );
+            WorkManagementCycles = await dataManager.workManagementCyclesRepository.GetWorkManagementCycles();
             if (WorkManagementCycles.Count > 0)
             {
                 if (WorkManagementCycles[0].Teachers == null)

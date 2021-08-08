@@ -15,24 +15,24 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
 {
     public class IndexModel : BasePageModel
     {
-        public IPageSeparator<Teacher> PageSeparator { get; set; }
+        //public IPageSeparator<Teacher> PageSeparator { get; set; }
         [BindProperty(SupportsGet = true)]
         public TeachersFilter TeachersFilter { get; set; }
 
-        public IndexModel(IRequestSender requestSender, IDropDownService dropDownService, IPageSeparator<Teacher> pageSeparator) : base(requestSender, dropDownService)
+        public IndexModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
-            this.PageSeparator = PageSeparator;
+            //this.PageSeparator = PageSeparator;
             TeachersFilter = new TeachersFilter();
 
         }
 
         public async Task OnGetAsync()
         {
-            TeachersFilter = await _dropDownService.CreateTeachersFilter();
+            TeachersFilter = await viewManager.teachersProvider.CreateTeachersFilter();
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            var newTeachersFilter = await _dropDownService.CreateTeachersFilter();
+            var newTeachersFilter = await viewManager.teachersProvider.CreateTeachersFilter();
             List<Teacher> filteredTeachers = newTeachersFilter.Teachers;
             if (TeachersFilter.TeacherName != null)
             {
@@ -50,7 +50,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
             {  
                 filteredTeachers = filteredTeachers.Where(x => x.Department.FacultyId == guid).ToList();
                 newTeachersFilter.SelectedFaculty = TeachersFilter.SelectedFaculty;
-                newTeachersFilter.Departments =await _dropDownService.GetDepartments(Guid.Parse(newTeachersFilter.SelectedFaculty));
+                newTeachersFilter.Departments =await viewManager.departmentsProvider.GetDepartmentsByFaculty(Guid.Parse(newTeachersFilter.SelectedFaculty));
             }
             if (Guid.TryParse(TeachersFilter.SelectedDepartment, out guid))
             {

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Management_Of_Educational_Cycles.Domain.Entities;
 using Management_Of_Educational_Cycles.Domain.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -18,7 +17,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
     public class EditModel : BasePageModel
     {
      
-        public EditModel(IRequestSender requestSender) : base(requestSender)
+        public EditModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
         }
@@ -34,10 +33,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
             }
 
             
-            Discipline = await _requestSender.GetContetFromRequestAsyncAs<Discipline>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Disciplines/one?id=" + id)
-                );
-
+            Discipline = await dataManager.disciplinesRepository.GetById(id);
             if (Discipline == null)
             {
                 return NotFound();
@@ -45,17 +41,13 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
-            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Disciplines/update", Discipline);
-            
+            var response = await dataManager.disciplinesRepository.UpdateDiscipline(Discipline);
             //if (response.IsCompletedSuccessfully)
             //{
             //    //Do something

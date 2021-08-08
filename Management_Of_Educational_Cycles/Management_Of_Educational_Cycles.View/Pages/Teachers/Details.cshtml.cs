@@ -16,7 +16,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
     public class DetailsModel : BasePageModel
     {
      
-        public DetailsModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public DetailsModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
 
         }
@@ -27,7 +27,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Teachers
         {
  
             
-            TeacherDisplayViewModel =await _dropDownService.CreateTeacherDisplayViewModel(id);
+            TeacherDisplayViewModel =await viewManager.teachersProvider.CreateTeacherDisplayViewModel(id);
             
             
             if (TeacherDisplayViewModel == null)

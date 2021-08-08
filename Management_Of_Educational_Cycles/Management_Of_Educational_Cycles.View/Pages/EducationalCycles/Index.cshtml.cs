@@ -16,7 +16,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
     public class IndexModel : BasePageModel
     {
        
-        public IndexModel(IRequestSender requestSender) : base(requestSender)
+        public IndexModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
             EducationalCycles = new List<EducationalCycle>();
         }
@@ -25,10 +25,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
 
         public async Task OnGetAsync()
         {
-            EducationalCycles = await _requestSender.GetContetFromRequestAsyncAs<List<EducationalCycle>>(
-                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/list")
-                );
-
+            EducationalCycles = await dataManager.educationalCyclesRepository.GetEducationalCycles();
+            
         }
     }
 }

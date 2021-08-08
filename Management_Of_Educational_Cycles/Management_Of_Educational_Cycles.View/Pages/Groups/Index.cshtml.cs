@@ -16,7 +16,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
     public class IndexModel : BasePageModel
     {
        
-        public IndexModel(IRequestSender requestSender, IDropDownService dropDownService) : base(requestSender, dropDownService)
+        public IndexModel(EntitieViewModelsManager viewManager) : base(viewManager)
         {
             
         }
@@ -25,12 +25,12 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
 
         public async Task OnGetAsync()
         {
-            GroupsFilter =await _dropDownService.CreateGroupsFilter();
+            GroupsFilter = await viewManager.groupsProvider.CreateGroupsFilter();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var newGroupsFilter = await _dropDownService.CreateGroupsFilter();
+            var newGroupsFilter =await viewManager.groupsProvider.CreateGroupsFilter();
             List<AcademicGroup> filteredGroups = newGroupsFilter.Groups;
             if (GroupsFilter.GroupName != null)
             {
@@ -43,7 +43,8 @@ namespace Management_Of_Educational_Cycles.View.Pages.Groups
             {
                 filteredGroups = filteredGroups.Where(x => x.Department.FacultyId == guid).ToList();
                 newGroupsFilter.SelectedFaculty = GroupsFilter.SelectedFaculty;
-                newGroupsFilter.Departments = await _dropDownService.GetDepartments(Guid.Parse(newGroupsFilter.SelectedFaculty));
+                newGroupsFilter.Departments = await viewManager.departmentsProvider.GetDepartmentsByFaculty(Guid.Parse(newGroupsFilter.SelectedFaculty));
+
             }
             if (Guid.TryParse(GroupsFilter.SelectedDepartment, out guid))
             {

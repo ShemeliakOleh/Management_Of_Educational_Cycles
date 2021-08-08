@@ -1,105 +1,115 @@
 ﻿@page
 @model Management_Of_Educational_Cycles.View.Pages.Teachers.DetailsModel
 
-@{
-    ViewData["Title"] = "Details";
-}
 
-<h1>Details</h1>
+
+<h3>Навантаження по викладачу @Model.TeacherDisplayViewModel.TeacherName @Model.TeacherDisplayViewModel.TeacherSurname</h3>
 
 <div>
-    <h1 class="col-form-label-lg">First Semester</h1>
+    <h1 class="col-form-label">Перший семестр</h1>
     <table class="myTable table hover" id="myTable">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].DisciplineName)
+                    Дисципліна
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].LectureHours)
+                    Група
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].LaboratorHours)
+                    Кількість лекційних годин
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].SeminarHours)
+                    Кількість лабораторних годин
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.FirstSemesterDisciplines[0].TotalHours)
+                    Кількість семінарських годин
+                </th>
+                <th>
+                    Загальна кількість годин
                 </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.TeacherDisplayViewModel.FirstSemesterDisciplines)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DisciplineName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LectureHours)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LaboratorHours)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SeminarHours)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalHours)
-                    </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisciplineName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LectureHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LaboratorHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeminarHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalHours)
+                </td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
-    <h1 class="col-form-label-lg">Second Semester</h1>
+    <h1 class="col-form-label">Другий семестр</h1>
     <table class="myTable table hover" id="myTable">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].DisciplineName)
+                    Дисципліна
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].LectureHours)
+                    Група
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].LaboratorHours)
+                    Кількість лекційних годин
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].SeminarHours)
+                    Кількість лабораторних годин
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TeacherDisplayViewModel.SecondSemesterDisciplines[0].TotalHours)
+                    Кількість семінарських годин
+                </th>
+                <th>
+                    Загальна кількість годин
                 </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.TeacherDisplayViewModel.SecondSemesterDisciplines)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DisciplineName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LectureHours)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LaboratorHours)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SeminarHours)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalHours)
-                    </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisciplineName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LectureHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LaboratorHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeminarHours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalHours)
+                </td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
 </div>
 <div>
     
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Повернутися до списку</a>
 </div>

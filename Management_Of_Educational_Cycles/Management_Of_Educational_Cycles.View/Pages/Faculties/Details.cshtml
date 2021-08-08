@@ -1,11 +1,7 @@
 ﻿@page
 @model Management_Of_Educational_Cycles.View.Pages.Faculties.DetailsModel
 
-@{
-    ViewData["Title"] = "Details";
-}
 
-<h1>Details</h1>
 
 <div>
     <h4>@Model.Faculty.Name</h4>
@@ -13,6 +9,6 @@
 </div>
 @await Html.PartialAsync("_DepartmentsList", Model.Departments)
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Faculty.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Faculty.Id">Редагувати</a> |
+    <a asp-page="./Index">Повернутися до списку</a>
 </div>

@@ -1,13 +1,10 @@
 ﻿@page
 @model Management_Of_Educational_Cycles.View.Pages.EducationalCycles.CreateModel
 
-@{
-    ViewData["Title"] = "Create";
-}
-<script src="js/site.js" asp-append-version="true"></script>
-<h1>Create</h1>
 
-<h4>EducationalCycle</h4>
+<script src="js/site.js" asp-append-version="true"></script>
+
+<h4>Заповніть поля нижче</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -92,7 +89,7 @@
                     <span asp-validation-for="educationalCycleEditViewModel.Semester" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Створити" class="btn btn-primary" />
                 </div>
                 
 </form>
@@ -100,5 +97,5 @@
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="Index">Повернутися до списку</a>
 </div>

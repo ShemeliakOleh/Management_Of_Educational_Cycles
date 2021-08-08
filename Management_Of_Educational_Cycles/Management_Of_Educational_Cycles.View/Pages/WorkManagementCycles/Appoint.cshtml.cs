@@ -20,7 +20,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         public List<Teacher> ListOfTeachers { get; set; }
         [BindProperty]
         public string Action { get; set; }
-        public AppointModel(IRequestSender requestSender) : base(requestSender)
+        public AppointModel(EntitieViewModelsManager viewManager, DataManager dataManager) : base(viewManager, dataManager)
         {
 
             ListOfTeachers = new List<Teacher>();
@@ -31,9 +31,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
             {
                 return NotFound();
             }
-            WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id));
-
+            WorkManagementCycle = await dataManager.workManagementCyclesRepository.GetById(id);
             if (WorkManagementCycle == null)
             {
                 return NotFound();
@@ -50,31 +48,26 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         {
             if (workManagementCycleId != null)
             {
-                WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + workManagementCycleId));
+                WorkManagementCycle = await dataManager.workManagementCyclesRepository.GetById(workManagementCycleId);
                 if ((Action == "Add" || Action == "Delete") && teacherId != null)
                 {
                     if (Action == "Add")
                     {
-                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint?workManagementCycleId=" + workManagementCycleId + "&teacherId=" + teacherId);
+                        var response = await viewManager.workManagementCyclesProvider.AppointTeacherForCycle(workManagementCycleId, teacherId);
 
                     }
                     else
                     {
-                        var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/throwOff?workManagementCycleId=" + workManagementCycleId + "&teacherId=" + teacherId);
-
+                        var response = await viewManager.workManagementCyclesProvider.ThrowOffTeacherForCycle(workManagementCycleId, teacherId);
                     }
-                    WorkManagementCycle = await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
-               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + workManagementCycleId));
-
+                    WorkManagementCycle = await dataManager.workManagementCyclesRepository.GetById(workManagementCycleId);
                     return Page();
                 }
                 if (Action == "Find")
                 {
                     if (Filter != null)
                     {
-                        var allTeachers = await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
-                        await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list"));
+                        var allTeachers = await dataManager.teachersRepository.GetTeachers();
                         var filteredTeachers = allTeachers;
                         if (Filter.TeacherName != null)
                         {
