@@ -11,6 +11,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
     {
         public Task<bool> Add(AcademicGroup group);
         public Task<bool> Update(AcademicGroup group);
+        public Task<List<AcademicGroup>> GetAcademicGroupsByDepartment(Guid? departmentId);
         public Task<bool> Remove(Guid? id);
         public Task<AcademicGroup> GetById(Guid? id);
         public Task<List<AcademicGroup>> GetAll();

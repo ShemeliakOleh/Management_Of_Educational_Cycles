@@ -32,6 +32,20 @@ namespace Management_Of_Educational_Cycles.API.Controllers
                 return Problem();
             }
         }
+        [HttpGet("getByDepartment")]
+        public async Task<IActionResult> GetGroupsByDepartment(Guid? departmentId)
+        {
+            var entities = await _dataManager._groupRepository.GetAcademicGroupsByDepartment(departmentId);
+            if (entities != null)
+            {
+                return Ok(entities);
+            }
+            else
+            {
+                return Problem();
+            }
+        }
+
         [HttpGet("one")]
         public async Task<IActionResult> GetOneById(Guid? id)
         {

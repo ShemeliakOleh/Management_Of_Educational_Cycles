@@ -52,6 +52,11 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
                 return new List<Department>();
             }
         }
+        public async Task<List<Department>> GetDepartmentsByFaculty(Guid? facultyId)
+        {
+            var departments = _context.Departments.Where(x => x.FacultyId == facultyId);
+            return await departments.ToListAsync();
+        }
 
         //public async Task<IEnumerable<SelectListItem>> GetAllAsSelectList(Guid? facultyId)
         //{

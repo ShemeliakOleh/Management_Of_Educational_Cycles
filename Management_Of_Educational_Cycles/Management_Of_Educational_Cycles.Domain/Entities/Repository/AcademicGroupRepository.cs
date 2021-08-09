@@ -27,6 +27,12 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
             return _context.AcademicGroups.Any(e => e.Id == id);
         }
 
+        public async Task<List<AcademicGroup>> GetAcademicGroupsByDepartment(Guid? departmentId)
+        {
+            var academicGroups = _context.AcademicGroups.Where(x => x.DepartmentId == departmentId);
+            return await academicGroups.ToListAsync();
+        }
+       
         public async Task<List<AcademicGroup>> GetAll()
         {
             var groups = await _context.AcademicGroups.Include(u => u.Department).ToListAsync();
