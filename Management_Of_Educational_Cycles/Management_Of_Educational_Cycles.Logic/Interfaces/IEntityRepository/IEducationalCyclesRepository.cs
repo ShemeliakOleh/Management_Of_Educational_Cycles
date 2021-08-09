@@ -15,5 +15,7 @@ namespace Management_Of_Educational_Cycles.Logic.Interfaces.IEntityRepository
         public Task<bool> UpdateEducationalCycle(EducationalCycle educationalCycle);
         public Task<bool> DeleteById(Guid? id);
         public Task<List<EducationalCycle>> GetFilteredEducationalCycles(EducationalCycle pattern);
+        public Task<bool> AppointTeacherForCycle(Guid? educationalCycleId, Guid? teacherId);
+        public Task<bool> ThrowOffTeacherForCycle(Guid? educationalCycleId, Guid? teacherId);
     }
 }

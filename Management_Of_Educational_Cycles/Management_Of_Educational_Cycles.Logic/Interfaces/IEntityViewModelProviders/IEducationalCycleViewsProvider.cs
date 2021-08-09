@@ -13,7 +13,6 @@ namespace Management_Of_Educational_Cycles.Logic.Interfaces.IEntityViewModelProv
         public Task<bool> SaveEducationalCycle(EducationalCycleEditViewModel cycleToSave);
         public Task<EducationalCycleEditViewModel> CreateEducationalCycle(EducationalCycle educationalCycle);
         public Task<bool> UpdateEducationalCycle(EducationalCycleEditViewModel cycleToUpdate);
-        public Task<bool> AppointTeacherForCycle(Guid? educationalCycleId, Guid? teacherId);
-        public Task<bool> ThrowOffTeacherForCycle(Guid? educationalCycleId, Guid? teacherId);
+        
     }
 }
