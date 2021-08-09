@@ -80,7 +80,7 @@ namespace Management_Of_Educational_Cycles.Domain.Entities.Repository
 
         public async Task<Department> GetById(Guid? id)
         {
-            var department = await _context.Departments.Include(u => u.Groups)
+            var department = await _context.Departments.Include(u => u.Faculty).Include(u => u.Groups)
                 .FirstOrDefaultAsync(u => u.Id == id);
             return department;
         }
