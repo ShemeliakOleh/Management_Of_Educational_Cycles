@@ -25,7 +25,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
 
         public async Task OnGetAsync()
         {
-            EducationalCycles = await dataManager.educationalCyclesRepository.GetEducationalCycles();
+            EducationalCycles = await dataManager.educationalCyclesRepository.GetAllEducationalCycles();
             
         }
     }

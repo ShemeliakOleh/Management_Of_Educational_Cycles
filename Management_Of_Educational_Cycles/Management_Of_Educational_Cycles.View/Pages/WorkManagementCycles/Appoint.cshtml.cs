@@ -67,7 +67,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 {
                     if (Filter != null)
                     {
-                        var allTeachers = await dataManager.teachersRepository.GetTeachers();
+                        var allTeachers = await dataManager.teachersRepository.GetAllTeachers();
                         var filteredTeachers = allTeachers;
                         if (Filter.TeacherName != null)
                         {

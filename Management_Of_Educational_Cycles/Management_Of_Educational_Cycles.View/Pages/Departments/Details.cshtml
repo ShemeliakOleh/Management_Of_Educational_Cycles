@@ -4,7 +4,20 @@
 <div>
     <h4>@Model.Department.Name</h4>
     <hr />
-
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Department.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Department.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Department.Faculty)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Department.Faculty.Name)
+        </dd>
+    </dl>
 </div>
 @await Html.PartialAsync("_GroupsList", Model.Department.Groups)
 <div>

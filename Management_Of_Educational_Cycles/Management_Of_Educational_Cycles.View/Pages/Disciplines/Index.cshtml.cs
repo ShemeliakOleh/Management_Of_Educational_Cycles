@@ -24,7 +24,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.Disciplines
 
         public async Task OnGetAsync()
         {
-            Disciplines = await dataManager.disciplinesRepository.GetDisciplines();
+            Disciplines = await dataManager.disciplinesRepository.GetAllDisciplines();
         }
     }
 }

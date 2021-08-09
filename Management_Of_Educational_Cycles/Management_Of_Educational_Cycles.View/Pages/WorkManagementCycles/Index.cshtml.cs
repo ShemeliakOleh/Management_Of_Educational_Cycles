@@ -25,7 +25,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
         public async Task OnGetAsync()
         {
 
-            WorkManagementCycles = await dataManager.workManagementCyclesRepository.GetWorkManagementCycles();
+            WorkManagementCycles = await dataManager.workManagementCyclesRepository.GetAllWorkManagementCycles();
             if (WorkManagementCycles.Count > 0)
             {
                 if (WorkManagementCycles[0].Teachers == null)
