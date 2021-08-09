@@ -20,7 +20,7 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
 
         }
 
-        public IList<WorkManagementCycle> WorkManagementCycles { get;set; }
+        public List<WorkManagementCycle> WorkManagementCycles { get;set; }
 
         public async Task OnGetAsync()
         {
