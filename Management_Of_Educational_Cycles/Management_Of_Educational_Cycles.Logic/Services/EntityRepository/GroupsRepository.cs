@@ -8,45 +8,56 @@ using Management_Of_Educational_Cycles.Logic.Interfaces;
 using Management_Of_Educational_Cycles.Logic.Interfaces.IEntityRepository;
 namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
 {
-    public class GroupsRepository : EntityRepository,IGroupsRepository
+    public class GroupsRepository : EntityRepository, IGroupsRepository
     {
         public GroupsRepository(IRequestSender requestSender) : base(requestSender)
         {
 
         }
-        public Task<bool> CreateGroup(AcademicGroup group)
+        public async Task<bool> CreateGroup(AcademicGroup group)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/AcademicGroups/create", group);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<bool> DeleteById(Guid? id)
+        public async Task<bool> DeleteById(Guid? id)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/remove?id=" + id);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<AcademicGroup> GetById(Guid? id)
+        public async Task<AcademicGroup> GetById(Guid? id)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<AcademicGroup>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/one?id=" + id)
+               );
         }
 
-        public Task<List<AcademicGroup>> GetFilteredGroups(AcademicGroup pattern)
+        public async Task<List<AcademicGroup>> GetFilteredGroups(AcademicGroup pattern)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<AcademicGroup>>(
+                await _requestSender.SendPostRequestAsync("https://localhost:44389/api/AcademicGroups/filter", pattern)
+                );
         }
 
-        public Task<List<AcademicGroup>> GetGroups()
+        public async Task<List<AcademicGroup>> GetGroups()
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<AcademicGroup>>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/list")
+               );
         }
 
-        public Task<List<AcademicGroup>> GetGroupsByDepartment(Guid? DepartmentId)
+        public async Task<List<AcademicGroup>> GetGroupsByDepartment(Guid? departmentId)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<AcademicGroup>>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/AcademicGroups/getByDepartment?departmentId=" + departmentId)
+               );
         }
 
-        public Task<bool> UpdateGroup(AcademicGroup group)
+        public async Task<bool> UpdateGroup(AcademicGroup group)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/AcademicGroups/update", group);
+            return response.IsSuccessStatusCode;
         }
     }
 }

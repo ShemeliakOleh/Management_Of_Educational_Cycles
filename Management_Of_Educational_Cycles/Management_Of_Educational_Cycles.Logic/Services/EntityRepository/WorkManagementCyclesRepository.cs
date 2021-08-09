@@ -8,40 +8,63 @@ using Management_Of_Educational_Cycles.Logic.Interfaces;
 using Management_Of_Educational_Cycles.Logic.Interfaces.IEntityRepository;
 namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
 {
+
     public class WorkManagementCyclesRepository : EntityRepository,IWorkManagementCyclesRepository
     {
         public WorkManagementCyclesRepository(IRequestSender requestSender) : base(requestSender)
         {
 
         }
-        public Task<bool> CreateWorkManagementCycle(WorkManagementCycle workManagementCycle)
+
+        
+
+        public async Task<bool> CreateWorkManagementCycle(WorkManagementCycle workManagementCycle)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/create", workManagementCycle);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<bool> DeleteById(Guid? id)
+        public async Task<bool> DeleteById(Guid? id)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/remove?id=" + id);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<WorkManagementCycle> GetById(Guid? id)
+        public async Task<WorkManagementCycle> GetById(Guid? id)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<WorkManagementCycle>(
+              await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/one?id=" + id)
+              );
         }
 
-        public Task<List<WorkManagementCycle>> GetFilteredWorkManagementCycles(WorkManagementCycle pattern)
+        public async Task<List<WorkManagementCycle>> GetFilteredWorkManagementCycles(WorkManagementCycle pattern)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<WorkManagementCycle>>(
+                await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/filter", pattern)
+                );
         }
 
-        public Task<List<WorkManagementCycle>> GetWorkManagementCycles()
+        public async Task<List<WorkManagementCycle>> GetWorkManagementCycles()
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<WorkManagementCycle>>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/list")
+               );
         }
-
-        public Task<bool> UpdateWorkManagementCycle(WorkManagementCycle workManagementCycle)
+        public async Task<bool> UpdateWorkManagementCycle(WorkManagementCycle workManagementCycle)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/WorkManagementCycles/update", workManagementCycle);
+            return response.IsSuccessStatusCode;
+            
+        }
+        public async Task<bool> ThrowOffTeacherForCycle(Guid? workManagementCycleId, Guid? teacherId)
+        {
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/throwOff?workManagementCycleId=" + workManagementCycleId + "&teacherId=" + teacherId);
+            return response.IsSuccessStatusCode;
+        }
+        public async Task<bool> AppointTeacherForCycle(Guid? workManagementCycleId, Guid? teacherId)
+        {
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/appoint?workManagementCycleId=" + workManagementCycleId + "&teacherId=" + teacherId);
+            return response.IsSuccessStatusCode;
         }
     }
 }

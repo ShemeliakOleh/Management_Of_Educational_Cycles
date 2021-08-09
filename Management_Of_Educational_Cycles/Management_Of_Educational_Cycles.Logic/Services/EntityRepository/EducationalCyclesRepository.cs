@@ -15,34 +15,58 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
         {
 
         }
-        public Task<bool> CreateEducationalCycle(EducationalCycle educationalCycle)
+
+       
+
+        public async Task<bool> CreateEducationalCycle(EducationalCycle educationalCycle)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/create", educationalCycle);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<bool> DeleteById(Guid? id)
+        public async Task<bool> DeleteById(Guid? id)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/remove?id=" + id);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<EducationalCycle> GetById(Guid? id)
+        public async Task<EducationalCycle> GetById(Guid? id)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<EducationalCycle>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/one?id=" + id)
+               );
         }
 
-        public Task<List<EducationalCycle>> GetEducationalCycles()
+        public async Task<List<EducationalCycle>> GetEducationalCycles()
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<EducationalCycle>>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/list")
+               );
         }
 
-        public Task<List<EducationalCycle>> GetFilteredEducationalCycles(EducationalCycle pattern)
+        public async Task<List<EducationalCycle>> GetFilteredEducationalCycles(EducationalCycle pattern)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<EducationalCycle>>(
+                await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/filter", pattern)
+                );
+        }
+        public async Task<bool> AppointTeacherForCycle(Guid? educationalCycleId, Guid? teacherId)
+        {
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/appoint?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
+            return response.IsSuccessStatusCode;
+        }
+        public async Task<bool> ThrowOffTeacherForCycle(Guid? educationalCycleId, Guid? teacherId)
+        {
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/EducationalCycles/throwOff?educationalCycleId=" + educationalCycleId + "&teacherId=" + teacherId);
+            return response.IsSuccessStatusCode;
+           
         }
 
-        public Task<bool> UpdateEducationalCycle(EducationalCycle educationalCycle)
+
+        public async Task<bool> UpdateEducationalCycle(EducationalCycle educationalCycle)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/EducationalCycles/update", educationalCycle);
+            return response.IsSuccessStatusCode;
         }
     }
 }

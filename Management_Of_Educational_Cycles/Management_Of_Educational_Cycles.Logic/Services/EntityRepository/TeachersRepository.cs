@@ -14,34 +14,43 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
         {
 
         }
-        public Task<bool> CreateTeacher(Teacher teacher)
+        public async Task<bool> CreateTeacher(Teacher teacher)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/create", teacher);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<bool> DeleteById(Guid? id)
+        public async Task<bool> DeleteById(Guid? id)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/remove?id=" + id);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<Teacher> GetById(Guid? id)
+        public async Task<Teacher> GetById(Guid? id)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<Teacher>(
+              await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/one?id=" + id)
+              );
         }
 
-        public Task<List<Teacher>> GetFilteredTeachers(Teacher pattern)
+        public async Task<List<Teacher>> GetFilteredTeachers(Teacher pattern)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
+                await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/filter", pattern)
+                );
         }
 
-        public Task<List<Teacher>> GetTeachers()
+        public async Task<List<Teacher>> GetTeachers()
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Teacher>>(
+              await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Teachers/list")
+              );
         }
 
-        public Task<bool> UpdateTeacher(Teacher teacher)
+        public async Task<bool> UpdateTeacher(Teacher teacher)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Teachers/update", teacher);
+            return response.IsSuccessStatusCode;
         }
     }
 }

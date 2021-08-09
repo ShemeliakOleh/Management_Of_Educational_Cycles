@@ -90,14 +90,6 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
             
             return false;
         }
-        public Task<bool> AppointTeacherForCycle(Guid? workManagementCycleId, Guid? teacherId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ThrowOffTeacherForCycle(Guid? workManagementCycleId, Guid? teacherId)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

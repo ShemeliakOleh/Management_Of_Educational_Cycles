@@ -16,19 +16,23 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
         {
 
         }
-        public Task<bool> CreateDepartment(Department department)
+        public async Task<bool> CreateDepartment(Department department)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/create", department);
+            return response.IsSuccessStatusCode;
+        }
+        
+        public async Task<bool> DeleteById(Guid? id)
+        {
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/remove?id=" + id);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<bool> DeleteById(Guid? id)
+        public async Task<Department> GetById(Guid? id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Department> GetById(Guid? id)
-        {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<Department>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/one?id=" + id)
+               );
         }
 
         public async Task<List<Department>> GetDepartments()
@@ -39,19 +43,24 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
 
         }
 
-        public Task<List<Department>> GetDepartmentsByFaculty(Guid? FacultyId)
+        public async Task<List<Department>> GetDepartmentsByFaculty(Guid? facultyId)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Department>>(
+                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/getByFaculty?facultyId=" + facultyId)
+                );
         }
 
-        public Task<bool> UpdateDepartment(Department department)
+        public async Task<bool> UpdateDepartment(Department department)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/update", department);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<List<Department>> GetFilteredDepartments(Department pattern)
+        public async Task<List<Department>> GetFilteredDepartments(Department pattern)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Department>>(
+                await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Departments/filter", pattern)
+                );
         }
 
         

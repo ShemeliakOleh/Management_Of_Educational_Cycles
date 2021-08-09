@@ -14,37 +14,42 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
         {
 
         }
-        public Task<bool> CreateFaculty(Faculty faculty)
+        public async Task<bool> CreateFaculty(Faculty faculty)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Faculties/create", faculty);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<bool> DeleteById(Guid? id)
+        public async Task<bool> DeleteById(Guid? id)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/remove?id=" + id);
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<Faculty> GetById(Guid? id)
         {
-            var faculty = await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
-            await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + id)
-            );
-            return faculty;
+            return await _requestSender.GetContetFromRequestAsyncAs<Faculty>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/one?id=" + id)
+               );
         }
 
-        public Task<List<Faculty>> GetFaculties()
+        public async Task<List<Faculty>> GetFaculties()
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Faculty>>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/list")
+               );
         }
 
-        public Task<List<Faculty>> GetFilteredFaculties(Faculty pattern)
+        public async Task<List<Faculty>> GetFilteredFaculties(Faculty pattern)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Faculty>>(
+               await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Faculties/filter", pattern)
+               );
         }
-
-        public Task<bool> UpdateFaculty(Faculty faculty)
+        public async Task<bool> UpdateFaculty(Faculty faculty)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Faculties/update", faculty);
+            return response.IsSuccessStatusCode;
         }
     }
 }

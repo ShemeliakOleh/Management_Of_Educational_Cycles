@@ -53,12 +53,12 @@ namespace Management_Of_Educational_Cycles.View.Pages.WorkManagementCycles
                 {
                     if (Action == "Add")
                     {
-                        var response = await viewManager.workManagementCyclesProvider.AppointTeacherForCycle(workManagementCycleId, teacherId);
+                        var response = await dataManager.workManagementCyclesRepository.AppointTeacherForCycle(workManagementCycleId, teacherId);
 
                     }
                     else
                     {
-                        var response = await viewManager.workManagementCyclesProvider.ThrowOffTeacherForCycle(workManagementCycleId, teacherId);
+                        var response = await dataManager.workManagementCyclesRepository.ThrowOffTeacherForCycle(workManagementCycleId, teacherId);
                     }
                     WorkManagementCycle = await dataManager.workManagementCyclesRepository.GetById(workManagementCycleId);
                     return Page();

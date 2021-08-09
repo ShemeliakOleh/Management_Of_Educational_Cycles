@@ -43,11 +43,11 @@ namespace Management_Of_Educational_Cycles.View.Pages.EducationalCycles
                 {
                     if (Action == "Add")
                     {
-                        var response = await viewManager.educationalCyclesProvider.AppointTeacherForCycle(educationalCycleId,teacherId);
+                        var response = await dataManager.educationalCyclesRepository.AppointTeacherForCycle(educationalCycleId,teacherId);
                     }
                     else
                     {
-                        var response = await viewManager.educationalCyclesProvider.ThrowOffTeacherForCycle(educationalCycleId, teacherId);
+                        var response = await dataManager.educationalCyclesRepository.ThrowOffTeacherForCycle(educationalCycleId, teacherId);
                     }
                     EducationalCycle = await dataManager.educationalCyclesRepository.GetById(educationalCycleId);
                     return Page();

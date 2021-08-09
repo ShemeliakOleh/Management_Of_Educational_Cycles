@@ -15,34 +15,42 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
         {
 
         }
-        public Task<bool> CreateDiscipline(Discipline discipline)
+        public async Task<bool> CreateDiscipline(Discipline discipline)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Disciplines/create", discipline);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<bool> DeleteById(Guid? id)
+        public async Task<bool> DeleteById(Guid? id)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Disciplines/remove?id=" + id);
+            return response.IsSuccessStatusCode;
         }
 
-        public Task<Discipline> GetById(Guid? id)
+        public async Task<Discipline> GetById(Guid? id)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<Discipline>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Disciplines/one?id=" + id)
+               );
         }
 
-        public Task<List<Discipline>> GetDisciplines()
+        public async Task<List<Discipline>> GetDisciplines()
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Discipline>>(
+               await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Disciplines/list")
+               );
         }
 
-        public Task<List<Discipline>> GetFilteredDisciplines(Discipline pattern)
+        public async Task<List<Discipline>> GetFilteredDisciplines(Discipline pattern)
         {
-            throw new NotImplementedException();
+            return await _requestSender.GetContetFromRequestAsyncAs<List<Discipline>>(
+               await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Disciplines/filter", pattern)
+               );
         }
-
-        public Task<bool> UpdateDiscipline(Discipline discipline)
+        public async Task<bool> UpdateDiscipline(Discipline discipline)
         {
-            throw new NotImplementedException();
+            var response = await _requestSender.SendPostRequestAsync("https://localhost:44389/api/Disciplines/update", discipline);
+            return response.IsSuccessStatusCode;
         }
 
     }
