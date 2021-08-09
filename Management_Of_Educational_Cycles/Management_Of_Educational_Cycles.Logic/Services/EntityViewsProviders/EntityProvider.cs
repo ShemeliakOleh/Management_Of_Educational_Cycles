@@ -16,7 +16,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
         }
         protected async Task<List<SelectListItem>> GetAllFaculties()
         {
-            var faculties = await dataManager.facultiesRepository.GetFaculties();
+            var faculties = await dataManager.facultiesRepository.GetAllFaculties();
             List<SelectListItem> facultiesSelectListItems = faculties.OrderBy(n => n.Name)
              .Select(n =>
                  new SelectListItem
@@ -34,7 +34,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
         }
         protected async Task<List<SelectListItem>> GetAllDisciplines()
         {
-            var disciplines = await dataManager.disciplinesRepository.GetDisciplines();
+            var disciplines = await dataManager.disciplinesRepository.GetAllDisciplines();
             List<SelectListItem> disciplinesSelectListItems = disciplines.OrderBy(n => n.Name)
              .Select(n =>
                  new SelectListItem

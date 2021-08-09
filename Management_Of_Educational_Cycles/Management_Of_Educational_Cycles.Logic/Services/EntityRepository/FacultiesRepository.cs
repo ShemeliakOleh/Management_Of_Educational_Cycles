@@ -33,7 +33,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
                );
         }
 
-        public async Task<List<Faculty>> GetFaculties()
+        public async Task<List<Faculty>> GetAllFaculties()
         {
             return await _requestSender.GetContetFromRequestAsyncAs<List<Faculty>>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Faculties/list")

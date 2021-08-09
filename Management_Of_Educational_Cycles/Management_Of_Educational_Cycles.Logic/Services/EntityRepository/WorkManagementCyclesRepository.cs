@@ -44,7 +44,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
                 );
         }
 
-        public async Task<List<WorkManagementCycle>> GetWorkManagementCycles()
+        public async Task<List<WorkManagementCycle>> GetAllWorkManagementCycles()
         {
             return await _requestSender.GetContetFromRequestAsyncAs<List<WorkManagementCycle>>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/WorkManagementCycles/list")

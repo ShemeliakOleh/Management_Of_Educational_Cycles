@@ -10,7 +10,7 @@ namespace Management_Of_Educational_Cycles.Logic.Interfaces.IEntityRepository
     public interface IEducationalCyclesRepository
     {
         public Task<EducationalCycle> GetById(Guid? id);
-        public Task<List<EducationalCycle>> GetEducationalCycles();
+        public Task<List<EducationalCycle>> GetAllEducationalCycles();
         public Task<bool> CreateEducationalCycle(EducationalCycle educationalCycle);
         public Task<bool> UpdateEducationalCycle(EducationalCycle educationalCycle);
         public Task<bool> DeleteById(Guid? id);

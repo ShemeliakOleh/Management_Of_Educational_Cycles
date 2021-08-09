@@ -20,7 +20,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
         public async Task<FacultiesFilter> CreateFacultiesFilter()
         {
             FacultiesFilter facultiesFilter = new FacultiesFilter();
-            facultiesFilter.Faculties = await dataManager.facultiesRepository.GetFaculties();
+            facultiesFilter.Faculties = await dataManager.facultiesRepository.GetAllFaculties();
             facultiesFilter.FacultyName = "";
             return facultiesFilter;
         }
@@ -30,7 +30,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
             return new FacultiesFilter()
             {
                 FacultyName = facultyName,
-                Faculties = (await dataManager.facultiesRepository.GetFaculties()).Where(x => x.Name.ToLower().Contains(facultyName.ToLower())).ToList()
+                Faculties = (await dataManager.facultiesRepository.GetAllFaculties()).Where(x => x.Name.ToLower().Contains(facultyName.ToLower())).ToList()
             };
         }
        

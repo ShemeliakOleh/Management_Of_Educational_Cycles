@@ -10,7 +10,7 @@ namespace Management_Of_Educational_Cycles.Logic.Interfaces.IEntityRepository
     public interface IFacultiesRepository
     {
         public Task<Faculty> GetById(Guid? id);
-        public Task<List<Faculty>> GetFaculties();
+        public Task<List<Faculty>> GetAllFaculties();
         public Task<bool> CreateFaculty(Faculty faculty);
         public Task<bool> UpdateFaculty(Faculty faculty);
         public Task<bool> DeleteById(Guid? id);

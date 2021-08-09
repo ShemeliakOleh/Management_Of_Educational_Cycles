@@ -35,7 +35,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityRepository
                );
         }
 
-        public async Task<List<Department>> GetDepartments()
+        public async Task<List<Department>> GetAllDepartments()
         {
             return await _requestSender.GetContetFromRequestAsyncAs<List<Department>>(
                await _requestSender.SendGetRequestAsync("https://localhost:44389/api/Departments/list")

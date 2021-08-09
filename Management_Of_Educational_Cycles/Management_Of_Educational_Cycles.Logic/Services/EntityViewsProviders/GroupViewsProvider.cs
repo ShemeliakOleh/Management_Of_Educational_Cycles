@@ -105,7 +105,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
                 GroupName = "",
                 Faculties = await GetAllFaculties(),
                 Departments = new List<SelectListItem>(),
-                Groups = new List<AcademicGroup>()
+                Groups = await dataManager.groupsRepository.GetAllGroups()
 
             };
             return groupsFilter;

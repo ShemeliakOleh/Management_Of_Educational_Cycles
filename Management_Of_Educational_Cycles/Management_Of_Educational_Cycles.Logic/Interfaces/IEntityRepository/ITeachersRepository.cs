@@ -10,7 +10,7 @@ namespace Management_Of_Educational_Cycles.Logic.Interfaces.IEntityRepository
     public interface ITeachersRepository
     {
         public Task<Teacher> GetById(Guid? id);
-        public Task<List<Teacher>> GetTeachers();
+        public Task<List<Teacher>> GetAllTeachers();
 
         public Task<bool> CreateTeacher(Teacher teacher);
         public Task<bool> UpdateTeacher(Teacher teacher);

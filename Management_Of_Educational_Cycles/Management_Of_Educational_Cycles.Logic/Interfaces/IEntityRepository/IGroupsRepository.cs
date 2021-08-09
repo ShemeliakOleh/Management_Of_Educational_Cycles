@@ -10,7 +10,7 @@ namespace Management_Of_Educational_Cycles.Logic.Interfaces.IEntityRepository
     public interface IGroupsRepository
     {
         public Task<AcademicGroup> GetById(Guid? id);
-        public Task<List<AcademicGroup>> GetGroups();
+        public Task<List<AcademicGroup>> GetAllGroups();
 
         public Task<List<AcademicGroup>> GetGroupsByDepartment(Guid? DepartmentId);
         public Task<bool> CreateGroup(AcademicGroup group);

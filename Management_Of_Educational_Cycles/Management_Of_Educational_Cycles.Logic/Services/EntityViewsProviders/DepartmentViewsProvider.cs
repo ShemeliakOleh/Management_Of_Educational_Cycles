@@ -85,7 +85,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
             {
                 DepartmentName = "",
                 Faculties = await GetAllFaculties(),
-                Departments = await dataManager.departmentsRepository.GetDepartments()
+                Departments = await dataManager.departmentsRepository.GetAllDepartments()
 
             };
             return departmentsFilter;

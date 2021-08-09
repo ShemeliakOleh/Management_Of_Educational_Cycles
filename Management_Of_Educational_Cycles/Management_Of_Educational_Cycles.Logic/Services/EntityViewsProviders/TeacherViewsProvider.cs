@@ -48,7 +48,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
         }
         public async Task<List<TeacherDisplayViewModel>> GetTeachers()
         {
-            var teachers = await dataManager.teachersRepository.GetTeachers();
+            var teachers = await dataManager.teachersRepository.GetAllTeachers();
             if (teachers != null)
             {
                 List<TeacherDisplayViewModel> teachersDisplay = new List<TeacherDisplayViewModel>();
@@ -93,7 +93,7 @@ namespace Management_Of_Educational_Cycles.Logic.Services.EntityViewsProviders
         }
         public async Task<TeachersFilter> CreateTeachersFilter()
         {
-            var teachers = await dataManager.teachersRepository.GetTeachers();
+            var teachers = await dataManager.teachersRepository.GetAllTeachers();
             TeachersFilter teachersFilter = new TeachersFilter()
             {
                 Teachers = teachers,
